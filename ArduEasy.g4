@@ -178,7 +178,7 @@ TIME 					: [0-2][0-9][:][0-5][0-9] ;
 DAY						: 'MONDAY' | 'TUESDAY' | 'WEDNESDAY' | 'THURSDAY' | 'FRIDAY' | 'SATURDAY' | 'SUNDAY' ;
 MONTH 					: 'JANUARY' | 'FEBRUARY' | 'MARCH' | 'APRIL' | 'MAY' | 'JUNE' | 'JULY' | 'AUGUST' | 'SEPTEMBER' | 'OCTOBER' | 'NOVEMBER' | 'DECEMBER' ;				
 STRUCT 					: 'changethispleasestruct' ;			
-BOOLEAN 				: 'true'|'false'|'on'|'off'|'open'|'close'|'enable'|'disable' ;
+BOOL 					: 'true'|'false'|'on'|'off'|'open'|'close'|'enable'|'disable' ;
 
 VOIDDEC					: 'void' ;
 INTDEC					: 'int' ;
