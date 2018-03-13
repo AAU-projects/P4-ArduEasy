@@ -1,0 +1,16 @@
+setup
+{
+	mainLight = PIN A 10 as input
+	otherLight = PIN 11 as output
+	aDoor = PIN A 30 as inputpullup
+}
+
+when ( 2 < 5)
+{
+	bool name = True
+
+	if(name)
+	{
+	
+	}
+}
