@@ -5,6 +5,6 @@ ArduEasyListener*
 ArduEasy.interp
 ArduEasy.tokens
 ArduEasyMaven/.idea*
-ArduEasyMaven/gen*
+ArduEasyMaven\gen
 .idea/*
 ArduEasyMaven/.idea/workspace.xml
