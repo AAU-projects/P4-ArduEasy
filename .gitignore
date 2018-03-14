@@ -1,0 +1,7 @@
+ArduEasyParser*
+ArduEasyBase*
+ArduEasyLexer*
+ArduEasyListener*
+ArduEasy.interp
+ArduEasy.tokens
+ArduEasyMaven/.idea*
