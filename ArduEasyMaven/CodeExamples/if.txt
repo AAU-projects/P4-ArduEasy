@@ -1,0 +1,45 @@
+setup{}
+function void IfTest1 ()
+{
+    if(5>2)
+    {
+        int bob = 7
+        int jens = 10
+
+        if (bob is jens)
+        {
+
+        }
+
+        bool PartyTime = true
+
+        if (PartyTime)
+        {
+            if (7 is above 15)
+            {
+
+            } else if (7 is below 15)
+            {
+
+            } else if (15 is not 15)
+            {
+
+            } else if (2 != 5)
+            {
+
+            } else
+            {
+
+            }
+        }
+
+        if (!PartyTime)
+        {
+
+        } else
+        {
+
+        }
+
+    }
+}

@@ -7,7 +7,6 @@ setup               : SETUP LBRACK definitions RBRACK
 					;
 
 functions           : function functions
-                    | function
                     |
                     ;
 
@@ -47,18 +46,18 @@ statement           : declaration
                  	| assignment
                  	| IF LPAREN logicalExpressions RPAREN LBRACK statements RBRACK
  					| IF LPAREN logicalExpressions RPAREN LBRACK statements RBRACK ifElse
-                 	| IF LPAREN logicalExpressions RPAREN LBRACK statements RBRACK ELSE LPAREN logicalExpressions RPAREN LBRACK statements RBRACK
+                 	| IF LPAREN logicalExpressions RPAREN LBRACK statements RBRACK ELSE LBRACK statements RBRACK
                  	| SWITCH LPAREN value RPAREN LBRACK cases RBRACK
                  	| WHILE LPAREN logicalExpressions RPAREN LBRACK statements RBRACK
- 					| FOR LPAREN declaration SEMICOLON logicalExpressions SEMICOLON expressions RPAREN LBRACK statements RBRACK
- 					| FOR LPAREN assignment SEMICOLON logicalExpressions SEMICOLON expressions RPAREN LBRACK statements RBRACK
- 					| PERFORM INT TIMES LBRACK statements RBRACK
- 					| PERFORM UNTIL logicalExpressions LBRACK statements RBRACK
+ 					| FOR LPAREN declaration SEMICOLON logicalExpressions SEMICOLON assignment RPAREN LBRACK statements RBRACK
+ 					| FOR LPAREN assignment SEMICOLON logicalExpressions SEMICOLON assignment RPAREN LBRACK statements RBRACK
+ 					| PERFORM expression TIMES LBRACK statements RBRACK
+ 					| PERFORM UNTIL LPAREN logicalExpressions RPAREN LBRACK statements RBRACK
  					;
 
-ifElse              : IF ELSE LPAREN logicalExpressions RPAREN LBRACK statements RBRACK
-                 	| IF ELSE LPAREN logicalExpressions RPAREN LBRACK statements RBRACK ifElse
-                 	| IF ELSE LPAREN logicalExpressions RPAREN LBRACK statements RBRACK ELSE LPAREN logicalExpressions RPAREN LBRACK statements RBRACK
+ifElse              : ELSE IF LPAREN logicalExpressions RPAREN LBRACK statements RBRACK
+                 	| ELSE IF LPAREN logicalExpressions RPAREN LBRACK statements RBRACK ifElse
+                 	| ELSE IF LPAREN logicalExpressions RPAREN LBRACK statements RBRACK ELSE LBRACK statements RBRACK
                  	;
 
 cases               : case_r cases
@@ -75,10 +74,11 @@ logicalExpressions  : logicalExpressions logicalOperator logicalExpressions
 logicalExpression   : expressions comparisonOperator expressions
                  	| identifier
                  	| NEGATEOPERATOR identifier
+                 	| BOOL
+                 	| NEGATEOPERATOR BOOL
                  	;
 
 expressions         : addSubExpression
- 					| expression
  					;
 
 expression          : identifier
@@ -90,9 +90,9 @@ addSubExpression    : multiDivExpression
                  	| addSubExpression SUBTRACTIVEOPERATOR multiDivExpression
                  	;
 
-multiDivExpression  : multiDivExpression MULTIPLICATIVEOPERATOR expression
-                 	| multiDivExpression DIVISIONALOPERATOR expression
-                 	| expression
+multiDivExpression  : expression MULTIPLICATIVEOPERATOR multiDivExpression
+                    | expression DIVISIONALOPERATOR multiDivExpression
+                    | expression
                  	;
 
 assignment          : identifier ASSIGNMENTOPERATOR expressions
@@ -103,6 +103,8 @@ value               : INT
 	                | PERCENTAGE
 	                | STRING
 	                | BOOL
+	                | SUBTRACTIVEOPERATOR INT
+	                | SUBTRACTIVEOPERATOR FLOAT
 	                ;
 
 typeSpecifier       : INTDEC
@@ -171,14 +173,14 @@ SEMICOLON				: ';' ;
 COMMA 					: ',' ;
 
 INT 					: [0]|[1-9]+[0-9]* ;
-FLOAT 					: [+-]?([0-9]*[.])?[0-9]+ ;
+FLOAT 					: ([0-9]*[.])?[0-9]+ ;
 PERCENTAGE 				: [1-9]+[0-9]*[%] ;
 STRING 					: '"'.*?'"' ;
 TIME 					: [0-2][0-9][:][0-5][0-9] ;
 DAY						: 'MONDAY' | 'TUESDAY' | 'WEDNESDAY' | 'THURSDAY' | 'FRIDAY' | 'SATURDAY' | 'SUNDAY' ;
 MONTH 					: 'JANUARY' | 'FEBRUARY' | 'MARCH' | 'APRIL' | 'MAY' | 'JUNE' | 'JULY' | 'AUGUST' | 'SEPTEMBER' | 'OCTOBER' | 'NOVEMBER' | 'DECEMBER' ;
 STRUCT 					: 'changethispleasestruct' ;
-BOOL 					: 'true'|'false'|'on'|'off'|'open'|'close'|'enable'|'disable' ;
+BOOL 					: 'true'|'false' ;
 
 VOIDDEC					: 'void' ;
 INTDEC					: 'int' ;
