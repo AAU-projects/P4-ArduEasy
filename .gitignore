@@ -5,7 +5,7 @@ ArduEasyListener*
 ArduEasy.interp
 ArduEasy.tokens
 ArduEasyMaven/.idea*
-ArduEasyMaven\gen
+ArduEasyMaven/gen
 .idea/*
 ArduEasyMaven/.idea/workspace.xml
 
@@ -18,6 +18,8 @@ ArduEasyMaven/.idea/workspace.xml
 .idea/**/workspace.xml
 .idea/**/tasks.xml
 .idea/dictionaries
+
+ArduEasyMaven/.idea/**/workspace.xml
 
 # Sensitive or high-churn files:
 .idea/**/dataSources/

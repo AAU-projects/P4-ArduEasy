@@ -1,4 +1,4 @@
-// Generated from C:/Workspaces/ArduEasyMaven/src/main/antlr4\ArduEasy.g4 by ANTLR 4.7
+// Generated from D:/Github/ArduEasy/ArduEasyMaven/src/main/antlr4\ArduEasy.g4 by ANTLR 4.7
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
 /**
