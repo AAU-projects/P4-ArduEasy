@@ -82,6 +82,7 @@ expressions         : addSubExpression
  					;
 
 expression          : identifier
+                    | SUBTRACTIVEOPERATOR identifier
  					| value
  					;
 
@@ -103,8 +104,12 @@ value               : INT
 	                | PERCENTAGE
 	                | STRING
 	                | BOOL
+	                | TIME
+	                | DAY
+	                | MONTH
 	                | SUBTRACTIVEOPERATOR INT
 	                | SUBTRACTIVEOPERATOR FLOAT
+	                | NEGATEOPERATOR BOOL
 	                ;
 
 typeSpecifier       : INTDEC
@@ -176,10 +181,9 @@ INT 					: [0]|[1-9]+[0-9]* ;
 FLOAT 					: ([0-9]*[.])?[0-9]+ ;
 PERCENTAGE 				: [1-9]+[0-9]*[%] ;
 STRING 					: '"'.*?'"' ;
-TIME 					: [0-2][0-9][:][0-5][0-9] ;
+TIME 					: ([0-1][0-9]|[2][0-3])[:][0-5][0-9] ;
 DAY						: 'MONDAY' | 'TUESDAY' | 'WEDNESDAY' | 'THURSDAY' | 'FRIDAY' | 'SATURDAY' | 'SUNDAY' ;
 MONTH 					: 'JANUARY' | 'FEBRUARY' | 'MARCH' | 'APRIL' | 'MAY' | 'JUNE' | 'JULY' | 'AUGUST' | 'SEPTEMBER' | 'OCTOBER' | 'NOVEMBER' | 'DECEMBER' ;
-STRUCT 					: 'changethispleasestruct' ;
 BOOL 					: 'true'|'false' ;
 
 VOIDDEC					: 'void' ;
@@ -187,7 +191,7 @@ INTDEC					: 'int' ;
 FLOATDEC				: 'float' ;
 STRINGDEC				: 'string' ;
 CHARDEC 				: 'char' ;
-PERCENTAGEDEC			: 'percentage' ;
+PERCENTAGEDEC			: 'percent' ;
 STRUCTDEC				: 'struct' ;
 ARRAYDEC				: 'array' ;
 TIMEDEC					: 'time' ;
