@@ -1,4 +1,4 @@
-// Generated from D:/Github/ArduEasy/ArduEasyMaven/src/main/antlr4\ArduEasy.g4 by ANTLR 4.7
+// Generated from C:/Workspaces/ArduEasy/ArduEasyMaven/src/main/antlr4\ArduEasy.g4 by ANTLR 4.7
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
