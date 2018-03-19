@@ -1,0 +1,21 @@
+setup
+{
+	mainLight = PIN A 10 as input
+	otherLight = PIN 11 as output
+	aDoor = PIN A 30 as inputpullup
+}
+
+when ( 2 < 5)
+{
+	bool name = true
+
+	if(name)
+	{
+		string TestString = "This is a test string."
+	}
+}
+
+function int thisIntReturns (int thisIntIsParameter, int thisIntIsAlsoParameter) 
+{
+	return thisIntReturns
+}
