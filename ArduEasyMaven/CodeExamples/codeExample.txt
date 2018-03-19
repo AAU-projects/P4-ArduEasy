@@ -1,21 +1,57 @@
-setup
+setup House
 {
-	mainLight = PIN A 10 as input
-	otherLight = PIN 11 as output
-	aDoor = PIN A 30 as inputpullup
-}
+	Int curtainsCounter 0
+	Light8 = PIN12 as INPUT
 
-when ( 2 < 5)
-{
-	bool name = true
-
-	if(name)
+	room Hallway
 	{
-		string TestString = "This is a test string."
+		Light1 = PIN1 as INPUT
+		Light2 = PIN2 as INPUT
+		Light3 = PIN3 as INPUT
+
+		Lights = { Light1, Light2, Light3 }
+		Doors = { Door1 }
+	}
+
+	room Livingroom
+	{
+		Lights = { Light4, Light5, Light6, Light7, Light8 }
 	}
 }
 
-function int thisIntReturns (int thisIntIsParameter, int thisIntIsAlsoParameter) 
+
+
+when (2 is not curtainsCounter)
 {
-	return thisIntReturns
+	curtainsCounter = curtainsCounter + 1
+
+	bool hallwayLightsState = not Hallway.Lights // sets the opposite state of lights, e.g lights are turned on and state is sets to false
+	Hallway.Lights = hallwayLightsState
+}
+
+function int testFunction(string bob)
+{
+	int returnValue = 42
+	
+	if(2 is below or equal 6)
+	{
+		int test = 6
+		bool isTrue = true
+		
+		perform test times 
+		{
+		}
+		
+		while(isTrue)
+		{
+			isTrue = false
+		}	
+	}
+	
+	if(bob is "hello")
+	{
+		returnValue = 420
+	}
+	
+	return returnValue
 }
