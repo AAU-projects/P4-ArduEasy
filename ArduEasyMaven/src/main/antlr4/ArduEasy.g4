@@ -19,13 +19,39 @@ definitions         : definition definitions
  					|
  					;
 
-definition          : identifier ASSIGNMENTOPERATOR pin AS ioStatus
+definition          : pindeclaration
                  	| declaration
                  	| assignment
+                 	| roomdeclaration
                  	;
 
 declaration         : typeSpecifier identifier ASSIGNMENTOPERATOR expressions
 					;
+
+roomdeclaration     : ROOMDEC identifier LBRACK roomblock RBRACK
+                    ;
+
+roomblock           : pindeclarations arraydeclarations
+                    |
+                    ;
+
+arraydeclaration    : identifier LBRACK identifierloop RBRACK
+                    ;
+
+arraydeclarations   : arraydeclaration arraydeclarations
+                    |
+                    ;
+
+identifierloop      : identifier
+                    | identifier COMMA identifierloop
+                    ;
+
+pindeclaration      : identifier ASSIGNMENTOPERATOR pin AS ioStatus
+                    ;
+
+pindeclarations     : pindeclaration pindeclarations
+                    |
+                    ;
 
 parameters          : parameter COMMA parameters
                  	| parameter
@@ -47,7 +73,7 @@ statement           : declaration
                  	| IF LPAREN logicalExpressions RPAREN LBRACK statements RBRACK
  					| IF LPAREN logicalExpressions RPAREN LBRACK statements RBRACK ifElse
                  	| IF LPAREN logicalExpressions RPAREN LBRACK statements RBRACK ELSE LBRACK statements RBRACK
-                 	| SWITCH LPAREN value RPAREN LBRACK cases RBRACK
+                 	| SWITCH LPAREN expression RPAREN LBRACK cases RBRACK
                  	| WHILE LPAREN logicalExpressions RPAREN LBRACK statements RBRACK
  					| FOR LPAREN declaration SEMICOLON logicalExpressions SEMICOLON assignment RPAREN LBRACK statements RBRACK
  					| FOR LPAREN assignment SEMICOLON logicalExpressions SEMICOLON assignment RPAREN LBRACK statements RBRACK
@@ -62,6 +88,7 @@ ifElse              : ELSE IF LPAREN logicalExpressions RPAREN LBRACK statements
 
 cases               : case_r cases
 					| case_r DEFAULT COLON LBRACK statements RBRACK
+					|
 					;
 
 case_r              : CASE value  COLON LBRACK statements RBRACK
@@ -198,8 +225,10 @@ TIMEDEC					: 'time' ;
 DAYDEC					: 'day' ;
 MONTHDEC 				: 'month' ;
 BOOLDEC 				: 'bool' ;
+ROOMDEC                 : 'room' ;
 
-SETUP 					: 'setup' ;
+SETUP 					: 'house' ;
+ROOM                    : 'room' ;
 WHEN 					: 'when' ;
 FOR 					: 'for' ;
 WHILE 					: 'while' ;
