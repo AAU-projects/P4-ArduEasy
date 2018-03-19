@@ -1,4 +1,4 @@
-setup{}
+house{}
 function void AssTest1()
 {
     int bob = 0

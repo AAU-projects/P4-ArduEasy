@@ -1,4 +1,4 @@
-setup{}
+house{}
 function void IfTest1 ()
 {
     if(5>2)
