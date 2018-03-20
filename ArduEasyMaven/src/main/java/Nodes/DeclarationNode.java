@@ -1,6 +1,6 @@
 package Nodes;
 
-public class DeclarationNode extends Node
+public class DeclarationNode extends DefinitionNode
 {
     public String Type;
     public IdentifierNode Identifier;
@@ -9,6 +9,6 @@ public class DeclarationNode extends Node
     @Override
     public String toString()
     {
-        return "Decleration";
+        return "Declaration";
     }
 }

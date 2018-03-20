@@ -1,11 +1,13 @@
 package Nodes;
 
 
-public class IdentifierNode {
+public class IdentifierNode
+{
     public String Value;
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return Value;
     }
 }
