@@ -1,7 +1,8 @@
 package Nodes;
 
 
-public class IdentifierNode {
+public class IdentifierNode extends ExpressionNode
+{
     public String Value;
 
     @Override

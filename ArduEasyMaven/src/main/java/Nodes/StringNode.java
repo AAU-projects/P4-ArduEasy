@@ -1,6 +1,6 @@
 package Nodes;
 
-public class StringNode extends Node
+public class StringNode extends ExpressionNode
 {
     public String Value;
 

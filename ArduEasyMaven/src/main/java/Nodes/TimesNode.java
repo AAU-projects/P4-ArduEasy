@@ -1,6 +1,6 @@
 package Nodes;
 
-public class TimesNode extends Node
+public class TimesNode extends ExpressionNode
 {
     public ExpressionNode LeftChild;
     public ExpressionNode RightChild;
