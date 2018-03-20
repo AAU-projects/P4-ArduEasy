@@ -1,5 +1,6 @@
 package Nodes;
 
-public class DefinitionNode extends Node{
+public class DefinitionNode extends Node
+{
 
 }
