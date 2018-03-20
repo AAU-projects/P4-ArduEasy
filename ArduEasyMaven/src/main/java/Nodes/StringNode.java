@@ -1,6 +1,7 @@
 package Nodes;
 
-public class StringNode extends Node {
+public class StringNode extends Node
+{
     public String Value;
 
     @Override

@@ -1,6 +1,7 @@
 package Nodes;
 
-public class FloatNode extends Node {
+public class FloatNode extends Node
+{
     public Float Value;
 
     @Override
