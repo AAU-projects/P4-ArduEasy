@@ -1,5 +1,5 @@
 package Nodes;
 
-class Node
+public abstract class Node
 {
 }
