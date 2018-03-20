@@ -11,7 +11,7 @@ functions           : function functions
                     ;
 
 function            : WHEN LPAREN logicalExpressions RPAREN LBRACK statements RBRACK
-                    | FUNCTION returnType identifier LPAREN parameters RPAREN LBRACK statements RETURN identifier RBRACK
+                    | FUNCTION returnType identifier LPAREN parameters RPAREN LBRACK statements RETURN expressions RBRACK
                     | FUNCTION VOIDDEC identifier LPAREN parameters RPAREN LBRACK statements RBRACK
                     ;
 
@@ -26,6 +26,7 @@ definition          : pindeclaration
                  	;
 
 declaration         : typeSpecifier identifier ASSIGNMENTOPERATOR expressions
+                    | typeSpecifier identifier ASSIGNMENTOPERATOR logicalExpressions
 					;
 
 roomdeclaration     : ROOMDEC identifier LBRACK roomblock RBRACK
@@ -124,6 +125,7 @@ multiDivExpression  : expression MULTIPLICATIVEOPERATOR multiDivExpression
                  	;
 
 assignment          : identifier ASSIGNMENTOPERATOR expressions
+                    | identifier ASSIGNMENTOPERATOR logicalExpressions
 					;
 
 value               : INT

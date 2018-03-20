@@ -1,6 +1,6 @@
 package Nodes;
 
-public class MinusNode extends ExpressionNode
+public class MinusNode extends ArithmeticExprNode
 {
     public ExpressionNode LeftChild;
     public ExpressionNode RightChild;

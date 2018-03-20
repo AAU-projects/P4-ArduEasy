@@ -4,7 +4,7 @@ public class DeclarationNode extends DefinitionNode
 {
     public String Type;
     public IdentifierNode Identifier;
-    public String Value;
+    public ExpressionNode Value;
 
     @Override
     public String toString()

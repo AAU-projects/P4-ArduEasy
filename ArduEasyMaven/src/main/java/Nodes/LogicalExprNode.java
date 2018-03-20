@@ -1,6 +1,6 @@
 package Nodes;
 
-public class LogicalExprNode extends Node
+public class LogicalExprNode extends ExpressionNode
 {
 
 }

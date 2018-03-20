@@ -3,7 +3,7 @@ package Nodes;
 public class AssignmentNode extends DefinitionNode
 {
     public IdentifierNode Identifier;
-    public String Value;
+    public ExpressionNode Value;
 
     @Override
     public String toString() {
