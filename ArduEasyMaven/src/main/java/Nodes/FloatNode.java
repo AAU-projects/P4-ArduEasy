@@ -1,6 +1,6 @@
 package Nodes;
 
-public class FloatNode extends Node
+public class FloatNode extends ExpressionNode
 {
     public Float Value;
 

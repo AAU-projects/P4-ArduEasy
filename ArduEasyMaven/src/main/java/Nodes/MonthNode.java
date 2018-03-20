@@ -1,6 +1,6 @@
 package Nodes;
 
-public class MonthNode extends Node
+public class MonthNode extends ExpressionNode
 {
     public String Value;
 

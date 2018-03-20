@@ -1,6 +1,6 @@
 package Nodes;
 
-public class PercentNode extends Node
+public class PercentNode extends ExpressionNode
 {
     public int Value;
 

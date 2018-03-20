@@ -1,4 +1,11 @@
 package Nodes;
 
-public class PinNode {
+public class PinNode extends Node
+{
+    public int Value;
+
+    @Override
+    public String toString() {
+        return "Pin";
+    }
 }
