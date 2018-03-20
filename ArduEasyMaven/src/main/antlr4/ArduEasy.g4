@@ -147,7 +147,6 @@ typeSpecifier       : INTDEC
 	                | TIMEDEC
 	                | DAYDEC
 	                | MONTHDEC
-	                | STRUCTDEC
 	                | BOOLDEC
 	                ;
 
