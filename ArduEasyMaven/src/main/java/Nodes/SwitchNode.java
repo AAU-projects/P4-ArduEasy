@@ -1,3 +1,7 @@
+package Nodes;
+
+import java.util.ArrayList;
+
 public class SwitchNode extends Node
 {
     public IdentifierNode Identifer;
