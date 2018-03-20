@@ -1,7 +1,7 @@
 package Nodes;
 
-public class MonthNode extends Node
-{
+
+public class IdentifierNode {
     public String Value;
 
     @Override
