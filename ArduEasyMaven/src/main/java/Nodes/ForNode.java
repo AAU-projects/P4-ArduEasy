@@ -2,7 +2,7 @@ package Nodes;
 
 import java.util.ArrayList;
 
-public abstract class ForNode
+public abstract class ForNode extends StatementsNode
 {
     public LogicalExprNode Predicate;
     public StatementsNode Increment;

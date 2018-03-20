@@ -9,6 +9,6 @@ public class DeclarationNode extends Node
     @Override
     public String toString()
     {
-        return "Decleration";
+        return "Declaration";
     }
 }
