@@ -147,7 +147,6 @@ typeSpecifier       : INTDEC
 	                | TIMEDEC
 	                | DAYDEC
 	                | MONTHDEC
-	                | STRUCTDEC
 	                | BOOLDEC
 	                ;
 
@@ -219,7 +218,6 @@ FLOATDEC				: 'float' ;
 STRINGDEC				: 'string' ;
 CHARDEC 				: 'char' ;
 PERCENTAGEDEC			: 'percent' ;
-STRUCTDEC				: 'struct' ;
 ARRAYDEC				: 'array' ;
 TIMEDEC					: 'time' ;
 DAYDEC					: 'day' ;
