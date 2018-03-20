@@ -2,10 +2,10 @@ package Nodes;
 
 import java.util.ArrayList;
 
-public class SwitchNode extends Node
+public class SwitchNode extends StatementsNode
 {
     public IdentifierNode Identifer;
-    public ArrayList<StatementsNode> body = new ArrayList<StatementsNode>();
+    public ArrayList<CaseNode> Body = new ArrayList<CaseNode>();
 
     @Override
     public String toString() { return "Switch"; }
