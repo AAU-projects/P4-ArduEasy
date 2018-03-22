@@ -40,10 +40,8 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
     }
 
     @Override
-    public DefinitionNode visitDefinition(ArduEasyParser.DefinitionContext ctx) {
-
-        ctx.
-
+    public DefinitionNode visitDefinition(ArduEasyParser.DefinitionContext ctx)
+    {
         if (ctx.pindeclaration() != null)
         {
             return visitPindeclaration(ctx.pindeclaration());
