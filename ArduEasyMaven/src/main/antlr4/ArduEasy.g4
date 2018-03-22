@@ -50,16 +50,30 @@ identifier          : IDENTIFIER
 
 statement           : declaration
                  	| assignment
-                 	| IF LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK
- 					| IF LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK ifElse
-                 	| IF LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK ELSE LBRACK statement* RBRACK
-                 	| SWITCH LPAREN expression RPAREN LBRACK cases RBRACK
-                 	| WHILE LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK
- 					| FOR LPAREN declaration SEMICOLON logicalExpressions SEMICOLON assignment RPAREN LBRACK statement* RBRACK
- 					| FOR LPAREN assignment SEMICOLON logicalExpressions SEMICOLON assignment RPAREN LBRACK statement* RBRACK
- 					| PERFORM expression TIMES LBRACK statement* RBRACK
- 					| PERFORM UNTIL LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK
+                 	| if
+                 	| switch
+                 	| while
+ 					| for
+ 					| perform
  					;
+
+perform             : PERFORM expression TIMES LBRACK statement* RBRACK
+                    | PERFORM UNTIL LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK
+                    ;
+
+for                 : FOR LPAREN (declaration | assignment) SEMICOLON logicalExpressions SEMICOLON assignment RPAREN LBRACK statement* RBRACK
+                    ;
+
+while               : WHILE LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK
+                    ;
+
+switch              : SWITCH LPAREN expression RPAREN LBRACK cases RBRACK
+                    ;
+
+if                  : IF LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK
+                    | IF LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK ifElse
+                    | IF LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK ELSE LBRACK statement* RBRACK
+                    ;
 
 ifElse              : ELSE IF LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK
                  	| ELSE IF LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK ifElse
