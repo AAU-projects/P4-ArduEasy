@@ -2,8 +2,8 @@ package Nodes;
 
 public class LogicalAndNode extends LogicalExprNode
 {
-    LogicalExprNode LeftChild;
-    LogicalExprNode RightChild;
+    public LogicalExprNode LeftChild;
+    public LogicalExprNode RightChild;
 
     @Override
     public String toString()
