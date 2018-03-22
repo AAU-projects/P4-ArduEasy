@@ -1,23 +1,15 @@
 grammar ArduEasy;
 
-r					: setup functions EOF
+r					: setup function* EOF
 					;
 
-setup               : SETUP LBRACK definitions RBRACK
+setup               : SETUP LBRACK definition* RBRACK
 					;
 
-functions           : function functions
-                    |
+function            : WHEN LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK
+                    | FUNCTION returnType identifier LPAREN parameters RPAREN LBRACK statement* RETURN logicalExpressions RBRACK
+                    | FUNCTION VOIDDEC identifier LPAREN parameters RPAREN LBRACK statement* RBRACK
                     ;
-
-function            : WHEN LPAREN logicalExpressions RPAREN LBRACK statements RBRACK
-                    | FUNCTION returnType identifier LPAREN parameters RPAREN LBRACK statements RETURN logicalExpressions RBRACK
-                    | FUNCTION VOIDDEC identifier LPAREN parameters RPAREN LBRACK statements RBRACK
-                    ;
-
-definitions         : definition definitions
- 					|
- 					;
 
 definition          : pindeclaration
                  	| declaration
@@ -31,15 +23,11 @@ declaration         : typeSpecifier identifier ASSIGNMENTOPERATOR logicalExpress
 roomdeclaration     : ROOMDEC identifier LBRACK roomblock RBRACK
                     ;
 
-roomblock           : pindeclarations arraydeclarations
+roomblock           : pindeclaration* arraydeclaration*
                     |
                     ;
 
 arraydeclaration    : identifier LBRACK identifierloop RBRACK
-                    ;
-
-arraydeclarations   : arraydeclaration arraydeclarations
-                    |
                     ;
 
 identifierloop      : identifier
@@ -47,10 +35,6 @@ identifierloop      : identifier
                     ;
 
 pindeclaration      : identifier ASSIGNMENTOPERATOR pin AS ioStatus
-                    ;
-
-pindeclarations     : pindeclaration pindeclarations
-                    |
                     ;
 
 parameters          : parameter COMMA parameters
@@ -64,47 +48,40 @@ parameter           : typeSpecifier identifier
 identifier          : IDENTIFIER
 					;
 
-statements          : statement statements
-                 	|
-                 	;
-
 statement           : declaration
                  	| assignment
-                 	| IF LPAREN logicalExpressions RPAREN LBRACK statements RBRACK
- 					| IF LPAREN logicalExpressions RPAREN LBRACK statements RBRACK ifElse
-                 	| IF LPAREN logicalExpressions RPAREN LBRACK statements RBRACK ELSE LBRACK statements RBRACK
+                 	| IF LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK
+ 					| IF LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK ifElse
+                 	| IF LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK ELSE LBRACK statement* RBRACK
                  	| SWITCH LPAREN expression RPAREN LBRACK cases RBRACK
-                 	| WHILE LPAREN logicalExpressions RPAREN LBRACK statements RBRACK
- 					| FOR LPAREN declaration SEMICOLON logicalExpressions SEMICOLON assignment RPAREN LBRACK statements RBRACK
- 					| FOR LPAREN assignment SEMICOLON logicalExpressions SEMICOLON assignment RPAREN LBRACK statements RBRACK
- 					| PERFORM expression TIMES LBRACK statements RBRACK
- 					| PERFORM UNTIL LPAREN logicalExpressions RPAREN LBRACK statements RBRACK
+                 	| WHILE LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK
+ 					| FOR LPAREN declaration SEMICOLON logicalExpressions SEMICOLON assignment RPAREN LBRACK statement* RBRACK
+ 					| FOR LPAREN assignment SEMICOLON logicalExpressions SEMICOLON assignment RPAREN LBRACK statement* RBRACK
+ 					| PERFORM expression TIMES LBRACK statement* RBRACK
+ 					| PERFORM UNTIL LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK
  					;
 
-ifElse              : ELSE IF LPAREN logicalExpressions RPAREN LBRACK statements RBRACK
-                 	| ELSE IF LPAREN logicalExpressions RPAREN LBRACK statements RBRACK ifElse
-                 	| ELSE IF LPAREN logicalExpressions RPAREN LBRACK statements RBRACK ELSE LBRACK statements RBRACK
+ifElse              : ELSE IF LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK
+                 	| ELSE IF LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK ifElse
+                 	| ELSE IF LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK ELSE LBRACK statement* RBRACK
                  	;
 
 cases               : case_r cases
-					| case_r DEFAULT COLON LBRACK statements RBRACK
+					| case_r DEFAULT COLON LBRACK statement* RBRACK
 					|
 					;
 
-case_r              : CASE value  COLON LBRACK statements RBRACK
+case_r              : CASE value  COLON LBRACK statement* RBRACK
 					;
 
 logicalExpressions  : logicalExpressions logicalOperator logicalExpressions
                  	| logicalExpression
                  	;
 
-logicalExpression   : expressions comparisonOperator expressions
-                    | expressions
+logicalExpression   : addSubExpression comparisonOperator addSubExpression
+                    | addSubExpression
                  	| NEGATEOPERATOR identifier
                  	;
-
-expressions         : addSubExpression
- 					;
 
 expression          : identifier
                     | SUBTRACTIVEOPERATOR identifier
