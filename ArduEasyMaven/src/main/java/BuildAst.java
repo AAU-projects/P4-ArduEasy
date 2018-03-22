@@ -20,11 +20,11 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
     {
         return new SetupNode()
         {{
-            Childs = new ArrayList<DefinitionNode>(visitSetupList(ctx.definition()));
+            Childs = new ArrayList<DefinitionNode>(visitSetupDefs(ctx.definition()));
         }};
     }
 
-    private List<DefinitionNode> visitSetupList(List<ArduEasyParser.DefinitionContext> context)
+    private List<DefinitionNode> visitSetupDefs(List<ArduEasyParser.DefinitionContext> context)
     {
         List<DefinitionNode> nodeList = new ArrayList<DefinitionNode>();
 
