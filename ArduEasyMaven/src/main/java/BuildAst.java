@@ -1,4 +1,5 @@
 import Nodes.*;
+import jdk.nashorn.internal.ir.Assignment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,15 +49,15 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         }
         else if (ctx.declaration() != null)
         {
-
+            return visitDeclaration(ctx.declaration());
         }
         else if (ctx.assignment() != null)
         {
-
+            return visitAssignment(ctx.assignment());
         }
         else if (ctx.roomdeclaration() != null)
         {
-
+            return visitRoomdeclaration(ctx.roomdeclaration());
         }
 
         return null;
@@ -69,19 +70,25 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
     }
 
     @Override
-    public Node visitDeclaration(ArduEasyParser.DeclarationContext ctx)
+    public DeclarationNode visitDeclaration(ArduEasyParser.DeclarationContext ctx)
     {
         return null;
     }
 
     @Override
-    public Node visitAssignment(ArduEasyParser.AssignmentContext ctx)
+    public AssignmentNode visitAssignment(ArduEasyParser.AssignmentContext ctx)
     {
         return null;
     }
 
     @Override
-    public Node visitRoomdeclaration(ArduEasyParser.RoomdeclarationContext ctx)
+    public RoomDeclaration visitRoomdeclaration(ArduEasyParser.RoomdeclarationContext ctx)
+    {
+        return null;
+    }
+
+    @Override
+    public IdentifierNode visitIdentifier(ArduEasyParser.IdentifierContext ctx)
     {
         return null;
     }
@@ -91,8 +98,6 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
 
         return null;
     }
-
-    visitif
 
     private Node visitIf(final ArduEasyParser.StatementContext ctx)
     {
