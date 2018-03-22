@@ -87,45 +87,84 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
     }
 
     @Override
-    public Node visitStatement(final ArduEasyParser.StatementContext ctx) {
+    public StatementsNode visitStatement(final ArduEasyParser.StatementContext ctx) {
 
+        if (ctx.if_r() != null)
+        {
+            return visitIf_r(ctx.if_r());
+        }
+        else if (ctx.for_r() != null)
+        {
+            return visitFor_r(ctx.for_r());
+        }
+        else if (ctx.switch_r() != null)
+        {
+            return visitSwitch_r(ctx.switch_r());
+        }
+        else if (ctx.perform_r() != null)
+        {
+            return visitPerform_r(ctx.perform_r());
+        }
+        else if (ctx.while_r() != null)
+        {
+            return visitWhile_r(ctx.while_r());
+        }
+    }
+
+    @Override
+    public IfNode visitIf_r(final ArduEasyParser.If_rContext ctx) {
+        return new IfNode()
+        {{
+            Predicate = visitLogicalExpressions(ctx.logicalExpressions());
+            Body = new ArrayList<StatementsNode>(visitIfStatements(ctx.statement()));
+            Alternative = visitIfElse(ctx.ifElse());
+            
+        }};
+    }
+
+    private List<StatementsNode> visitIfStatements(List<ArduEasyParser.StatementContext> context)
+    {
+        List<StatementsNode> nodeList = new ArrayList<StatementsNode>();
+
+        for (ArduEasyParser.StatementContext statement: context)
+        {
+            if (statement != null)
+            {
+                nodeList.add(visitStatement(statement));
+            }
+        }
+
+        return nodeList;
+    }
+
+
+    @Override
+    public IfOrElseNode visitIfElse(ArduEasyParser.IfElseContext ctx) {
+        return new IfOrElseNode(); //TODO
+    }
+
+    @Override
+    public LogicalExprNode visitLogicalExpressions(ArduEasyParser.LogicalExpressionsContext ctx) {
+        return new LogicalExprNode(); //TODO
+    }
+
+    @Override
+    public ForNode visitFor_r(ArduEasyParser.For_rContext ctx) {
         return null;
     }
 
-    visitif
-
-    private Node visitIf(final ArduEasyParser.StatementContext ctx)
-    {
-        return new IfNode() {
-
-        };
+    @Override
+    public SwitchNode visitSwitch_r(ArduEasyParser.Switch_rContext ctx) {
+        return null;
     }
 
-    private Node visitWhile(final ArduEasyParser.StatementContext ctx)
-    {
-        return new WhileNode() {
-
-        };
+    @Override
+    public PerformNode visitPerform_r(ArduEasyParser.Perform_rContext ctx) {
+        return null;
     }
 
-    private Node visitFor(final ArduEasyParser.StatementContext ctx)
-    {
-        return new ForNode() {
-
-        };
-    }
-
-    private Node visitSwitch(final ArduEasyParser.StatementContext ctx)
-    {
-        return new SwitchNode() {
-
-        };
-    }
-
-    private Node visitPerform(final ArduEasyParser.StatementContext ctx)
-    {
-        return new PerformNode() {
-
-        };
+    @Override
+    public WhileNode visitWhile_r(ArduEasyParser.While_rContext ctx) {
+        return null;
     }
 }
