@@ -89,21 +89,10 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
     @Override
     public Node visitStatement(final ArduEasyParser.StatementContext ctx) {
 
-        ctx.if
-
-        if (ctx.start.getText().contains("if"))
-        {
-            return visitIf(ctx.IF())
-        }
-        else if (ctx.start.getText().contains("while"))
-        {
-            child = visitWhile(ctx);
-        }
-        else if (ctx.start.getText().contains("for"))
-        {
-            child = visitFor(ctx);
-        }
+        return null;
     }
+
+    visitif
 
     private Node visitIf(final ArduEasyParser.StatementContext ctx)
     {
