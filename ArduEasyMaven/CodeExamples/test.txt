@@ -1,4 +1,4 @@
 house
 {
-    light = 5
+    int light1 = 2
 }
