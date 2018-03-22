@@ -1,6 +1,6 @@
 package Nodes;
 
-public class LessThanNode
+public class LessThanNode extends LogicalExprNode
 {
     public ExpressionNode LeftChild;
     public ExpressionNode RightChild;

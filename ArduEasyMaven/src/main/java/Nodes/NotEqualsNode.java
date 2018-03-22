@@ -1,6 +1,6 @@
 package Nodes;
 
-public class NotEqualsNode
+public class NotEqualsNode extends LogicalExprNode
 {
     public ExpressionNode LeftChild;
     public ExpressionNode RightChild;
