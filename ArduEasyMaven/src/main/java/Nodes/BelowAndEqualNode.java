@@ -1,6 +1,6 @@
 package Nodes;
 
-public class BelowAndEqualNode
+public class BelowAndEqualNode extends LogicalExprNode
 {
     public ExpressionNode LeftChild;
     public ExpressionNode RightChild;
