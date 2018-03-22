@@ -133,6 +133,27 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         {
             return visitWhile_r(ctx.while_r());
         }
+        else if (ctx.declaration() != null)
+        {
+            return visitDeclaration(ctx.declaration());
+        }
+        else if (ctx.assignment() != null)
+        {
+            return visitAssignment(ctx.assignment());
+        }
+
+        return null;
+    }
+
+    @Override
+    public ForNode visitFor_r(final ArduEasyParser.For_rContext ctx) {
+        return new ForNode()
+        {{
+            Predicate = visitLogicalExpressions(ctx.logicalExpressions());
+            Increment = visitAssignment(ctx.assignment(1)); // takes the second assignment in the for loop
+            body = new ArrayList<StatementsNode>(visitStatementList(ctx.statement()));
+
+        }};
     }
 
     @Override
@@ -140,13 +161,13 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         return new IfNode()
         {{
             Predicate = visitLogicalExpressions(ctx.logicalExpressions());
-            Body = new ArrayList<StatementsNode>(visitIfStatements(ctx.statement()));
+            Body = new ArrayList<StatementsNode>(visitStatementList(ctx.statement()));
             Alternative = visitIfElse(ctx.ifElse());
             
         }};
     }
 
-    private List<StatementsNode> visitIfStatements(List<ArduEasyParser.StatementContext> context)
+    private List<StatementsNode> visitStatementList(List<ArduEasyParser.StatementContext> context)
     {
         List<StatementsNode> nodeList = new ArrayList<StatementsNode>();
 
@@ -172,10 +193,6 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         return new LogicalExprNode(); //TODO
     }
 
-    @Override
-    public ForNode visitFor_r(ArduEasyParser.For_rContext ctx) {
-        return null;
-    }
 
     @Override
     public SwitchNode visitSwitch_r(ArduEasyParser.Switch_rContext ctx) {
