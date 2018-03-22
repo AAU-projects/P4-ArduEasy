@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public abstract class ForNode extends StatementsNode
 {
     public LogicalExprNode Predicate;
-    public StatementsNode Increment;
+    public AssignmentNode Increment;
     public ArrayList<StatementsNode> body = new ArrayList<StatementsNode>();
 
     @Override
