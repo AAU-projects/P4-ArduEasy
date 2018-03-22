@@ -64,9 +64,14 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
     }
 
     @Override
-    public PinDeclarationNode visitPindeclaration(ArduEasyParser.PindeclarationContext ctx)
+    public PinDeclarationNode visitPindeclaration(final ArduEasyParser.PindeclarationContext ctx)
     {
-        return null;
+        return new PinDeclarationNode()
+        {{
+            Identifier = visitIdentifier(ctx.identifier());
+            Pin = visitPin(ctx.pin());
+            IoStatus = visitIoStatus(ctx.ioStatus());
+        }};
     }
 
     @Override
@@ -89,6 +94,18 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
 
     @Override
     public IdentifierNode visitIdentifier(ArduEasyParser.IdentifierContext ctx)
+    {
+        return null;
+    }
+
+    @Override
+    public PinNode visitPin(ArduEasyParser.PinContext ctx)
+    {
+        return null;
+    }
+
+    @Override
+    public IoStatusNode visitIoStatus(ArduEasyParser.IoStatusContext ctx)
     {
         return null;
     }

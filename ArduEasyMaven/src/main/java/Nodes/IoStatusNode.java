@@ -1,6 +1,6 @@
 package Nodes;
 
-public class IoStatusNode
+public class IoStatusNode extends Node
 {
     public String Value;
 
