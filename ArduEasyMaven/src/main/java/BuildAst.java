@@ -20,18 +20,71 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
     {
         return new SetupNode()
         {{
-            Childs = new ArrayList<DefinitionNode>(visitSetupDefs(ctx.definition()));
+            Childs = new ArrayList<DefinitionNode>(visitSetupList(ctx.definition()));
         }};
     }
 
-    private List<DefinitionNode> visitSetupDefs(List<ArduEasyParser.DefinitionContext> context)
+    private List<DefinitionNode> visitSetupList(List<ArduEasyParser.DefinitionContext> context)
     {
+        List<DefinitionNode> nodeList = new ArrayList<DefinitionNode>();
 
+        for (ArduEasyParser.DefinitionContext def: context)
+        {
+            if (def != null)
+            {
+                nodeList.add(visitDefinition(def));
+            }
+        }
 
-
-
-
-        return new ArrayList<DefinitionNode>();
+        return nodeList;
     }
 
+    @Override
+    public DefinitionNode visitDefinition(ArduEasyParser.DefinitionContext ctx) {
+
+        ctx.
+
+        if (ctx.pindeclaration() != null)
+        {
+            return visitPindeclaration(ctx.pindeclaration());
+        }
+        else if (ctx.declaration() != null)
+        {
+
+        }
+        else if (ctx.assignment() != null)
+        {
+
+        }
+        else if (ctx.roomdeclaration() != null)
+        {
+
+        }
+
+        return null;
+    }
+
+    @Override
+    public PinDeclarationNode visitPindeclaration(ArduEasyParser.PindeclarationContext ctx)
+    {
+        return null;
+    }
+
+    @Override
+    public Node visitDeclaration(ArduEasyParser.DeclarationContext ctx)
+    {
+        return null;
+    }
+
+    @Override
+    public Node visitAssignment(ArduEasyParser.AssignmentContext ctx)
+    {
+        return null;
+    }
+
+    @Override
+    public Node visitRoomdeclaration(ArduEasyParser.RoomdeclarationContext ctx)
+    {
+        return null;
+    }
 }
