@@ -26,12 +26,60 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
 
     private List<DefinitionNode> visitSetupDefs(List<ArduEasyParser.DefinitionContext> context)
     {
-
-
-
-
-
         return new ArrayList<DefinitionNode>();
     }
 
+    @Override
+    public Node visitStatement(final ArduEasyParser.StatementContext ctx) {
+
+        ctx.if
+
+        if (ctx.start.getText().contains("if"))
+        {
+            return visitIf(ctx.IF())
+        }
+        else if (ctx.start.getText().contains("while"))
+        {
+            child = visitWhile(ctx);
+        }
+        else if (ctx.start.getText().contains("for"))
+        {
+            child = visitFor(ctx);
+        }
+    }
+
+    private Node visitIf(final ArduEasyParser.StatementContext ctx)
+    {
+        return new IfNode() {
+
+        };
+    }
+
+    private Node visitWhile(final ArduEasyParser.StatementContext ctx)
+    {
+        return new WhileNode() {
+
+        };
+    }
+
+    private Node visitFor(final ArduEasyParser.StatementContext ctx)
+    {
+        return new ForNode() {
+
+        };
+    }
+
+    private Node visitSwitch(final ArduEasyParser.StatementContext ctx)
+    {
+        return new SwitchNode() {
+
+        };
+    }
+
+    private Node visitPerform(final ArduEasyParser.StatementContext ctx)
+    {
+        return new PerformNode() {
+
+        };
+    }
 }
