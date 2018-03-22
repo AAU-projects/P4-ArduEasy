@@ -12,18 +12,34 @@ public class Program
 {
     public static void main(String args[]) throws IOException
     {
-        String filePath = "CodeExamples/if.txt";
+        String filePath = "CodeExamples/test.txt";
         CharStream inputStream = CharStreams.fromFileName(filePath);
         ArduEasyLexer lexer = new ArduEasyLexer(inputStream);
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
         ArduEasyParser parser = new ArduEasyParser(tokenStream);
-        parser.setBuildParseTree(true);
+        //parser.setBuildParseTree(true);
 
-        ParseTree tree = parser.r();
-        TestListener test = new TestListener();
+        //ParseTree tree = parser.r();
+
+        /*TestListener test = new TestListener();
         ParseTreeWalker walker = new ParseTreeWalker();
-        walker.walk(test, tree);
+        walker.walk(test, tree);*/
         //TestVisitor test = new TestVisitor();
         //test.visit(tree);
+
+        RootNode root;
+
+        try
+        {
+            ArduEasyParser.RContext programContext = parser.r();
+
+            root = (RootNode) new BuildAst().visitR(programContext);
+
+        } catch (Exception e)
+        {
+            System.out.println(e.toString());
+        }
+
+
     }
 }
