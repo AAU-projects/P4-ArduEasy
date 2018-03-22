@@ -50,27 +50,27 @@ identifier          : IDENTIFIER
 
 statement           : declaration
                  	| assignment
-                 	| if
-                  	| switch
-                  	| while
-  					| for
-  					| perform
+                 	| if_r
+                  	| switch_r
+                  	| while_r
+  					| for_r
+  					| perform_r
   					;
 
-perform             : PERFORM expression TIMES LBRACK statement* RBRACK
+perform_r           : PERFORM expression TIMES LBRACK statement* RBRACK
                     | PERFORM UNTIL LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK
                     ;
 
-for                 : FOR LPAREN (declaration | assignment) SEMICOLON logicalExpressions SEMICOLON assignment RPAREN LBRACK statement* RBRACK
+for_r               : FOR LPAREN (declaration | assignment) SEMICOLON logicalExpressions SEMICOLON assignment RPAREN LBRACK statement* RBRACK
                     ;
 
-while               : WHILE LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK
+while_r             : WHILE LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK
                     ;
 
-switch              : SWITCH LPAREN expression RPAREN LBRACK cases RBRACK
+switch_r            : SWITCH LPAREN expression RPAREN LBRACK cases RBRACK
                     ;
 
-if                  : IF LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK
+if_r                : IF LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK
                     | IF LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK ifElse
                     | IF LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK ELSE LBRACK statement* RBRACK
                     ;
