@@ -2,3 +2,5 @@ house
 {
     int light1 = 2
 }
+
+function void bob(){}
