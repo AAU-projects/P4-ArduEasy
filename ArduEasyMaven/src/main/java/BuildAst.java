@@ -395,17 +395,8 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
     }
 
     @Override
-    public ExpressionNode visitExpression(final ArduEasyParser.ExpressionContext ctx) {
-        if (ctx.identifier() != null)
-        {
-            if (ctx.SUBTRACTIVEOPERATOR() != null)
-            {
-                return new ExpressionNode()
-                {{
-
-                }};
-            }
-        }
+    public ExpressionNode visitExpression(ArduEasyParser.ExpressionContext ctx) {
+        return new ExpressionNode(); //TODO
     }
 
 
