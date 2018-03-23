@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class ElseNode extends IfOrElseNode
 {
-    public ArrayList<StatementsNode> Childs = new ArrayList<StatementsNode>();
+    public ArrayList<StatementsNode> Body = new ArrayList<StatementsNode>();
 
     @Override
     public String toString()

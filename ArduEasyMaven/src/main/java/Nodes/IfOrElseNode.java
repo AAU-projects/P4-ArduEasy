@@ -1,6 +1,6 @@
 package Nodes;
 
-public class IfOrElseNode extends StatementsNode
+public class IfOrElseNode extends IfNode
 {
 
 }

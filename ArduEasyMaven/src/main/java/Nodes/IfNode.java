@@ -2,11 +2,12 @@ package Nodes;
 
 import java.util.ArrayList;
 
-public class IfNode extends IfOrElseNode
+public class IfNode extends StatementsNode
 {
     public LogicalExprNode Predicate;
     public ArrayList<StatementsNode> Body = new ArrayList<StatementsNode>();
     public IfOrElseNode Alternative;
+    public ElseNode Else;
 
     @Override
     public String toString()
