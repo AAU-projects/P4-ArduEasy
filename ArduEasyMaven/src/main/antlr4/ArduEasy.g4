@@ -70,19 +70,17 @@ while_r             : WHILE LPAREN logicalExpressions RPAREN LBRACK statement* R
 switch_r            : SWITCH LPAREN expression RPAREN LBRACK cases RBRACK
                     ;
 
-if_r                : IF LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK
-                    | IF LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK ifElse
-                    | IF LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK ELSE LBRACK statement* RBRACK
+if_r                : IF LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK (ifElse | else_r)
                     ;
 
-ifElse              : ELSE IF LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK
-                 	| ELSE IF LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK ifElse
-                 	| ELSE IF LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK ELSE LBRACK statement* RBRACK
+else_r              : ELSE LBRACK statement* RBRACK
+                    ;
+
+ifElse              : ELSE IF LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK (ifElse | else_r)
                  	;
 
-cases               : case_r cases
-					| case_r DEFAULT COLON LBRACK statement* RBRACK
-					|
+cases               : case_r* DEFAULT COLON LBRACK statement* RBRACK
+					| case_r*
 					;
 
 case_r              : CASE value  COLON LBRACK statement* RBRACK
