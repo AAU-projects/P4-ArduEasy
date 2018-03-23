@@ -18,6 +18,10 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
     private List<FunctionsNode> visitFunctionsList(List<ArduEasyParser.FunctionContext> ctx)
     {
         System.out.println(ctx.get(0).WHEN());
+        List<FunctionsNode> nodes = new ArrayList<FunctionsNode>();
+
+        for (ArduEasyParser.FunctionContext func: ctx)
+
 
         return new ArrayList<FunctionsNode>();
     }
@@ -74,6 +78,8 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
 
             }};
         }
+
+        return null;
     }
 
     private ArrayList<ParameterNode> visitParameterList(ArduEasyParser.ParametersContext ctx)
