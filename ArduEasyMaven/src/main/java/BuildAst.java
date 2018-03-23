@@ -189,8 +189,6 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         }};
     }
 
-
-
     @Override
     public AssignmentNode visitAssignment(final ArduEasyParser.AssignmentContext ctx)
     {
@@ -362,12 +360,6 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         }};
     }
 
-
-    @Override
-    public CaseNode visitCases(final ArduEasyParser.CasesContext ctx) {
-        return new CaseNode(); //TODO maybe not nes
-    }
-
     @Override
     public WhileNode visitWhile_r(final ArduEasyParser.While_rContext ctx) {
         return new WhileNode()
@@ -407,12 +399,6 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
             Body = visitStatementList(ctx.statement());
         }};
     }
-
-    @Override
-    public ExpressionNode visitExpression(ArduEasyParser.ExpressionContext ctx) {
-        return new ExpressionNode(); //TODO
-    }
-
 
     @Override
     public ForNode visitFor_r(final ArduEasyParser.For_rContext ctx) {
@@ -487,5 +473,28 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
     @Override
     public LogicalExprNode visitLogicalExpressions(ArduEasyParser.LogicalExpressionsContext ctx) {
         return null;
+    }
+
+    @Override
+    public Node visitLogicalExpression(ArduEasyParser.LogicalExpressionContext ctx)
+    {
+        return super.visitLogicalExpression(ctx);
+    }
+
+    @Override
+    public ExpressionNode visitExpression(ArduEasyParser.ExpressionContext ctx) {
+        return new ExpressionNode(); //TODO
+    }
+
+    @Override
+    public Node visitAddSubExpression(ArduEasyParser.AddSubExpressionContext ctx)
+    {
+        return super.visitAddSubExpression(ctx);
+    }
+
+    @Override
+    public Node visitMultiDivExpression(ArduEasyParser.MultiDivExpressionContext ctx)
+    {
+        return super.visitMultiDivExpression(ctx);
     }
 }
