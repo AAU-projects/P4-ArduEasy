@@ -64,16 +64,17 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
                 ReturnType = ctx.returnType().toString();
                 Identifier = visitIdentifier(ctx.identifier());
                 Parameters = visitParameterList(ctx.parameters());
-
+                Body = visitStatementList(ctx.statement());
                 Return = visitReturn(ctx.logicalExpressions());
-
             }};
         }
         else if (ctx.VOIDDEC() != null)
         {
             return new FunctionNode()
             {{
-
+                Identifier = visitIdentifier(ctx.identifier());
+                Parameters = visitParameterList(ctx.parameters());
+                Body = visitStatementList(ctx.statement());
             }};
         }
 
