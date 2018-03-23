@@ -1,5 +1,5 @@
 package Nodes;
 
-public class ReturnNode {
+public class ReturnNode extends Node{
     public ExpressionNode Value;
 }

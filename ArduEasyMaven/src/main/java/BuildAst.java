@@ -1,5 +1,4 @@
 import Nodes.*;
-import sun.reflect.generics.tree.ReturnType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +35,8 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
                 Identifier = visitIdentifier(ctx.identifier());
                 Parameters = visitParameterList(ctx.parameters());
 
+                Return = visitReturn(ctx.logicalExpressions());
+
             }};
         }
         else if (ctx.VOIDDEC() != null)
@@ -45,6 +46,17 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
 
             }};
         }
+
+        return null;
+    }
+
+    private ReturnNode visitReturn(final ArduEasyParser.LogicalExpressionsContext ctx) {
+
+        return new ReturnNode()
+        {{
+            Value = visitLogicalExpressions(ctx);
+        }};
+
     }
 
     private ArrayList<ParameterNode> visitParameterList(ArduEasyParser.ParametersContext ctx)
@@ -429,6 +441,6 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
 
     @Override
     public LogicalExprNode visitLogicalExpressions(ArduEasyParser.LogicalExpressionsContext ctx) {
-        return new LogicalExprNode(); //TODO
+        return null;
     }
 }
