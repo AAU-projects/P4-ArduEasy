@@ -146,11 +146,64 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
     }
 
     @Override
+    public SwitchNode visitSwitch_r(final ArduEasyParser.Switch_rContext ctx) {
+        return new SwitchNode()
+        {{
+            expression = visitExpression(ctx.expression());
+            Body = visitCaseList(ctx.cases());
+            defaultCase = visitDefaultCase(ctx.cases());
+        }};
+    }
+
+    private CaseNode visitDefaultCase(final ArduEasyParser.CasesContext ctx)
+    {
+        if (ctx.statement() != null) // checks for a default case
+        {
+            return new CaseNode()
+            {{
+                Value = ctx.DEFAULT().toString();
+                Body = visitStatementList(ctx.statement());
+            }};
+        }
+        return null;
+    }
+
+    private ArrayList<CaseNode> visitCaseList(final ArduEasyParser.CasesContext ctx) {
+        ArrayList<CaseNode> nodeList = new ArrayList<CaseNode>();
+
+        for (ArduEasyParser.Case_rContext cases: ctx.case_r())
+        {
+            if (cases != null)
+            {
+                nodeList.add(visitCase_r(cases));
+            }
+        }
+
+        return nodeList;
+
+    }
+
+    @Override
+    public CaseNode visitCase_r(final ArduEasyParser.Case_rContext ctx) {
+        return new CaseNode()
+        {{
+            Value = ctx.value().toString();
+            Body = visitStatementList(ctx.statement());
+        }};
+    }
+
+
+    @Override
+    public CaseNode visitCases(final ArduEasyParser.CasesContext ctx) {
+        return new CaseNode(); //TODO maybe not nes
+    }
+
+    @Override
     public WhileNode visitWhile_r(final ArduEasyParser.While_rContext ctx) {
         return new WhileNode()
         {{
             Predicate = visitLogicalExpressions(ctx.logicalExpressions());
-            Body = new ArrayList<StatementsNode>(visitStatementList(ctx.statement()));
+            Body = visitStatementList(ctx.statement());
         }};
     }
 
@@ -171,7 +224,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         return new PerformTimes()
         {{
             value = visitExpression(ctx.expression());
-            Body = new ArrayList<StatementsNode>(visitStatementList(ctx.statement()));
+            Body = visitStatementList(ctx.statement());
         }};
     }
 
@@ -180,7 +233,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         return new PerformUntil()
         {{
             Predicate = visitLogicalExpressions(ctx.logicalExpressions());
-            Body = new ArrayList<StatementsNode>(visitStatementList(ctx.statement()));
+            Body = visitStatementList(ctx.statement());
         }};
     }
 
@@ -189,14 +242,6 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         return new ExpressionNode(); //TODO
     }
 
-    @Override
-    public SwitchNode visitSwitch_r(final ArduEasyParser.Switch_rContext ctx) {
-        return new SwitchNode()
-        {{
-            expression = new ExpressionNode();
-             //TODO
-        }};
-    }
 
     @Override
     public ForNode visitFor_r(final ArduEasyParser.For_rContext ctx) {
@@ -204,7 +249,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         {{
             Predicate = visitLogicalExpressions(ctx.logicalExpressions());
             Increment = visitAssignment(ctx.assignment(1)); // takes the second assignment in the for loop
-            body = new ArrayList<StatementsNode>(visitStatementList(ctx.statement()));
+            body = visitStatementList(ctx.statement();
 
         }};
     }
@@ -213,24 +258,49 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
     public IfNode visitIf_r(final ArduEasyParser.If_rContext ctx) {
         return new IfNode()
         {{
+            Body = visitStatementList(ctx.statement());
             Predicate = visitLogicalExpressions(ctx.logicalExpressions());
-            Body = new ArrayList<StatementsNode>(visitStatementList(ctx.statement()));
 
             if (ctx.ifElse() != null)
             {
                 Alternative = visitIfElse(ctx.ifElse());
             }
+            else if (ctx.else_r() != null)
+            {
+                Else = visitElse_r(ctx.else_r());
+            }
         }};
     }
 
     @Override
-    public IfOrElseNode visitIfElse(ArduEasyParser.IfElseContext ctx) {
-        return new IfOrElseNode(); //TODO
+    public ElseNode visitElse_r(final ArduEasyParser.Else_rContext ctx) {
+        return new ElseNode()
+        {{
+            Body = visitStatementList(ctx.statement());
+        }};
     }
 
-    private List<StatementsNode> visitStatementList(List<ArduEasyParser.StatementContext> context)
+    @Override
+    public IfOrElseNode visitIfElse(final ArduEasyParser.IfElseContext ctx) {
+        return new IfOrElseNode()
+        {{
+            Predicate = visitLogicalExpressions(ctx.logicalExpressions());
+            Body = visitStatementList(ctx.statement());
+
+            if (ctx.ifElse() != null)
+            {
+                Alternative = visitIfElse(ctx.ifElse());
+            }
+            else if (ctx.else_r() != null)
+            {
+                Else = visitElse_r(ctx.else_r());
+            }
+        }};
+    }
+
+    private ArrayList<StatementsNode> visitStatementList(List<ArduEasyParser.StatementContext> context)
     {
-        List<StatementsNode> nodeList = new ArrayList<StatementsNode>();
+        ArrayList<StatementsNode> nodeList = new ArrayList<StatementsNode>();
 
         for (ArduEasyParser.StatementContext statement: context)
         {
