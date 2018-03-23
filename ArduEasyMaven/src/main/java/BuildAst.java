@@ -13,6 +13,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         return new RootNode()
         {{
             Home = visitSetup(ctx.setup());
+            Functions =
         }};
     }
 
@@ -103,6 +104,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         return new RoomDeclaration()
         {{
             Identifier = visitIdentifier(ctx.identifier());
+            body = visitRoomBlockList(ctx.roomblock());
         }};
     }
 
@@ -130,30 +132,50 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
     }
 
     @Override
-    public ArrayDeclarationNode visitArraydeclaration(ArduEasyParser.ArraydeclarationContext ctx)
+    public ArrayDeclarationNode visitArraydeclaration(final ArduEasyParser.ArraydeclarationContext ctx)
     {
         return new ArrayDeclarationNode()
         {{
+            Identifier = visitIdentifier(ctx.identifier());
+            Values = visitIdentifierList(ctx.identifierloop());
+        }};
+    }
 
+    private List<IdentifierNode> visitIdentifierList(ArduEasyParser.IdentifierloopContext ctx)
+    {
+        List<IdentifierNode> nodeList = new ArrayList<IdentifierNode>();
+
+        if (ctx.identifier() == null) return nodeList;
+
+        nodeList.add(visitIdentifier(ctx.identifier()));
+
+        if (ctx.identifierloop() == null) return nodeList;
+
+        nodeList.addAll(visitIdentifierList(ctx.identifierloop()));
+
+        return nodeList;
+    }
+
+    @Override
+    public IdentifierNode visitIdentifier(final ArduEasyParser.IdentifierContext ctx)
+    {
+        return new IdentifierNode()
+        {{
+            Value = ctx.IDENTIFIER().toString();
         }};
     }
 
     @Override
-    public IdentifierNode visitIdentifier(ArduEasyParser.IdentifierContext ctx)
+    public PinNode visitPin(final ArduEasyParser.PinContext ctx)
     {
-        return null;
+        if (ctx.A() == null) return new DigitalPinNode(){{ Value = Integer.parseInt(ctx.INT().toString()); }};
+        return new AnalogPinNode(){{ Value = Integer.parseInt(ctx.INT().toString()); }};
     }
 
     @Override
-    public PinNode visitPin(ArduEasyParser.PinContext ctx)
+    public IoStatusNode visitIoStatus(final ArduEasyParser.IoStatusContext ctx)
     {
-        return null;
-    }
-
-    @Override
-    public IoStatusNode visitIoStatus(ArduEasyParser.IoStatusContext ctx)
-    {
-        return null;
+        return new IoStatusNode(){{ Value = ctx.toString(); }};
     }
 
     @Override
@@ -210,6 +232,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         {
             return visitPerformUntil(ctx); // if the grammar contains a logical expression we know its perform until
         }
+        return null;
     }
 
     private PerformNode visitPerformTimes(final ArduEasyParser.Perform_rContext ctx)

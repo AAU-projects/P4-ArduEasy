@@ -1,11 +1,12 @@
 package Nodes;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ArrayDeclarationNode extends Node implements RoomBlockNode
 {
     public IdentifierNode Identifier;
-    public ArrayList<IdentifierNode> Values = new ArrayList<IdentifierNode>();
+    public List<IdentifierNode> Values = new ArrayList<IdentifierNode>();
 
     @Override
     public String toString() {

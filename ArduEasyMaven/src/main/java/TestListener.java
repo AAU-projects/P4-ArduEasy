@@ -27,18 +27,6 @@ public class TestListener extends ArduEasyBaseListener
     }
 
     @Override
-    public void enterDefinitions(ArduEasyParser.DefinitionsContext ctx)
-    {
-        super.enterDefinitions(ctx);
-    }
-
-    @Override
-    public void exitDefinitions(ArduEasyParser.DefinitionsContext ctx)
-    {
-        super.exitDefinitions(ctx);
-    }
-
-    @Override
     public void enterDefinition(ArduEasyParser.DefinitionContext ctx)
     {
         super.enterDefinition(ctx);

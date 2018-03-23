@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class RootNode extends Node
 {
-    public SetupNode Home;
+    protected SetupNode Home;
     public ArrayList<FunctionsNode> Functions = new ArrayList<FunctionsNode>();
 
     @Override
