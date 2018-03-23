@@ -75,21 +75,67 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
     }
 
     @Override
-    public DeclarationNode visitDeclaration(ArduEasyParser.DeclarationContext ctx)
+    public DeclarationNode visitDeclaration(final ArduEasyParser.DeclarationContext ctx)
     {
-        return null;
+        return new DeclarationNode()
+        {{
+            Type = ctx.typeSpecifier().getText();
+            Identifier = visitIdentifier(ctx.identifier());
+            Value = visitLogicalExpressions(ctx.logicalExpressions());
+        }};
+    }
+
+
+
+    @Override
+    public AssignmentNode visitAssignment(final ArduEasyParser.AssignmentContext ctx)
+    {
+        return new AssignmentNode()
+        {{
+           Identifier = visitIdentifier(ctx.identifier());
+           Value = visitLogicalExpressions(ctx.logicalExpressions());
+        }};
     }
 
     @Override
-    public AssignmentNode visitAssignment(ArduEasyParser.AssignmentContext ctx)
+    public RoomDeclaration visitRoomdeclaration(final ArduEasyParser.RoomdeclarationContext ctx)
     {
-        return null;
+        return new RoomDeclaration()
+        {{
+            Identifier = visitIdentifier(ctx.identifier());
+        }};
+    }
+
+    private List<RoomBlockNode> visitRoomBlockList(ArduEasyParser.RoomblockContext context)
+    {
+        List<RoomBlockNode> nodeList = new ArrayList<RoomBlockNode>();
+
+        for (ArduEasyParser.PindeclarationContext ctx: context.pindeclaration())
+        {
+            if (ctx != null)
+            {
+                nodeList.add(visitPindeclaration(ctx));
+            }
+        }
+
+        for (ArduEasyParser.ArraydeclarationContext ctx: context.arraydeclaration())
+        {
+            if (ctx != null)
+            {
+                nodeList.add(visitArraydeclaration(ctx));
+            }
+        }
+
+        return nodeList;
     }
 
     @Override
-    public RoomDeclaration visitRoomdeclaration(ArduEasyParser.RoomdeclarationContext ctx)
+    public ArrayDeclarationNode visitArraydeclaration(ArduEasyParser.ArraydeclarationContext ctx)
     {
-        return null;
+        return new ArrayDeclarationNode()
+        {{
+
+        }};
     }
 
     @Override
