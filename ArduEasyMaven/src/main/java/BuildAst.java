@@ -1,5 +1,5 @@
 import Nodes.*;
-import jdk.nashorn.internal.ir.Assignment;
+import sun.reflect.generics.tree.ReturnType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         return new RootNode()
         {{
             Home = visitSetup(ctx.setup());
-            Functions =
+            Functions = null;
         }};
     }
 
@@ -25,6 +25,52 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
             Childs = new ArrayList<DefinitionNode>(visitSetupDefs(ctx.definition()));
         }};
     }
+
+    private FunctionsNode visitFunctionFunction(final ArduEasyParser.FunctionContext ctx)
+    {
+        if (ctx.returnType() != null)
+        {
+            return new FunctionNode()
+            {{
+                ReturnType = ctx.returnType().toString();
+                Identifier = visitIdentifier(ctx.identifier());
+                Parameters = visitParameterList(ctx.parameters());
+
+            }};
+        }
+        else if (ctx.VOIDDEC() != null)
+        {
+            return new FunctionNode()
+            {{
+
+            }};
+        }
+    }
+
+    private ArrayList<ParameterNode> visitParameterList(ArduEasyParser.ParametersContext ctx)
+    {
+        ArrayList<ParameterNode> nodeList = new ArrayList<ParameterNode>();
+
+        if (ctx.parameter() == null) return nodeList;
+
+        nodeList.add(visitParameter(ctx.parameter()));
+
+        if (ctx.parameters() == null) return nodeList;
+
+        nodeList.addAll(visitParameterList(ctx.parameters()));
+
+        return nodeList;
+    }
+
+    @Override
+    public ParameterNode visitParameter(final ArduEasyParser.ParameterContext ctx) {
+        return new ParameterNode()
+        {{
+            Type = ctx.typeSpecifier().toString();
+            Identifier = visitIdentifier(ctx.identifier());
+        }};
+    }
+
 
     private List<DefinitionNode> visitSetupDefs(List<ArduEasyParser.DefinitionContext> context)
     {
@@ -248,7 +294,6 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         }
 
         return nodeList;
-
     }
 
     @Override
@@ -318,7 +363,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         {{
             Predicate = visitLogicalExpressions(ctx.logicalExpressions());
             Increment = visitAssignment(ctx.assignment(1)); // takes the second assignment in the for loop
-            body = visitStatementList(ctx.statement();
+            body = visitStatementList(ctx.statement());
 
         }};
     }
