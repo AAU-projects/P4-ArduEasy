@@ -70,13 +70,13 @@ while_r             : WHILE LPAREN logicalExpressions RPAREN LBRACK statement* R
 switch_r            : SWITCH LPAREN expression RPAREN LBRACK cases RBRACK
                     ;
 
-if_r                : IF LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK (ifElse | else_r)
+if_r                : IF LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK (ifElse* | else_r?)
                     ;
 
 else_r              : ELSE LBRACK statement* RBRACK
                     ;
 
-ifElse              : ELSE IF LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK (ifElse | else_r)
+ifElse              : ELSE IF LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK (ifElse* | else_r?)
                  	;
 
 cases               : case_r* DEFAULT COLON LBRACK statement* RBRACK

@@ -1,6 +1,6 @@
 package Nodes;
 
-public class BelowOrEqualNode extends LogicalExprNode
+public class AdditiveNode extends ArithmeticExprNode
 {
     public ExpressionNode LeftChild;
     public ExpressionNode RightChild;
@@ -8,6 +8,6 @@ public class BelowOrEqualNode extends LogicalExprNode
     @Override
     public String toString()
     {
-        return "BelowOrEqual comparison";
+        return "plus";
     }
 }

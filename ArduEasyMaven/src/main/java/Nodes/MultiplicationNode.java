@@ -1,6 +1,6 @@
 package Nodes;
 
-public class TimesNode extends ArithmeticExprNode
+public class MultiplicationNode extends ArithmeticExprNode
 {
     public ExpressionNode LeftChild;
     public ExpressionNode RightChild;
@@ -8,6 +8,6 @@ public class TimesNode extends ArithmeticExprNode
     @Override
     public String toString()
     {
-        return "times";
+        return "multiplication";
     }
 }

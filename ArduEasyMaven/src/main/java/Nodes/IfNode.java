@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class IfNode extends StatementsNode
 {
-    public LogicalExprNode Predicate;
+    public ExpressionNode Predicate;
     public ArrayList<StatementsNode> Body = new ArrayList<StatementsNode>();
     public IfOrElseNode Alternative;
     public ElseNode Else;

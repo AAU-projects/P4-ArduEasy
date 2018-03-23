@@ -471,30 +471,214 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
     }
 
     @Override
-    public LogicalExprNode visitLogicalExpressions(ArduEasyParser.LogicalExpressionsContext ctx) {
+    public ExpressionNode visitLogicalExpressions(final ArduEasyParser.LogicalExpressionsContext ctx)
+    {
+        if (ctx.logicalOperator() != null)
+        {
+            if (ctx.logicalOperator().ANDOPERATOR() != null)
+            {
+                return new LogicalAndNode()
+                {{
+                    Left = visitLogicalExpressions(ctx.logicalExpressions(0));
+                    Right = visitLogicalExpressions(ctx.logicalExpressions(1));
+                }};
+            }
+            else if (ctx.logicalOperator().OROPERATOR() != null)
+            {
+                return new LogicalOrNode()
+                {{
+                    Left = visitLogicalExpressions(ctx.logicalExpressions(0));
+                    Right = visitLogicalExpressions(ctx.logicalExpressions(1));
+                }};
+            }
+        }
+
+        return visitLogicalExpression(ctx.logicalExpression());
+    }
+
+    @Override
+    public ExpressionNode visitLogicalExpression(final ArduEasyParser.LogicalExpressionContext ctx)
+    {
+        if (ctx.comparisonOperator() != null)
+        {
+            if (ctx.comparisonOperator().EQUALSOPERATOR() != null)
+            {
+                return new EqualsNode()
+                {{
+                    Left = visitAddSubExpression(ctx.addSubExpression(0));
+                    Right = visitAddSubExpression(ctx.addSubExpression(1));
+                }};
+            }
+            else if (ctx.comparisonOperator().BELOWOPERATOR() != null)
+            {
+                return new LessThanNode()
+                {{
+                    Left = visitAddSubExpression(ctx.addSubExpression(0));
+                    Right = visitAddSubExpression(ctx.addSubExpression(1));
+                }};
+            }
+            else if (ctx.comparisonOperator().ABOVEOPERATOR() != null)
+            {
+                return new GreaterThanNode()
+                {{
+                    Left = visitAddSubExpression(ctx.addSubExpression(0));
+                    Right = visitAddSubExpression(ctx.addSubExpression(1));
+                }};
+            }
+            else if (ctx.comparisonOperator().EQUALSORBELOWOPERATOR() != null)
+            {
+                return new LessOrEqualNode()
+                {{
+                    Left = visitAddSubExpression(ctx.addSubExpression(0));
+                    Right = visitAddSubExpression(ctx.addSubExpression(1));
+                }};
+            }
+            else if (ctx.comparisonOperator().EQUALSORABOVEOPERATOR() != null)
+            {
+                return new GreaterOrEqualNode()
+                {{
+                    Left = visitAddSubExpression(ctx.addSubExpression(0));
+                    Right = visitAddSubExpression(ctx.addSubExpression(1));
+                }};
+            }
+            else if (ctx.comparisonOperator().ISNOTOPERATOR() != null)
+            {
+                return new NotEqualsNode()
+                {{
+                    Left = visitAddSubExpression(ctx.addSubExpression(0));
+                    Right = visitAddSubExpression(ctx.addSubExpression(1));
+                }};
+            }
+        }
+        else if (ctx.addSubExpression(0) != null)
+        {
+            return visitAddSubExpression(ctx.addSubExpression(0));
+        }
+
+        return new NegateNode(){{ child = visitIdentifier(ctx.identifier());}};
+    }
+
+    @Override
+    public ExpressionNode visitExpression(final ArduEasyParser.ExpressionContext ctx) {
+        if (ctx.identifier() != null)
+        {
+            if (ctx.SUBTRACTIVEOPERATOR() != null)
+            {
+                return new NegateNode(){{ child = visitIdentifier(ctx.identifier());}};
+            }
+            else if (ctx.identifier() != null)
+            {
+                return visitIdentifier(ctx.identifier());
+            }
+            else if (ctx.value() != null)
+            {
+                return determinateValue(ctx.value());
+            }
+        }
+        return null;
+    }
+
+    private ExpressionNode determinateValue(final ArduEasyParser.ValueContext ctx)
+    {
+        if (ctx.INT() != null)
+        {
+            if (ctx.SUBTRACTIVEOPERATOR() != null)
+            {
+                return new IntNode(){{ Value = -Integer.parseInt(ctx.INT().getText());}};
+            }
+
+            return new IntNode(){{ Value = Integer.parseInt(ctx.INT().getText());}};
+
+        }
+        else if (ctx.FLOAT() != null)
+        {
+            if (ctx.SUBTRACTIVEOPERATOR() != null)
+            {
+                return new FloatNode(){{ Value = -Float.parseFloat(ctx.INT().getText());}};
+            }
+
+            return new FloatNode(){{ Value = Float.parseFloat(ctx.INT().getText());}};
+        }
+        else if (ctx.PERCENTAGE() != null)
+        {
+            return new PercentNode(){{ Value = Integer.parseInt(ctx.PERCENTAGE().getText().replaceAll("%",""));}};
+        }
+        else if (ctx.STRING() != null)
+        {
+            return new StringNode(){{ Value = ctx.STRING().getText();}};
+        }
+        else if (ctx.BOOL() != null)
+        {
+            if (ctx.NEGATEOPERATOR() != null)
+            {
+                return new NegateNode(){{ child = new BoolNode(){{ Value = Boolean.valueOf(ctx.BOOL().getText());}};}};
+            }
+
+            return new BoolNode(){{ Value = Boolean.valueOf(ctx.BOOL().getText());}};
+        }
+        else if (ctx.TIME() != null)
+        {
+            return new TimeNode(){{ Value = ctx.TIME().getText();}};
+        }
+        else if (ctx.DAY() != null)
+        {
+            return new DayNode(){{ Value = ctx.DAY().getText();}};
+        }
+        else if (ctx.MONTH() != null)
+        {
+            return new MonthNode(){{ Value = ctx.MONTH().getText();}};
+        }
+
         return null;
     }
 
     @Override
-    public Node visitLogicalExpression(ArduEasyParser.LogicalExpressionContext ctx)
+    public ExpressionNode visitAddSubExpression(final ArduEasyParser.AddSubExpressionContext ctx)
     {
-        return super.visitLogicalExpression(ctx);
+        if (ctx.ADDITIVEOPERATOR() != null)
+        {
+            return new AdditiveNode()
+            {{
+                LeftChild = visitAddSubExpression(ctx.addSubExpression());
+                RightChild = visitMultiDivExpression(ctx.multiDivExpression());
+            }};
+        }
+        else if (ctx.SUBTRACTIVEOPERATOR() != null)
+        {
+            return new SubtractiveNode()
+            {{
+                LeftChild = visitAddSubExpression(ctx.addSubExpression());
+                RightChild = visitMultiDivExpression(ctx.multiDivExpression());
+            }};
+        }
+        else
+        {
+            return visitMultiDivExpression(ctx.multiDivExpression());
+        }
     }
 
     @Override
-    public ExpressionNode visitExpression(ArduEasyParser.ExpressionContext ctx) {
-        return new ExpressionNode(); //TODO
-    }
-
-    @Override
-    public Node visitAddSubExpression(ArduEasyParser.AddSubExpressionContext ctx)
+    public ExpressionNode visitMultiDivExpression(final ArduEasyParser.MultiDivExpressionContext ctx)
     {
-        return super.visitAddSubExpression(ctx);
-    }
-
-    @Override
-    public Node visitMultiDivExpression(ArduEasyParser.MultiDivExpressionContext ctx)
-    {
-        return super.visitMultiDivExpression(ctx);
+        if (ctx.MULTIPLICATIVEOPERATOR() != null)
+        {
+            return new MultiplicationNode()
+            {{
+                LeftChild = visitExpression(ctx.expression());
+                RightChild = visitMultiDivExpression(ctx.multiDivExpression());
+            }};
+        }
+        else if (ctx.DIVISIONALOPERATOR() != null)
+        {
+            return new DivisionNode()
+            {{
+                LeftChild = visitExpression(ctx.expression());
+                RightChild = visitMultiDivExpression(ctx.multiDivExpression());
+            }};
+        }
+        else
+        {
+            return visitExpression(ctx.expression());
+        }
     }
 }
