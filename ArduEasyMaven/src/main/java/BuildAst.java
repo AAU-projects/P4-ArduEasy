@@ -1,5 +1,4 @@
 import Nodes.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,6 +54,52 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
             Childs = new ArrayList<DefinitionNode>(visitSetupDefs(ctx.definition()));
         }};
     }
+
+    private FunctionsNode visitFunctionFunction(final ArduEasyParser.FunctionContext ctx)
+    {
+        if (ctx.returnType() != null)
+        {
+            return new FunctionNode()
+            {{
+                ReturnType = ctx.returnType().toString();
+                Identifier = visitIdentifier(ctx.identifier());
+                Parameters = visitParameterList(ctx.parameters());
+
+            }};
+        }
+        else if (ctx.VOIDDEC() != null)
+        {
+            return new FunctionNode()
+            {{
+
+            }};
+        }
+    }
+
+    private ArrayList<ParameterNode> visitParameterList(ArduEasyParser.ParametersContext ctx)
+    {
+        ArrayList<ParameterNode> nodeList = new ArrayList<ParameterNode>();
+
+        if (ctx.parameter() == null) return nodeList;
+
+        nodeList.add(visitParameter(ctx.parameter()));
+
+        if (ctx.parameters() == null) return nodeList;
+
+        nodeList.addAll(visitParameterList(ctx.parameters()));
+
+        return nodeList;
+    }
+
+    @Override
+    public ParameterNode visitParameter(final ArduEasyParser.ParameterContext ctx) {
+        return new ParameterNode()
+        {{
+            Type = ctx.typeSpecifier().toString();
+            Identifier = visitIdentifier(ctx.identifier());
+        }};
+    }
+
 
     private List<DefinitionNode> visitSetupDefs(List<ArduEasyParser.DefinitionContext> context)
     {
@@ -278,7 +323,6 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         }
 
         return nodeList;
-
     }
 
     @Override
