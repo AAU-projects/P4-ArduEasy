@@ -15,15 +15,35 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         }};
     }
 
+    @Override
+    public SetupNode visitSetup(final ArduEasyParser.SetupContext ctx)
+    {
+        return new SetupNode()
+        {{
+            Childs = new ArrayList<DefinitionNode>(visitSetupDefs(ctx.definition()));
+        }};
+    }
+
     private List<FunctionsNode> visitFunctionsList(List<ArduEasyParser.FunctionContext> ctx)
     {
-        System.out.println(ctx.get(0).WHEN());
-        List<FunctionsNode> nodes = new ArrayList<FunctionsNode>();
+        List<FunctionsNode> nodeList = new ArrayList<FunctionsNode>();
 
         for (ArduEasyParser.FunctionContext func: ctx)
+        {
+            if (func != null)
+            {
+                if (func.WHEN() != null)
+                {
+                    nodeList.add(visitFucntionWhen(func));
+                }
+                else if (func.FUNCTION() != null)
+                {
+                    nodeList.add(visitFunctionFunction(func));
+                }
+            }
+        }
 
-
-        return new ArrayList<FunctionsNode>();
+        return nodeList;
     }
 
     private WhenNode visitFucntionWhen(final ArduEasyParser.FunctionContext ctx)
@@ -50,15 +70,6 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         return nodeList;
     }
 
-    @Override
-    public SetupNode visitSetup(final ArduEasyParser.SetupContext ctx)
-    {
-        return new SetupNode()
-        {{
-            Childs = new ArrayList<DefinitionNode>(visitSetupDefs(ctx.definition()));
-        }};
-    }
-
     private FunctionsNode visitFunctionFunction(final ArduEasyParser.FunctionContext ctx)
     {
         if (ctx.returnType() != null)
@@ -68,18 +79,29 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
                 ReturnType = ctx.returnType().toString();
                 Identifier = visitIdentifier(ctx.identifier());
                 Parameters = visitParameterList(ctx.parameters());
-
+                Body = visitStatementList(ctx.statement());
+                Return = visitReturn(ctx.logicalExpressions());
             }};
         }
         else if (ctx.VOIDDEC() != null)
         {
             return new FunctionNode()
             {{
-
+                Identifier = visitIdentifier(ctx.identifier());
+                Parameters = visitParameterList(ctx.parameters());
+                Body = visitStatementList(ctx.statement());
             }};
         }
 
         return null;
+    }
+
+    private ReturnNode visitReturn(final ArduEasyParser.LogicalExpressionsContext ctx) {
+
+        return new ReturnNode()
+        {{
+            Value = visitLogicalExpressions(ctx);
+        }};
     }
 
     private ArrayList<ParameterNode> visitParameterList(ArduEasyParser.ParametersContext ctx)
@@ -298,7 +320,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
     public SwitchNode visitSwitch_r(final ArduEasyParser.Switch_rContext ctx) {
         return new SwitchNode()
         {{
-            expression = visitExpression(ctx.expression());
+            expression = visitExpression(ctx.expression()); //TODO not totaly sure here
             Body = visitCaseList(ctx.cases());
             defaultCase = visitDefaultCase(ctx.cases());
         }};
@@ -381,7 +403,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
     {
         return new PerformUntil()
         {{
-            Predicate = visitLogicalExpressions(ctx.logicalExpressions());
+            Predicate = visitLogicalExpressions(ctx.logicalExpressions()); //TODO skal ikke være logical
             Body = visitStatementList(ctx.statement());
         }};
     }
@@ -464,6 +486,6 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
 
     @Override
     public LogicalExprNode visitLogicalExpressions(ArduEasyParser.LogicalExpressionsContext ctx) {
-        return new LogicalExprNode(); //TODO
+        return null;
     }
 }
