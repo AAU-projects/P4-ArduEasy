@@ -192,6 +192,59 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
     }
 
     @Override
+    public WhileNode visitWhile_r(final ArduEasyParser.While_rContext ctx) {
+        return new WhileNode()
+        {{
+            Predicate = visitLogicalExpressions(ctx.logicalExpressions());
+            Body = new ArrayList<StatementsNode>(visitStatementList(ctx.statement()));
+        }};
+    }
+
+    @Override
+    public PerformNode visitPerform_r(final ArduEasyParser.Perform_rContext ctx) {
+        if (ctx.expression() != null)
+        {
+            return visitPerformTimes(ctx); // if the grammar contains a expression we know its perform times
+        }
+        else if (ctx.logicalExpressions() != null)
+        {
+            return visitPerformUntil(ctx); // if the grammar contains a logical expression we know its perform until
+        }
+    }
+
+    private PerformNode visitPerformTimes(final ArduEasyParser.Perform_rContext ctx)
+    {
+        return new PerformTimes()
+        {{
+            value = visitExpression(ctx.expression());
+            Body = new ArrayList<StatementsNode>(visitStatementList(ctx.statement()));
+        }};
+    }
+
+    private PerformNode visitPerformUntil(final ArduEasyParser.Perform_rContext ctx)
+    {
+        return new PerformUntil()
+        {{
+            Predicate = visitLogicalExpressions(ctx.logicalExpressions());
+            Body = new ArrayList<StatementsNode>(visitStatementList(ctx.statement()));
+        }};
+    }
+
+    @Override
+    public ExpressionNode visitExpression(ArduEasyParser.ExpressionContext ctx) {
+        return new ExpressionNode(); //TODO
+    }
+
+    @Override
+    public SwitchNode visitSwitch_r(final ArduEasyParser.Switch_rContext ctx) {
+        return new SwitchNode()
+        {{
+            expression = new ExpressionNode();
+             //TODO
+        }};
+    }
+
+    @Override
     public ForNode visitFor_r(final ArduEasyParser.For_rContext ctx) {
         return new ForNode()
         {{
@@ -208,9 +261,17 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         {{
             Predicate = visitLogicalExpressions(ctx.logicalExpressions());
             Body = new ArrayList<StatementsNode>(visitStatementList(ctx.statement()));
-            Alternative = visitIfElse(ctx.ifElse());
-            
+
+            if (ctx.ifElse() != null)
+            {
+                Alternative = visitIfElse(ctx.ifElse());
+            }
         }};
+    }
+
+    @Override
+    public IfOrElseNode visitIfElse(ArduEasyParser.IfElseContext ctx) {
+        return new IfOrElseNode(); //TODO
     }
 
     private List<StatementsNode> visitStatementList(List<ArduEasyParser.StatementContext> context)
@@ -228,30 +289,8 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         return nodeList;
     }
 
-
-    @Override
-    public IfOrElseNode visitIfElse(ArduEasyParser.IfElseContext ctx) {
-        return new IfOrElseNode(); //TODO
-    }
-
     @Override
     public LogicalExprNode visitLogicalExpressions(ArduEasyParser.LogicalExpressionsContext ctx) {
         return new LogicalExprNode(); //TODO
-    }
-
-
-    @Override
-    public SwitchNode visitSwitch_r(ArduEasyParser.Switch_rContext ctx) {
-        return null;
-    }
-
-    @Override
-    public PerformNode visitPerform_r(ArduEasyParser.Perform_rContext ctx) {
-        return null;
-    }
-
-    @Override
-    public WhileNode visitWhile_r(ArduEasyParser.While_rContext ctx) {
-        return null;
     }
 }
