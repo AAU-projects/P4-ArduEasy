@@ -1,5 +1,4 @@
 import Nodes.*;
-import jdk.nashorn.internal.ir.Assignment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +12,39 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         return new RootNode()
         {{
             Home = visitSetup(ctx.setup());
-            Functions =
+            Functions = new ArrayList<FunctionsNode>(visitFunctionsList(ctx.function()));
         }};
+    }
+
+    private List<FunctionsNode> visitFunctionsList(List<ArduEasyParser.FunctionContext> ctx)
+    {
+        System.out.println(ctx.get(0).WHEN());
+
+        return new ArrayList<FunctionsNode>();
+    }
+
+    private WhenNode visitFucntionWhen(final ArduEasyParser.FunctionContext ctx)
+    {
+        return new WhenNode()
+        {{
+            Predicate = visitLogicalExpressions(ctx.logicalExpressions());
+            Body = visitStatementList(ctx.statement());
+        }};
+    }
+
+    private List<StatementsNode> visitStatementsList(List<ArduEasyParser.StatementContext> ctx)
+    {
+        List<StatementsNode> nodeList = new ArrayList<StatementsNode>();
+
+        for (ArduEasyParser.StatementContext stmt: ctx)
+        {
+            if (stmt != null)
+            {
+                nodeList.add(visitStatement(stmt));
+            }
+        }
+
+        return nodeList;
     }
 
     @Override
@@ -318,7 +348,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         {{
             Predicate = visitLogicalExpressions(ctx.logicalExpressions());
             Increment = visitAssignment(ctx.assignment(1)); // takes the second assignment in the for loop
-            body = visitStatementList(ctx.statement();
+            body = visitStatementList(ctx.statement());
 
         }};
     }
