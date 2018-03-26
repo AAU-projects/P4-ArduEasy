@@ -1,5 +1,7 @@
 package AST.Nodes;
 
+import visitor.Visitor;
+
 import java.util.ArrayList;
 
 public class ElseNode extends IfOrElseNode
@@ -10,5 +12,10 @@ public class ElseNode extends IfOrElseNode
     public String toString()
     {
         return "else";
+    }
+
+    @Override
+    public Object Accept(Visitor visitor) {
+        return visitor.Visit(this);
     }
 }
