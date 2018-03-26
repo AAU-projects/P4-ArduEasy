@@ -1,5 +1,5 @@
 package AST.Nodes;
 
-public class ExpressionNode extends StatementsNode
+public abstract class ExpressionNode extends Node
 {
 }
