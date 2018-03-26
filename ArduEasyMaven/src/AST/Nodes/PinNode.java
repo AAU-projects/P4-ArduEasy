@@ -1,6 +1,6 @@
 package AST.Nodes;
 
-public class PinNode extends Node
+public abstract class PinNode extends Node
 {
     public int Value;
 
@@ -9,4 +9,6 @@ public class PinNode extends Node
     {
         return "Pin";
     }
+
+
 }
