@@ -6,7 +6,6 @@ public interface Visitor
 {
     Object Visit(AdditiveNode node);
     Object Visit(AnalogPinNode node);
-    Object Visit(ArithmeticExprNode node);
     Object Visit(ArrayDeclarationNode node);
     Object Visit(AssignmentNode node);
     Object Visit(BelowAndEqualNode node);
@@ -15,13 +14,11 @@ public interface Visitor
     Object Visit(CaseNode node);
     Object Visit(DayNode node);
     Object Visit(DeclarationNode node);
-    Object Visit(DefinitionNode node);
     Object Visit(DigitalPinNode node);
     Object Visit(DivisionNode node);
     Object Visit(ElseIfNode node);
     Object Visit(ElseNode node);
     Object Visit(EqualsNode node);
-    Object Visit(ExpressionNode node);
     Object Visit(FloatNode node);
     Object Visit(ForNode node);
     Object Visit(ForNodeAssign node);
@@ -39,7 +36,6 @@ public interface Visitor
     Object Visit(LessOrEqualNode node);
     Object Visit(LessThanNode node);
     Object Visit(LogicalAndNode node);
-    Object Visit(LogicalExprNode node);
     Object Visit(LogicalOrNode node);
     Object Visit(MonthNode node);
     Object Visit(MultiplicationNode node);
@@ -52,12 +48,10 @@ public interface Visitor
     Object Visit(PerformTimes node);
     Object Visit(PerformUntil node);
     Object Visit(PinDeclarationNode node);
-    Object Visit(PinNode node);
     Object Visit(ReturnNode node);
     Object Visit(RoomDeclaration node);
     Object Visit(RootNode node);
     Object Visit(SetupNode node);
-    Object Visit(StatementsNode node);
     Object Visit(StringNode node);
     Object Visit(SubtractiveNode node);
     Object Visit(SwitchNode node);
