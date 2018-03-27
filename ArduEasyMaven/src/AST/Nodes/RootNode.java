@@ -1,5 +1,7 @@
 package AST.Nodes;
 
+import visitor.Visitor;
+
 import java.util.ArrayList;
 
 public class RootNode extends Node
@@ -12,4 +14,10 @@ public class RootNode extends Node
     {
         return "Root";
     }
+
+    @Override
+    public Object Accept(Visitor visitor) {
+        return visitor.Visit(this);
+    }
+
 }

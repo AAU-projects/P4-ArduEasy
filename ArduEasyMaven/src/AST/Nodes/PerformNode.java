@@ -1,6 +1,6 @@
 package AST.Nodes;
 
-public class PerformNode extends StatementsNode
+public abstract class PerformNode extends StatementsNode
 {
 
 }
