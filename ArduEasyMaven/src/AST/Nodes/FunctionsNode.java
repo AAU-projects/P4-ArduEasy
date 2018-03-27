@@ -1,6 +1,6 @@
 package AST.Nodes;
 
-public class FunctionsNode extends Node
+public abstract class FunctionsNode extends Node
 {
 
 }
