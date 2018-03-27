@@ -1,6 +1,6 @@
 package AST.Nodes;
 
-public class IfOrElseNode extends IfNode
+public abstract class IfOrElseNode extends StatementsNode
 {
 
 }

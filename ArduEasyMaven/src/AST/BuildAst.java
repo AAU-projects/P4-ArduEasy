@@ -444,7 +444,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
             }
             else if (ctx.else_r() != null)
             {
-                Else = visitElse_r(ctx.else_r());
+                Alternative = visitElse_r(ctx.else_r());
             }
         }};
     }
@@ -459,7 +459,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
 
     @Override
     public IfOrElseNode visitIfElse(final ArduEasyParser.IfElseContext ctx) {
-        return new IfOrElseNode()
+        return new ElseIfNode()
         {{
             Predicate = visitLogicalExpressions(ctx.logicalExpressions());
             Body = visitStatementList(ctx.statement());
@@ -470,7 +470,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
             }
             else if (ctx.else_r() != null)
             {
-                Else = visitElse_r(ctx.else_r());
+                Alternative = visitElse_r(ctx.else_r());
             }
         }};
     }

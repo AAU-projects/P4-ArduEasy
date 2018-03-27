@@ -4,12 +4,11 @@ import visitor.Visitor;
 
 import java.util.ArrayList;
 
-public class IfNode extends StatementsNode
+public class IfNode extends IfOrElseNode
 {
     public ExpressionNode Predicate;
     public ArrayList<StatementsNode> Body = new ArrayList<StatementsNode>();
     public IfOrElseNode Alternative;
-    public ElseNode Else;
 
     @Override
     public String toString()
