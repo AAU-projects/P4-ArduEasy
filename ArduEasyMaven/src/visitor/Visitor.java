@@ -8,8 +8,6 @@ public interface Visitor
     Object Visit(AnalogPinNode node);
     Object Visit(ArrayDeclarationNode node);
     Object Visit(AssignmentNode node);
-    Object Visit(BelowAndEqualNode node);
-    Object Visit(BelowOrEqualNode node);
     Object Visit(BoolNode node);
     Object Visit(CaseNode node);
     Object Visit(DayNode node);
@@ -23,7 +21,6 @@ public interface Visitor
     Object Visit(ForNodeAssign node);
     Object Visit(ForNodeDecl node);
     Object Visit(FunctionNode node);
-    Object Visit(GreaterAndEqualNode node);
     Object Visit(GreaterOrEqualNode node);
     Object Visit(GreaterThanNode node);
     Object Visit(IdentifierNode node);

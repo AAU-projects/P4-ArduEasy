@@ -10,6 +10,9 @@ public class PrettyPrint implements Visitor
 
     @Override
     public Object Visit(AdditiveNode node) {
+        node.LeftChild.Accept(this);
+        System.out.print("+");
+        node.RightChild.Accept(this);
         return null;
     }
 
@@ -31,16 +34,6 @@ public class PrettyPrint implements Visitor
         node.Value.Accept(this);
 
         System.out.println("}");
-        return null;
-    }
-
-    @Override
-    public Object Visit(BelowAndEqualNode node) {
-        return null;
-    }
-
-    @Override
-    public Object Visit(BelowOrEqualNode node) {
         return null;
     }
 
@@ -115,12 +108,7 @@ public class PrettyPrint implements Visitor
     public Object Visit(FunctionNode node) {
         return null;
     }
-
-    @Override
-    public Object Visit(GreaterAndEqualNode node) {
-        return null;
-    }
-
+    
     @Override
     public Object Visit(GreaterOrEqualNode node) {
         return null;
