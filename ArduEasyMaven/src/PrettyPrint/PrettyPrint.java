@@ -108,7 +108,7 @@ public class PrettyPrint implements Visitor
     public Object Visit(FunctionNode node) {
         return null;
     }
-    
+
     @Override
     public Object Visit(GreaterOrEqualNode node) {
         return null;
