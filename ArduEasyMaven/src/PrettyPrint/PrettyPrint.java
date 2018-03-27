@@ -363,4 +363,10 @@ public class PrettyPrint implements Visitor
 
         return null;
     }
+
+    @Override
+    public Object Visit(HouseNode node)
+    {
+        return null;
+    }
 }

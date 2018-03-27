@@ -1,4 +1,4 @@
-// Generated from C:/Users/hazz/Documents/GitHub/ArduEasy/ArduEasyMaven/src/antlr4\ArduEasy.g4 by ANTLR 4.7
+// Generated from H:/Github/ArduEasy/ArduEasyMaven/src/antlr4\ArduEasy.g4 by ANTLR 4.7
 package antlr4;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -34,6 +34,12 @@ public interface ArduEasyVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitDefinition(ArduEasyParser.DefinitionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link ArduEasyParser#houseaccess}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitHouseaccess(ArduEasyParser.HouseaccessContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link ArduEasyParser#declaration}.
 	 * @param ctx the parse tree

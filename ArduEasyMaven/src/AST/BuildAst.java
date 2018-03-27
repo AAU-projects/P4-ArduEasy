@@ -270,6 +270,27 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
     }
 
     @Override
+    public HouseNode visitHouseaccess(final ArduEasyParser.HouseaccessContext ctx)
+    {
+        return new HouseNode()
+        {{
+            Identifiers = SplitDotNotation(ctx.DOT_NOTATION().toString());
+        }};
+    }
+
+    private List<IdentifierNode> SplitDotNotation(String notation)
+    {
+        List<IdentifierNode> nodes = new ArrayList<IdentifierNode>();
+
+        for (final String identifier : notation.split(".") )
+        {
+            nodes.add(new IdentifierNode(){{Value = identifier;}});
+        }
+
+        return nodes;
+    }
+
+    @Override
     public PinNode visitPin(final ArduEasyParser.PinContext ctx)
     {
         if (ctx.A() == null) return new DigitalPinNode(){{ Value = Integer.parseInt(ctx.INT().toString()); }};
@@ -575,7 +596,17 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
             return visitAddSubExpression(ctx.addSubExpression(0));
         }
 
-        return new NegateNode(){{ child = visitIdentifier(ctx.identifier());}};
+        return new NegateNode()
+        {{
+            if (ctx.houseaccess() != null)
+            {
+                child = visitHouseaccess(ctx.houseaccess());
+            }
+            else
+            {
+                child = visitIdentifier(ctx.identifier());
+            }
+        }};
     }
 
     @Override
@@ -587,6 +618,10 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         else if (ctx.identifier() != null)
         {
             return visitIdentifier(ctx.identifier());
+        }
+        else if (ctx.houseaccess() != null)
+        {
+            return visitHouseaccess(ctx.houseaccess());
         }
         else if (ctx.value() != null)
         {
