@@ -13,7 +13,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
     {
         return new RootNode()
         {{
-            Home = visitSetup(ctx.setup());
+            Setup = visitSetup(ctx.setup());
             Functions = new ArrayList<FunctionsNode>(visitFunctionsList(ctx.function()));
         }};
     }

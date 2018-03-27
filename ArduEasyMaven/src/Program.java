@@ -1,3 +1,4 @@
+import PrettyPrint.PrettyPrint;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -23,6 +24,9 @@ public class Program
             ArduEasyParser.RContext programContext = parser.r();
 
             root = (RootNode) new BuildAst().visitR(programContext);
+
+            PrettyPrint printer = new PrettyPrint();
+            printer.Visit(root);
 
         } catch (Exception e)
         {

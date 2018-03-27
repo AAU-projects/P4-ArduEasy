@@ -25,6 +25,12 @@ public class PrettyPrint implements Visitor
 
     @Override
     public Object Visit(AssignmentNode node) {
+        System.out.println("Assigment {");
+
+        node.Identifier.Accept(this);
+        node.Value.Accept(this);
+
+        System.out.println("}");
         return null;
     }
 
@@ -55,6 +61,13 @@ public class PrettyPrint implements Visitor
 
     @Override
     public Object Visit(DeclarationNode node) {
+        System.out.println("Declaration {");
+
+        System.out.println(node.Type);
+        node.Identifier.Accept(this);
+        node.Value.Accept(this);
+        System.out.println("}");
+
         return null;
     }
 
@@ -205,6 +218,14 @@ public class PrettyPrint implements Visitor
 
     @Override
     public Object Visit(PinDeclarationNode node) {
+        System.out.println("PinDeclartion {");
+
+        node.Identifier.Accept(this);
+        node.Pin.Accept(this);
+        node.IoStatus.Accept(this);
+
+        System.out.println("}");
+
         return null;
     }
 
@@ -215,16 +236,47 @@ public class PrettyPrint implements Visitor
 
     @Override
     public Object Visit(RoomDeclaration node) {
+        System.out.println("RoomDeclaration {");
+
+        node.Identifier.Accept(this);
+
+        for (RoomBlockNode RoomBlock : node.body )
+        {
+            System.out.println();
+            RoomBlock.Accept(this);
+        }
+
+        System.out.println("}");
+
         return null;
     }
 
     @Override
     public Object Visit(RootNode node) {
-        node.S
+        System.out.println("Root {");
+        node.Setup.Accept(this);
+
+        for (FunctionsNode function : node.Functions )
+        {
+            System.out.println();
+            function.Accept(this);
+        }
+
+        System.out.println("}");
+        return null;
     }
 
     @Override
     public Object Visit(SetupNode node) {
+        System.out.println("Setup {");
+
+        for (DefinitionNode definition : node.Childs )
+        {
+            System.out.println();
+            definition.Accept(this);
+        }
+        System.out.println("}");
+
         return null;
     }
 
