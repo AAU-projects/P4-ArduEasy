@@ -1,0 +1,57 @@
+house
+{
+    Temp = PIN A 12 as INPUT
+    CurrentTime = PIN A 13 as INPUT
+    
+    time SavedTime = 00:00
+    
+    room Kitchen
+    {
+        Lamp1 = PIN 1 as OUTPUT
+        Lamp2 = PIN 2 as OUTPUT
+        CoffeeMachine = PIN 3 as OUTPUT
+        Button = PIN 4 as INPUT
+        Window = PIN 5 as OUTPUT
+        
+        Lamps = {Lamp1, Lamp2}
+    }
+    
+    room Bedroom
+    {
+        Blinds1 = PIN 6 as OUTPUT
+        Blinds2 = PIN 7 as OUTPUT
+        Blinds3 = PIN 8 as OUTPUT
+        
+        Blinds = {Blinds1, Blinds2, Blinds3}
+    }
+}
+
+when (Kitchen.Button is true)
+{
+    float Fahrenheit = CelciusToFahrenheit(Temp)
+    Kitchen.CoffeeMachine = true
+    SavedTime = CurrentTime
+    
+    if (SavedTime + 00:15 is CurrentTime && Fahrenheit is above or equal 64)
+    {
+        Kitchen.Window = true //Opens the window 15 mins after the coffee machine turned on if Fahrenheit >= 64.
+    }
+}
+
+when (Time is 07:00)
+{
+    Bedroom.Blinds = true //This will open the blinds at 7.
+    Kitchen.Lamps = true //Turns on the Lamps in the Kitchen
+}
+
+when (Time is 18:00)
+{
+    Bedroom.Blinds = false //This will close the blinds at 18.
+}
+
+function float CelciusToFahrenheit(int temp)
+{
+    float result = temp * 1.8 + 32
+    
+    return result
+}
