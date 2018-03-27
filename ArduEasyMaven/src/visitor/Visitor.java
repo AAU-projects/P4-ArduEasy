@@ -20,10 +20,8 @@ public interface Visitor
     Object Visit(ElseNode node);
     Object Visit(EqualsNode node);
     Object Visit(FloatNode node);
-    Object Visit(ForNode node);
     Object Visit(ForNodeAssign node);
     Object Visit(ForNodeDecl node);
-    Object Visit(FunctionsNode node);
     Object Visit(FunctionNode node);
     Object Visit(GreaterAndEqualNode node);
     Object Visit(GreaterOrEqualNode node);
@@ -40,11 +38,9 @@ public interface Visitor
     Object Visit(MonthNode node);
     Object Visit(MultiplicationNode node);
     Object Visit(NegateNode node);
-    Object Visit(Node node);
     Object Visit(NotEqualsNode node);
     Object Visit(ParameterNode node);
     Object Visit(PercentNode node);
-    Object Visit(PerformNode node);
     Object Visit(PerformTimes node);
     Object Visit(PerformUntil node);
     Object Visit(PinDeclarationNode node);
