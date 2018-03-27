@@ -191,16 +191,39 @@ public class PrettyPrint implements Visitor
 
     @Override
     public Object Visit(PercentNode node) {
+        System.out.print(node.toString());
+
         return null;
     }
 
     @Override
     public Object Visit(PerformTimes node) {
+        System.out.print("Perform (");
+        node.value.Accept(this);
+        System.out.println(") times {");
+
+        for (StatementsNode stmt : node.Body)
+        {
+            stmt.Accept(this);
+        }
+
+        System.out.println("}");
         return null;
     }
 
     @Override
     public Object Visit(PerformUntil node) {
+        System.out.print("Perform until (");
+        node.Predicate.Accept(this);
+        System.out.println(") {");
+
+        for (StatementsNode stmt : node.Body)
+        {
+            stmt.Accept(this);
+        }
+
+        System.out.println("}");
+
         return null;
     }
 
@@ -219,6 +242,8 @@ public class PrettyPrint implements Visitor
 
     @Override
     public Object Visit(ReturnNode node) {
+
+
         return null;
     }
 
@@ -270,31 +295,72 @@ public class PrettyPrint implements Visitor
 
     @Override
     public Object Visit(StringNode node) {
+
+        System.out.print(node.Value);
+
         return null;
     }
 
     @Override
     public Object Visit(SubtractiveNode node) {
+        node.LeftChild.Accept(this);
+        System.out.print(" - ");
+        node.RightChild.Accept(this);
         return null;
     }
 
     @Override
     public Object Visit(SwitchNode node) {
+        System.out.print("Switch: (");
+        node.expression.Accept(this);
+        System.out.println(") {");
+
+        for (CaseNode caseN: node.Body)
+        {
+            caseN.Accept(this);
+        }
+
+        node.defaultCase.Accept(this);
+        System.out.println("}");
         return null;
     }
 
     @Override
     public Object Visit(TimeNode node) {
+        System.out.print(node.Value);
+
         return null;
     }
 
     @Override
     public Object Visit(WhenNode node) {
+        System.out.print("When (");
+        node.Predicate.Accept(this);
+        System.out.println(") {");
+
+        for (StatementsNode stmt : node.Body)
+        {
+            stmt.Accept(this);
+        }
+
+        System.out.println("}");
+
         return null;
     }
 
     @Override
     public Object Visit(WhileNode node) {
+        System.out.print("While (");
+        node.Predicate.Accept(this);
+        System.out.println(") {");
+
+        for (StatementsNode stmt : node.Body)
+        {
+            stmt.Accept(this);
+        }
+
+        System.out.println("}");
+
         return null;
     }
 }
