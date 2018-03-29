@@ -30,11 +30,7 @@ roomblock           : pindeclaration* arraydeclaration*
                     |
                     ;
 
-arraydeclaration    : identifier LBRACK identifierloop RBRACK
-                    ;
-
-identifierloop      : identifier
-                    | identifier COMMA identifierloop
+arraydeclaration    : identifier ASSIGNMENTOPERATOR LBRACK identifier(COMMA identifier)* RBRACK
                     ;
 
 pindeclaration      : identifier ASSIGNMENTOPERATOR pin AS ioStatus

@@ -1,6 +1,12 @@
 // Hej med dig
 
-house{} // comments are working now
+house
+{
+    room Kitchen
+    {
+        bob = {bob,bob,bob}
+    }
+} // comments are working now
 
 function void bob1()
 {

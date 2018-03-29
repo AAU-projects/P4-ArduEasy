@@ -240,22 +240,19 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
     {
         return new ArrayDeclarationNode()
         {{
-            Identifier = visitIdentifier(ctx.identifier());
-            Values = visitIdentifierList(ctx.identifierloop());
+            Identifier = visitIdentifier(ctx.identifier().remove(0));
+            Values = visitIdentifierList(ctx.identifier());
         }};
     }
 
-    private List<IdentifierNode> visitIdentifierList(ArduEasyParser.IdentifierloopContext ctx)
+    private List<IdentifierNode> visitIdentifierList(List<ArduEasyParser.IdentifierContext> ctx)
     {
         List<IdentifierNode> nodeList = new ArrayList<IdentifierNode>();
 
-        if (ctx.identifier() == null) return nodeList;
-
-        nodeList.add(visitIdentifier(ctx.identifier()));
-
-        if (ctx.identifierloop() == null) return nodeList;
-
-        nodeList.addAll(visitIdentifierList(ctx.identifierloop()));
+        for (ArduEasyParser.IdentifierContext id : ctx)
+        {
+            if (id != null) nodeList.add(visitIdentifier(id));
+        }
 
         return nodeList;
     }
