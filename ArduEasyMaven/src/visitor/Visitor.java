@@ -51,4 +51,5 @@ public interface Visitor
     Object Visit(TimeNode node);
     Object Visit(WhenNode node);
     Object Visit(WhileNode node);
+    Object Visit(HouseNode node);
 }

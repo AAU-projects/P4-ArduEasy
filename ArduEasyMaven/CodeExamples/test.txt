@@ -1,33 +1,14 @@
-house{}
+// Hej med dig
 
-function void LOOPtest1()
+house
 {
-    while(true)
+    room Kitchen
     {
-        while(true && !false)
-        {
-
-        }
+        bob = {bob,bob,bob}
     }
-    int i = -52
-    for (i=0;i<10;i=i + 1)
-    {
+} // comments are working now
 
-    }
-    for(int j = 0;j<10;j=j+1)
-    {
-
-    }
-    perform 158 times
-    {
-
-    }
-    perform bob times
-    {
-
-    }
-    perform until (i > 15)
-    {
-
-    }
+function void bob1()
+{
+    bob = house.bob.bob.bob.bob.bob.bob.bob
 }

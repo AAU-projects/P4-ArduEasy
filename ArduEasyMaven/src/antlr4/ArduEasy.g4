@@ -17,6 +17,9 @@ definition          : pindeclaration
                  	| roomdeclaration
                  	;
 
+houseaccess         : DOT_NOTATION
+                    ;
+
 declaration         : typeSpecifier identifier ASSIGNMENTOPERATOR logicalExpressions
 					;
 
@@ -27,11 +30,7 @@ roomblock           : pindeclaration* arraydeclaration*
                     |
                     ;
 
-arraydeclaration    : identifier LBRACK identifierloop RBRACK
-                    ;
-
-identifierloop      : identifier
-                    | identifier COMMA identifierloop
+arraydeclaration    : identifier ASSIGNMENTOPERATOR LBRACK identifier(COMMA identifier)* RBRACK
                     ;
 
 pindeclaration      : identifier ASSIGNMENTOPERATOR pin AS ioStatus
@@ -92,10 +91,11 @@ logicalExpressions  : logicalExpressions logicalOperator logicalExpressions
 
 logicalExpression   : addSubExpression comparisonOperator addSubExpression
                     | addSubExpression
-                 	| NEGATEOPERATOR identifier
+                 	| NEGATEOPERATOR (identifier | houseaccess)
                  	;
 
 expression          : identifier
+                    | houseaccess
                     | SUBTRACTIVEOPERATOR identifier
  					| value
  					;
@@ -235,4 +235,7 @@ OUTPUT 					: 'output' ;
 INPUTPULLUP 			: 'inputpullup' ;
 
 IDENTIFIER  			: [a-zA-Z_][a-zA-Z_0-9]* ;
+DOT_NOTATION            : SETUP'.'IDENTIFIER('.'IDENTIFIER)* ;
+
 IGNORE                  : [ \t\r\n]+ -> channel(HIDDEN) ;
+LINE_COMMENT            : '//' ~[\r\n]* -> channel(HIDDEN) ;

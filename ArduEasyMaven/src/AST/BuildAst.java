@@ -240,22 +240,19 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
     {
         return new ArrayDeclarationNode()
         {{
-            Identifier = visitIdentifier(ctx.identifier());
-            Values = visitIdentifierList(ctx.identifierloop());
+            Identifier = visitIdentifier(ctx.identifier().remove(0));
+            Values = visitIdentifierList(ctx.identifier());
         }};
     }
 
-    private List<IdentifierNode> visitIdentifierList(ArduEasyParser.IdentifierloopContext ctx)
+    private List<IdentifierNode> visitIdentifierList(List<ArduEasyParser.IdentifierContext> ctx)
     {
         List<IdentifierNode> nodeList = new ArrayList<IdentifierNode>();
 
-        if (ctx.identifier() == null) return nodeList;
-
-        nodeList.add(visitIdentifier(ctx.identifier()));
-
-        if (ctx.identifierloop() == null) return nodeList;
-
-        nodeList.addAll(visitIdentifierList(ctx.identifierloop()));
+        for (ArduEasyParser.IdentifierContext id : ctx)
+        {
+            if (id != null) nodeList.add(visitIdentifier(id));
+        }
 
         return nodeList;
     }
@@ -267,6 +264,27 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         {{
             Value = ctx.IDENTIFIER().toString();
         }};
+    }
+
+    @Override
+    public HouseNode visitHouseaccess(final ArduEasyParser.HouseaccessContext ctx)
+    {
+        return new HouseNode()
+        {{
+            Identifiers = SplitDotNotation(ctx.DOT_NOTATION().toString());
+        }};
+    }
+
+    private List<IdentifierNode> SplitDotNotation(String notation)
+    {
+        List<IdentifierNode> nodes = new ArrayList<IdentifierNode>();
+
+        for (final String identifier : notation.split(".") )
+        {
+            nodes.add(new IdentifierNode(){{Value = identifier;}});
+        }
+
+        return nodes;
     }
 
     @Override
@@ -575,7 +593,17 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
             return visitAddSubExpression(ctx.addSubExpression(0));
         }
 
-        return new NegateNode(){{ child = visitIdentifier(ctx.identifier());}};
+        return new NegateNode()
+        {{
+            if (ctx.houseaccess() != null)
+            {
+                child = visitHouseaccess(ctx.houseaccess());
+            }
+            else
+            {
+                child = visitIdentifier(ctx.identifier());
+            }
+        }};
     }
 
     @Override
@@ -587,6 +615,10 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         else if (ctx.identifier() != null)
         {
             return visitIdentifier(ctx.identifier());
+        }
+        else if (ctx.houseaccess() != null)
+        {
+            return visitHouseaccess(ctx.houseaccess());
         }
         else if (ctx.value() != null)
         {
