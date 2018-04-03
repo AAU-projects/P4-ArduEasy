@@ -8,29 +8,27 @@ public class PrettyPrint implements Visitor
     private int tabsIndent = 0; // increase or decrease this int to tab indend the code
     //tabindent should increase after {
     //tabindent should decrease before }
-    //use printIndent & printIndentln to print 
+    //use printIndent & printIndentln to print
 
     @Override
     public Object Visit(AdditiveNode node) {
         node.LeftChild.Accept(this);
-        printIndent("+");
+        System.out.print("+");
         node.RightChild.Accept(this);
         return null;
     }
 
     @Override
     public Object Visit(AnalogPinNode node) {
-        printIndentln("AnalogPin {");
-
-        printIndentln(node.Value); // missing a infront?
-
-        printIndent("}");
+        System.out.print("A ");
+        System.out.print(node.Value);
         return null;
     }
 
     @Override
     public Object Visit(ArrayDeclarationNode node) {
         printIndentln("ArrayDeclaration {"); // TODO
+        tabsIndent++;
 
         node.Identifier.Accept(this);
 
@@ -39,6 +37,7 @@ public class PrettyPrint implements Visitor
             System.out.println();
             identifier.Accept(this);
         }
+        tabsIndent--;
         printIndent("}");
 
         return null;
@@ -47,27 +46,28 @@ public class PrettyPrint implements Visitor
     @Override
     public Object Visit(AssignmentNode node) {
         printIndentln("Assigment {");
+        tabsIndent++;
 
         node.Identifier.Accept(this);
-        printIndent(" = ");
+        System.out.print(" = ");
         node.Value.Accept(this); //TODO prints dot notations?
 
-        printIndent("}");
+        tabsIndent--;
+        printIndentln("}");
         return null;
     }
 
     @Override
     public Object Visit(BoolNode node) {
         System.out.print(node.Value); // just print ???
-
         return null;
     }
 
     @Override
     public Object Visit(CaseNode node) {
         printIndent("case ");
-        printIndent(node.Value);
-        printIndent(":");
+        System.out.print(node.Value);
+        System.out.print(":");
 
         for (StatementsNode Statement : node.Body )
         {
@@ -105,18 +105,14 @@ public class PrettyPrint implements Visitor
 
     @Override
     public Object Visit(DigitalPinNode node) {
-        printIndentln("DigitalPin {");
-
-        printIndentln(node.Value); // missing a infront?
-
-        printIndent("}");
+        System.out.print(node.Value); // TODO missing a infront?
         return null;
     }
 
     @Override
     public Object Visit(DivisionNode node) {
         node.LeftChild.Accept(this);
-        printIndent("/");
+        System.out.print("/");
         node.RightChild.Accept(this);
         return null;
     }
@@ -169,7 +165,7 @@ public class PrettyPrint implements Visitor
 
     @Override
     public Object Visit(FloatNode node) {
-        printIndent(node.Value);
+        System.out.print(node.Value);
         return null;
     }
 
@@ -183,10 +179,14 @@ public class PrettyPrint implements Visitor
         node.Increment.Accept(this);
         printIndentln(")");
         printIndentln("{");
+        tabsIndent++;
+
         for (StatementsNode Statement : node.body )
         {
             Statement.Accept(this);
         }
+
+        tabsIndent--;
         printIndentln("}");
 
         return null;
@@ -232,10 +232,9 @@ public class PrettyPrint implements Visitor
             }
         }
         printIndentln(")" );
-
-
         printIndentln("{" );
         tabsIndent++;
+
         for (StatementsNode Statement : node.Body )
         {
             Statement.Accept(this);
@@ -245,9 +244,9 @@ public class PrettyPrint implements Visitor
         {
             node.Return.Accept(this);
         }
+
         tabsIndent--;
         printIndentln("}");
-
 
         return null;
     }
@@ -294,7 +293,6 @@ public class PrettyPrint implements Visitor
 
         tabsIndent--;
         printIndentln("}");
-
 
         return null;
     }
@@ -351,7 +349,7 @@ public class PrettyPrint implements Visitor
 
     @Override
     public Object Visit(MonthNode node) {
-        printIndent(node.Value);
+        System.out.print(node.Value);
         return null;
     }
 
@@ -365,7 +363,7 @@ public class PrettyPrint implements Visitor
 
     @Override
     public Object Visit(NegateNode node) {
-
+        //TODO
         return null;
     }
 
@@ -398,12 +396,14 @@ public class PrettyPrint implements Visitor
         node.value.Accept(this);
         System.out.print(") times");
         printIndentln("{");
+        tabsIndent++;
 
         for (StatementsNode stmt : node.Body)
         {
             stmt.Accept(this);
         }
 
+        tabsIndent--;
         printIndentln("}");
         return null;
     }
@@ -413,12 +413,14 @@ public class PrettyPrint implements Visitor
         printIndent("Perform until (");
         node.Predicate.Accept(this);
         printIndentln(") {");
+        tabsIndent++;
 
         for (StatementsNode stmt : node.Body)
         {
             stmt.Accept(this);
         }
 
+        tabsIndent--;
         printIndentln("}");
 
         return null;
@@ -427,11 +429,13 @@ public class PrettyPrint implements Visitor
     @Override
     public Object Visit(PinDeclarationNode node) {
         printIndentln("PinDeclartion {");
+        tabsIndent++;
 
         node.Identifier.Accept(this);
         node.Pin.Accept(this);
         node.IoStatus.Accept(this);
 
+        tabsIndent--;
         printIndentln("}");
 
         return null;
@@ -440,7 +444,7 @@ public class PrettyPrint implements Visitor
     @Override
     public Object Visit(ReturnNode node) {
         printIndent("return ");
-        printIndent(node.Value.toString());
+        System.out.print(node.Value.toString());
 
         return null;
     }
@@ -498,16 +502,14 @@ public class PrettyPrint implements Visitor
 
     @Override
     public Object Visit(StringNode node) {
-
-        printIndent(node.Value);
-
+        System.out.print(node.Value);
         return null;
     }
 
     @Override
     public Object Visit(SubtractiveNode node) {
         node.LeftChild.Accept(this);
-        printIndent(" - ");
+        System.out.print("-");
         node.RightChild.Accept(this);
         return null;
     }
@@ -517,6 +519,7 @@ public class PrettyPrint implements Visitor
         printIndent("Switch: (");
         node.expression.Accept(this);
         printIndentln(") {");
+        tabsIndent++;
 
         for (CaseNode caseN: node.Body)
         {
@@ -524,14 +527,15 @@ public class PrettyPrint implements Visitor
         }
 
         node.defaultCase.Accept(this);
+
+        tabsIndent--;
         printIndentln("}");
         return null;
     }
 
     @Override
     public Object Visit(TimeNode node) {
-        printIndent(node.Value);
-
+        System.out.print(node.Value);
         return null;
     }
 
@@ -540,12 +544,14 @@ public class PrettyPrint implements Visitor
         printIndent("When (");
         node.Predicate.Accept(this);
         printIndentln(") {");
+        tabsIndent++;
 
         for (StatementsNode stmt : node.Body)
         {
             stmt.Accept(this);
         }
 
+        tabsIndent--;
         printIndentln("}");
 
         return null;
@@ -556,12 +562,14 @@ public class PrettyPrint implements Visitor
         printIndent("While (");
         node.Predicate.Accept(this);
         printIndentln(") {");
+        tabsIndent++;
 
         for (StatementsNode stmt : node.Body)
         {
             stmt.Accept(this);
         }
 
+        tabsIndent--;
         printIndentln("}");
 
         return null;
