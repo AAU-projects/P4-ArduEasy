@@ -1,8 +1,8 @@
 house
 {
-		Light1 = PIN 1 as input
-		Light2 = PIN 2 as output
-		Light3 = PIN 3 as input
+		//Light1 = PIN 1 as input
+		//Light2 = PIN 2 as output
+		//Light3 = PIN 3 as input
 }
 
 function void IfTest1 ()

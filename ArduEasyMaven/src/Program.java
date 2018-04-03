@@ -11,7 +11,7 @@ public class Program
 {
     public static void main(String args[]) throws IOException
     {
-        String filePath = "CodeExamples/test.txt";
+        String filePath = "CodeExamples/smallif";
         CharStream inputStream = CharStreams.fromFileName(filePath);
         ArduEasyLexer lexer = new ArduEasyLexer(inputStream);
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);

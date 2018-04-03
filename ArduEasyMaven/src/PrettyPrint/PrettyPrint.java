@@ -5,9 +5,6 @@ import visitor.Visitor;
 
 public class PrettyPrint implements Visitor
 {
-    private int tab = 0;
-
-
     @Override
     public Object Visit(AdditiveNode node) {
         node.LeftChild.Accept(this);
@@ -47,7 +44,8 @@ public class PrettyPrint implements Visitor
         System.out.println("Assigment {");
 
         node.Identifier.Accept(this);
-        node.Value.Accept(this);
+        System.out.print(" = ");
+        node.Value.Accept(this); //TODO prints dot notations?
 
         System.out.println("}");
         return null;
@@ -86,10 +84,11 @@ public class PrettyPrint implements Visitor
     public Object Visit(DeclarationNode node) {
         System.out.println("Declaration {");
 
-        System.out.println(node.Type);
+        System.out.print(node.Type + " ");
         node.Identifier.Accept(this);
+        System.out.print(" = ");
         node.Value.Accept(this);
-        System.out.println("}");
+        System.out.println("\n}");
 
         return null;
     }
@@ -181,7 +180,6 @@ public class PrettyPrint implements Visitor
 
     @Override
     public Object Visit(ForNodeDecl node) {
-
         System.out.print("For (");
         node.Var.Accept(this);
         System.out.print("; ");
@@ -201,6 +199,39 @@ public class PrettyPrint implements Visitor
 
     @Override
     public Object Visit(FunctionNode node) {
+        System.out.print("function ");
+        System.out.print(node.ReturnType + " ");
+        node.Identifier.Accept(this);
+        System.out.print("(");
+
+        int parametersCounter = 0;
+        for (ParameterNode parameter : node.Parameters)
+        {
+            if (parametersCounter++ != node.Parameters.size() - 1)
+            {
+                parameter.Accept(this);
+                System.out.print(", " );
+            }
+            else
+            {
+                parameter.Accept(this);
+            }
+        }
+        System.out.println(")" );
+
+
+        System.out.println("{" );
+        for (StatementsNode Statement : node.Body )
+        {
+            Statement.Accept(this);
+        }
+
+        if (node.Return != null) // return can be null if function is void
+        {
+            node.Return.Accept(this);
+        }
+        System.out.println("}");
+
         return null;
     }
 
@@ -222,16 +253,32 @@ public class PrettyPrint implements Visitor
 
     @Override
     public Object Visit(IdentifierNode node) {
+        System.out.print(node.Value);
         return null;
     }
 
     @Override
     public Object Visit(IfNode node) {
+        System.out.print("if(");
+        node.Predicate.Accept(this);
+        System.out.println(")");
+        System.out.println("{");
+
+        for (StatementsNode Statement : node.Body )
+        {
+            Statement.Accept(this);
+        }
+
+        if (node.Alternative != null) // only accept if there is another else or else if node
+        {
+            node.Alternative.Accept(this);
+        }
         return null;
     }
 
     @Override
     public Object Visit(IfOrElseNode node) {
+        //TODO dont know what to do with this :)
         return null;
     }
 
@@ -249,46 +296,69 @@ public class PrettyPrint implements Visitor
 
     @Override
     public Object Visit(LessOrEqualNode node) {
+        node.Left.Accept(this);
+        System.out.print("<=");
+        node.Right.Accept(this);
         return null;
     }
 
     @Override
     public Object Visit(LessThanNode node) {
+        node.Left.Accept(this);
+        System.out.print("<");
+        node.Right.Accept(this);
         return null;
     }
 
     @Override
     public Object Visit(LogicalAndNode node) {
+        node.Left.Accept(this);
+        System.out.print("&&");
+        node.Right.Accept(this);
         return null;
     }
 
     @Override
     public Object Visit(LogicalOrNode node) {
+        node.Left.Accept(this);
+        System.out.print("||");
+        node.Right.Accept(this);
         return null;
     }
 
     @Override
     public Object Visit(MonthNode node) {
+        System.out.print(node.Value);
         return null;
     }
 
     @Override
     public Object Visit(MultiplicationNode node) {
+        node.LeftChild.Accept(this);
+        System.out.print("*");
+        node.RightChild.Accept(this);
         return null;
     }
 
     @Override
     public Object Visit(NegateNode node) {
+
         return null;
     }
 
     @Override
     public Object Visit(NotEqualsNode node) {
+        node.Left.Accept(this);
+        System.out.print("!=");
+        node.Right.Accept(this);
         return null;
     }
 
     @Override
     public Object Visit(ParameterNode node) {
+        System.out.print(node.Type + " ");
+        node.Identifier.Accept(this);
+
         return null;
     }
 
@@ -345,7 +415,8 @@ public class PrettyPrint implements Visitor
 
     @Override
     public Object Visit(ReturnNode node) {
-
+        System.out.print("return ");
+        System.out.print(node.Value.toString());
 
         return null;
     }
@@ -471,5 +542,12 @@ public class PrettyPrint implements Visitor
     public Object Visit(HouseNode node)
     {
         return null;
+    }
+
+    public void Indent(int tabs)
+    {
+        for (int i = 0; i <= tabs; i++){
+            System.out.print("\t");
+        }
     }
 }

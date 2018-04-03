@@ -8,7 +8,8 @@ house
     }
 } // comments are working now
 
-function void bob1()
+function void bob1(string hey)
 {
     bob = house.bob.bob.bob.bob.bob.bob.bob
+
 }

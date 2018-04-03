@@ -79,7 +79,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         {
             return new FunctionNode()
             {{
-                ReturnType = ctx.returnType().toString();
+                ReturnType = ctx.returnType().getText();
                 Identifier = visitIdentifier(ctx.identifier());
                 Parameters = visitParameterList(ctx.parameters());
                 Body = visitStatementList(ctx.statement());
@@ -90,6 +90,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         {
             return new FunctionNode()
             {{
+                ReturnType = ctx.VOIDDEC().getText();
                 Identifier = visitIdentifier(ctx.identifier());
                 Parameters = visitParameterList(ctx.parameters());
                 Body = visitStatementList(ctx.statement());
@@ -126,7 +127,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
     public ParameterNode visitParameter(final ArduEasyParser.ParameterContext ctx) {
         return new ParameterNode()
         {{
-            Type = ctx.typeSpecifier().toString();
+            Type = ctx.typeSpecifier().getText();
             Identifier = visitIdentifier(ctx.identifier());
         }};
     }
@@ -262,7 +263,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
     {
         return new IdentifierNode()
         {{
-            Value = ctx.IDENTIFIER().toString();
+            Value = ctx.IDENTIFIER().getText();
         }};
     }
 
