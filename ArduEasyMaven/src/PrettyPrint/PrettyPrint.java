@@ -115,7 +115,7 @@ public class PrettyPrint implements Visitor
     @Override
     public Object Visit(ElseIfNode node) {
         System.out.println("else if (");
-        node.Predicate.Accept(this)
+        node.Predicate.Accept(this);
         System.out.println(")");
         System.out.println("{ ");
 
