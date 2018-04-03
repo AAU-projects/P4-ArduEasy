@@ -5,10 +5,10 @@ import visitor.Visitor;
 
 public class PrettyPrint implements Visitor
 {
-    private int tabsIndent = 0; // increase or decrease this int to tab indend the code
+    private int tabsIndent = 0; // increase or decrease this int to indend the code
     //tabindent should increase after {
     //tabindent should decrease before }
-    //use printIndent & printIndentln to print
+    //first printIndent and then system.out.print or printIndentln to print
 
     @Override
     public Object Visit(AdditiveNode node) {
