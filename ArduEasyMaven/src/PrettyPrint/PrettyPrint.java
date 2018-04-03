@@ -286,13 +286,15 @@ public class PrettyPrint implements Visitor
             Statement.Accept(this);
         }
 
+        tabsIndent--;
+        printIndentln("}");
+
         if (node.Alternative != null) // only accept if there is another else or else if node
         {
             node.Alternative.Accept(this);
         }
 
-        tabsIndent--;
-        printIndentln("}");
+
 
         return null;
     }
@@ -363,7 +365,7 @@ public class PrettyPrint implements Visitor
 
     @Override
     public Object Visit(NegateNode node) {
-        //TODO
+        System.out.print("!" + node.child.toString());
         return null;
     }
 
