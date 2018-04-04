@@ -3,9 +3,11 @@ package PrettyPrint;
 import AST.Nodes.*;
 import visitor.Visitor;
 
+import java.util.List;
+
 public class PrettyPrint implements Visitor
 {
-    private int tabsIndent = 0; // increase or decrease this int to indend the code
+    private int tabsIndent = 0; // increase or decrease this int to indent the code
     //tabindent should increase after {
     //tabindent should decrease before }
     //first printIndent and then system.out.print or printIndentln to print
@@ -20,40 +22,55 @@ public class PrettyPrint implements Visitor
 
     @Override
     public Object Visit(AnalogPinNode node) {
-        System.out.print(" A ");
+        System.out.print("A ");
         System.out.print(node.Value);
         return null;
     }
 
     @Override
     public Object Visit(ArrayDeclarationNode node) {
-        printIndentln("ArrayDeclaration {"); // TODO
-        tabsIndent++;
-
+        printIndent("");
         node.Identifier.Accept(this);
+        System.out.print(" = {");
 
-        for (IdentifierNode identifier : node.Values )
+        List<IdentifierNode> arrayValues = node.Values;
+        arrayValues.remove(0);
+
+        int valuesCounter = 0;
+        for (IdentifierNode value : arrayValues)
         {
-            System.out.println();
-            identifier.Accept(this);
+            if (valuesCounter++ != arrayValues.size() - 1)
+            {
+                value.Accept(this);
+                System.out.print(", " );
+            }
+            else
+            {
+                value.Accept(this);
+            }
         }
-        tabsIndent--;
-        printIndent("}");
+        System.out.print("}");
+
 
         return null;
     }
 
     @Override
-    public Object Visit(AssignmentNode node) {
-        printIndentln("Assigment {");
-        tabsIndent++;
+    public Object Visit(AssignmentNode node, boolean indent) {
+        if (indent)
+        {
+            printIndent("");
+        }
 
         node.Identifier.Accept(this);
         System.out.print(" = ");
         node.Value.Accept(this); //TODO prints dot notations?
 
-        tabsIndent--;
-        printIndentln("}");
+        if (indent)
+        {
+            System.out.println();
+        }
+
         return null;
     }
 
@@ -86,20 +103,21 @@ public class PrettyPrint implements Visitor
     }
 
     @Override
-    public Object Visit(DeclarationNode node) {
-        printIndentln("Declaration {");
-        tabsIndent++;
+    public Object Visit(DeclarationNode node, boolean indent) {
+        if (indent)
+        {
+            printIndent("");
+        }
 
-        printIndent(node.Type + " ");
+        System.out.print(node.Type + " ");
         node.Identifier.Accept(this);
         System.out.print(" = ");
         node.Value.Accept(this);
 
-        System.out.print("\n");
-
-        tabsIndent--;
-        printIndentln("}");
-
+        if (indent)
+        {
+            System.out.println();
+        }
         return null;
     }
 
@@ -171,13 +189,15 @@ public class PrettyPrint implements Visitor
 
     @Override
     public Object Visit(ForNodeAssign node) {
-        printIndent("For (");
+        printIndent("for (");
+        node.Var.indentPrettyPrint = false;
         node.Var.Accept(this);
         System.out.print("; ");
         node.Predicate.Accept(this);
         System.out.print("; ");
+        node.Increment.indentPrettyPrint = false;
         node.Increment.Accept(this);
-        printIndentln(")");
+        System.out.println(")");
         printIndentln("{");
         tabsIndent++;
 
@@ -194,18 +214,24 @@ public class PrettyPrint implements Visitor
 
     @Override
     public Object Visit(ForNodeDecl node) {
-        printIndent("For (");
+        printIndent("for (");
+        node.Var.indentPrettyPrint = false;
         node.Var.Accept(this);
         System.out.print("; ");
         node.Predicate.Accept(this);
         System.out.print("; ");
+        node.Increment.indentPrettyPrint = false;
         node.Increment.Accept(this);
-        printIndentln(")");
+        System.out.println(")");
         printIndentln("{");
+        tabsIndent++;
+
         for (StatementsNode Statement : node.body )
         {
             Statement.Accept(this);
         }
+
+        tabsIndent--;
         printIndentln("} ");
 
         return null;
@@ -243,6 +269,7 @@ public class PrettyPrint implements Visitor
         if (node.Return != null) // return can be null if function is void
         {
             node.Return.Accept(this);
+            System.out.println();
         }
 
         tabsIndent--;
@@ -394,9 +421,9 @@ public class PrettyPrint implements Visitor
 
     @Override
     public Object Visit(PerformTimes node) {
-        printIndent("Perform (");
+        printIndent("Perform ");
         node.value.Accept(this);
-        System.out.print(") times");
+        System.out.println(" times");
         printIndentln("{");
         tabsIndent++;
 
@@ -414,7 +441,8 @@ public class PrettyPrint implements Visitor
     public Object Visit(PerformUntil node) {
         printIndent("Perform until (");
         node.Predicate.Accept(this);
-        printIndentln(") {");
+        System.out.println(")");
+        printIndentln("{");
         tabsIndent++;
 
         for (StatementsNode stmt : node.Body)
@@ -430,15 +458,12 @@ public class PrettyPrint implements Visitor
 
     @Override
     public Object Visit(PinDeclarationNode node) {
-        printIndentln("PinDeclartion {");
-        tabsIndent++;
-
+        printIndent("");
         node.Identifier.Accept(this);
+        System.out.print(" = PIN ");
         node.Pin.Accept(this);
+        System.out.print(" as ");
         node.IoStatus.Accept(this);
-
-        tabsIndent--;
-        printIndentln("}");
 
         return null;
     }
@@ -447,16 +472,15 @@ public class PrettyPrint implements Visitor
     public Object Visit(ReturnNode node) {
         printIndent("return ");
         System.out.print(node.Value.toString());
-
         return null;
     }
 
     @Override
     public Object Visit(RoomDeclaration node) {
-        printIndentln("RoomDeclaration {");
+        printIndent("room ");
+        System.out.println(node.Identifier);
+        printIndent("{");
         tabsIndent++;
-
-        node.Identifier.Accept(this);
 
         for (RoomBlockNode RoomBlock : node.body )
         {
@@ -465,6 +489,7 @@ public class PrettyPrint implements Visitor
         }
 
         tabsIndent--;
+        System.out.println();
         printIndentln("}");
 
         return null;
@@ -472,8 +497,6 @@ public class PrettyPrint implements Visitor
 
     @Override
     public Object Visit(RootNode node) {
-        printIndentln("Root {");
-        tabsIndent++;
         node.Setup.Accept(this);
 
         for (FunctionsNode function : node.Functions )
@@ -482,14 +505,13 @@ public class PrettyPrint implements Visitor
             function.Accept(this);
         }
 
-        tabsIndent--;
-        printIndentln("}");
         return null;
     }
 
     @Override
     public Object Visit(SetupNode node) {
-        printIndentln("Setup {");
+        printIndentln("Setup ");
+        printIndent("{");
         tabsIndent++;
         for (DefinitionNode definition : node.Childs )
         {
@@ -545,7 +567,8 @@ public class PrettyPrint implements Visitor
     public Object Visit(WhenNode node) {
         printIndent("When (");
         node.Predicate.Accept(this);
-        printIndentln(") {");
+        printIndentln(")");
+        printIndentln("{");
         tabsIndent++;
 
         for (StatementsNode stmt : node.Body)
@@ -563,7 +586,8 @@ public class PrettyPrint implements Visitor
     public Object Visit(WhileNode node) {
         printIndent("While (");
         node.Predicate.Accept(this);
-        printIndentln(") {");
+        System.out.println(")");
+        printIndentln("{");
         tabsIndent++;
 
         for (StatementsNode stmt : node.Body)
@@ -580,6 +604,31 @@ public class PrettyPrint implements Visitor
     @Override
     public Object Visit(HouseNode node)
     {
+        System.out.print(node.Identifiers);
+        return null;
+    }
+
+    @Override
+    public Object Visit(MethodCallNode node) {
+        System.out.print(node.identifier);
+        System.out.print("(");
+
+        int exprCounter = 0;
+        for (ExpressionNode expr : node.expressions)
+        {
+            if (exprCounter++ != node.expressions.size() - 1)
+            {
+                expr.Accept(this);
+                System.out.print(", " );
+            }
+            else
+            {
+                expr.Accept(this);
+            }
+        }
+
+        System.out.print(")");
+
         return null;
     }
 

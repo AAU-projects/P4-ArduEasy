@@ -5,7 +5,7 @@ house
 		//Light3 = PIN 3 as input
 }
 
-function void IfTest1 ()
+function void IfTest1 (string bob, int you)
 {
     if(5>2)
     {

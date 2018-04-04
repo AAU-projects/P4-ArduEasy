@@ -189,7 +189,26 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         {{
             Type = ctx.typeSpecifier().getText();
             Identifier = visitIdentifier(ctx.identifier());
-            Value = visitLogicalExpressions(ctx.logicalExpressions());
+
+            if (ctx.logicalExpressions() != null)
+            {
+                Value = visitLogicalExpressions(ctx.logicalExpressions());
+            }
+            else if (ctx.methodCall() != null)
+            {
+                Value = visitMethodCall(ctx.methodCall());
+            }
+
+        }};
+
+    }
+
+    @Override
+    public ExpressionNode visitMethodCall(final ArduEasyParser.MethodCallContext ctx) {
+        return new MethodCallNode()
+        {{
+            identifier = visitIdentifier(ctx.identifier());
+            expressions = visitExpressionList(ctx.expression());
         }};
     }
 
@@ -198,7 +217,14 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
     {
         return new AssignmentNode()
         {{
-           Identifier = visitIdentifier(ctx.identifier());
+            if (ctx.identifier() != null)
+            {
+                Identifier = visitIdentifier(ctx.identifier());
+            }
+            else if (ctx.houseaccess() != null)
+            {
+                Identifier = visitHouseaccess(ctx.houseaccess());
+            }
            Value = visitLogicalExpressions(ctx.logicalExpressions());
         }};
     }
@@ -272,20 +298,16 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
     {
         return new HouseNode()
         {{
-            Identifiers = SplitDotNotation(ctx.DOT_NOTATION().toString());
+            Identifiers = SplitDotNotation(ctx.DOT_NOTATION().getText());
         }};
     }
 
-    private List<IdentifierNode> SplitDotNotation(String notation)
+    private IdentifierNode SplitDotNotation(final String notation)
     {
-        List<IdentifierNode> nodes = new ArrayList<IdentifierNode>();
-
-        for (final String identifier : notation.split(".") )
-        {
-            nodes.add(new IdentifierNode(){{Value = identifier;}});
-        }
-
-        return nodes;
+        return new IdentifierNode()
+        {{
+            Value = notation;
+        }};
     }
 
     @Override
@@ -298,7 +320,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
     @Override
     public IoStatusNode visitIoStatus(final ArduEasyParser.IoStatusContext ctx)
     {
-        return new IoStatusNode(){{ Value = ctx.toString(); }};
+        return new IoStatusNode(){{ Value = ctx.getText(); }};
     }
 
     @Override
@@ -509,6 +531,21 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         return nodeList;
     }
 
+    private ArrayList<ExpressionNode> visitExpressionList(List<ArduEasyParser.ExpressionContext> context)
+    {
+        ArrayList<ExpressionNode> nodeList = new ArrayList<ExpressionNode>();
+
+        for (ArduEasyParser.ExpressionContext expression: context)
+        {
+            if (expression != null)
+            {
+                nodeList.add(visitExpression(expression));
+            }
+        }
+
+        return nodeList;
+    }
+
     @Override
     public ExpressionNode visitLogicalExpressions(final ArduEasyParser.LogicalExpressionsContext ctx)
     {
@@ -647,10 +684,10 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         {
             if (ctx.SUBTRACTIVEOPERATOR() != null)
             {
-                return new FloatNode(){{ Value = -Float.parseFloat(ctx.INT().getText());}};
+                return new FloatNode(){{ Value = -Float.parseFloat(ctx.FLOAT().getText());}};
             }
 
-            return new FloatNode(){{ Value = Float.parseFloat(ctx.INT().getText());}};
+            return new FloatNode(){{ Value = Float.parseFloat(ctx.FLOAT().getText());}};
         }
         else if (ctx.PERCENTAGE() != null)
         {

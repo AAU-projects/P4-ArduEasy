@@ -20,8 +20,11 @@ definition          : pindeclaration
 houseaccess         : DOT_NOTATION
                     ;
 
-declaration         : typeSpecifier identifier ASSIGNMENTOPERATOR logicalExpressions
+declaration         : typeSpecifier identifier ASSIGNMENTOPERATOR (logicalExpressions | methodCall)
 					;
+
+methodCall          : identifier LPAREN (expression(','expression)*)? RPAREN
+                    ;
 
 roomdeclaration     : ROOMDEC identifier LBRACK roomblock RBRACK
                     ;
@@ -110,7 +113,7 @@ multiDivExpression  : expression MULTIPLICATIVEOPERATOR multiDivExpression
                     | expression
                  	;
 
-assignment          : identifier ASSIGNMENTOPERATOR logicalExpressions
+assignment          : (identifier | houseaccess) ASSIGNMENTOPERATOR logicalExpressions
 					;
 
 value               : INT

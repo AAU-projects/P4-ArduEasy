@@ -7,11 +7,11 @@ public interface Visitor
     Object Visit(AdditiveNode node);
     Object Visit(AnalogPinNode node);
     Object Visit(ArrayDeclarationNode node);
-    Object Visit(AssignmentNode node);
+    Object Visit(AssignmentNode node, boolean indent);
     Object Visit(BoolNode node);
     Object Visit(CaseNode node);
     Object Visit(DayNode node);
-    Object Visit(DeclarationNode node);
+    Object Visit(DeclarationNode node, boolean indent);
     Object Visit(DigitalPinNode node);
     Object Visit(DivisionNode node);
     Object Visit(ElseIfNode node);
@@ -52,4 +52,5 @@ public interface Visitor
     Object Visit(WhenNode node);
     Object Visit(WhileNode node);
     Object Visit(HouseNode node);
+    Object Visit(MethodCallNode node);
 }

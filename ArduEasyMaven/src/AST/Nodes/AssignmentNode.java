@@ -6,6 +6,7 @@ public class AssignmentNode extends DefinitionNode
 {
     public IdentifierNode Identifier;
     public ExpressionNode Value;
+    public boolean indentPrettyPrint = true;
 
     @Override
     public String toString()
@@ -15,6 +16,6 @@ public class AssignmentNode extends DefinitionNode
 
     @Override
     public Object Accept(Visitor visitor) {
-        return visitor.Visit(this);
+        return visitor.Visit(this, indentPrettyPrint);
     }
 }

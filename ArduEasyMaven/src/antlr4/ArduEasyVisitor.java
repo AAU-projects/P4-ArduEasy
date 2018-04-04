@@ -47,6 +47,12 @@ public interface ArduEasyVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitDeclaration(ArduEasyParser.DeclarationContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link ArduEasyParser#methodCall}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMethodCall(ArduEasyParser.MethodCallContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link ArduEasyParser#roomdeclaration}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
