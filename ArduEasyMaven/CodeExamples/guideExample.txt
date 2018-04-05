@@ -47,11 +47,58 @@ when (Time is 07:00)
 when (Time is 18:00)
 {
     house.Bedroom.Blinds = false //This will close the blinds at 18.
+
+    switch (val)
+        {
+            case 1:
+            {
+                int bob = 88
+            }
+            case 2:
+            {
+                if (true)
+                {
+                }
+            }
+            case 5:
+            {
+                bob = bob + val
+            }
+            default:
+            {
+                val = val + val
+            }
+        }
 }
 
 function float CelciusToFahrenheit(int temp)
 {
     float result = temp * 1.8 + 32
+    day weekday = MONDAY
+    month test = DECEMBER
+    percent anothertest = 35%
+
+
+    for (i=0;i<10;i=i + 1)
+        {
+
+        }
+        for(int j = 0;j<10;j=j+1)
+        {
+
+        }
+        perform 158 times
+        {
+
+        }
+        perform bob times
+        {
+
+        }
+        perform until (i > 15)
+        {
+
+        }
 
     return result
 }

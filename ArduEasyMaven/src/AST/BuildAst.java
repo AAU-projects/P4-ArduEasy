@@ -364,22 +364,24 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         {{
             expression = visitExpression(ctx.expression()); //TODO not totaly sure here
             Body = visitCaseList(ctx.cases());
-            defaultCase = visitDefaultCase(ctx.cases());
+            if (ctx.cases().statement().size() != 0) // for some reaon statements is not null so i check for size
+            {
+                defaultCase = visitDefaultCase(ctx.cases());
+            }
+            else
+            {
+                defaultCase = null;
+            }
         }};
     }
 
     private CaseNode visitDefaultCase(final ArduEasyParser.CasesContext ctx)
     {
-        if (ctx.statement() != null) // checks for a default case
-        {
-            return new CaseNode()
-            {{
-                Value = ctx.DEFAULT().toString();
-                Body = visitStatementList(ctx.statement());
-            }};
-        }
-        System.out.println("visitDefaultCase");
-        return null;
+        return new CaseNode()
+        {{
+            Value = ctx.DEFAULT().getText();
+            Body = visitStatementList(ctx.statement());
+        }};
     }
 
     private ArrayList<CaseNode> visitCaseList(final ArduEasyParser.CasesContext ctx) {
@@ -400,7 +402,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
     public CaseNode visitCase_r(final ArduEasyParser.Case_rContext ctx) {
         return new CaseNode()
         {{
-            Value = ctx.value().toString();
+            Value = ctx.value().getText();
             Body = visitStatementList(ctx.statement());
         }};
     }

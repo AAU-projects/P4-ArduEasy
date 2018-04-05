@@ -23,7 +23,7 @@ function void SwitchTest()
             val = val + val
         }
     }
-    
+
     switch (8)
     {
         case 8:
