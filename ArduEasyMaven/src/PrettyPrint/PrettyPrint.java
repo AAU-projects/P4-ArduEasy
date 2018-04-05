@@ -51,13 +51,12 @@ public class PrettyPrint implements Visitor
         }
         System.out.print("}");
 
-
         return null;
     }
 
     @Override
-    public Object Visit(AssignmentNode node, boolean indent) {
-        if (indent)
+    public Object Visit(AssignmentNode node) {
+        if (node.indentPrettyPrint)
         {
             printIndent("");
         }
@@ -66,7 +65,7 @@ public class PrettyPrint implements Visitor
         System.out.print(" = ");
         node.Value.Accept(this);
 
-        if (indent)
+        if (node.indentPrettyPrint)
         {
             System.out.println();
         }
@@ -114,8 +113,8 @@ public class PrettyPrint implements Visitor
     }
 
     @Override
-    public Object Visit(DeclarationNode node, boolean indent) {
-        if (indent)
+    public Object Visit(DeclarationNode node) {
+        if (node.indentPrettyPrint)
         {
             printIndent("");
         }
@@ -125,7 +124,7 @@ public class PrettyPrint implements Visitor
         System.out.print(" = ");
         node.Value.Accept(this);
 
-        if (indent)
+        if (node.indentPrettyPrint)
         {
             System.out.println();
         }

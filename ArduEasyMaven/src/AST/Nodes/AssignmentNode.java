@@ -16,6 +16,6 @@ public class AssignmentNode extends DefinitionNode
 
     @Override
     public Object Accept(Visitor visitor) {
-        return visitor.Visit(this, indentPrettyPrint);
+        return visitor.Visit(this);
     }
 }
