@@ -7,7 +7,6 @@ public class DeclarationNode extends DefinitionNode
     public String Type;
     public IdentifierNode Identifier;
     public ExpressionNode Value;
-    public boolean indentPrettyPrint = true;
 
     @Override
     public String toString()

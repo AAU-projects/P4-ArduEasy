@@ -18,8 +18,7 @@ public interface Visitor
     Object Visit(ElseNode node);
     Object Visit(EqualsNode node);
     Object Visit(FloatNode node);
-    Object Visit(ForNodeAssign node);
-    Object Visit(ForNodeDecl node);
+    Object Visit(ForNode node);
     Object Visit(FunctionNode node);
     Object Visit(GreaterOrEqualNode node);
     Object Visit(GreaterThanNode node);

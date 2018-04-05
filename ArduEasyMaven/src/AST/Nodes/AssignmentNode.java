@@ -6,7 +6,6 @@ public class AssignmentNode extends DefinitionNode
 {
     public IdentifierNode Identifier;
     public ExpressionNode Value;
-    public boolean indentPrettyPrint = true;
 
     @Override
     public String toString()

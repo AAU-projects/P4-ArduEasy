@@ -76,12 +76,7 @@ public class TypeChecker implements Visitor {
     }
 
     @Override
-    public Object Visit(ForNodeAssign node) {
-        return null;
-    }
-
-    @Override
-    public Object Visit(ForNodeDecl node) {
+    public Object Visit(ForNode node) {
         return null;
     }
 

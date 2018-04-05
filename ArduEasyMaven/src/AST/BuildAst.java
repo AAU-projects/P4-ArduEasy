@@ -452,7 +452,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
     public ForNode visitFor_r(final ArduEasyParser.For_rContext ctx) {
         if (ctx.declaration() != null)
         {
-            return new ForNodeDecl()
+            return new ForNode()
             {{
                 Var = visitDeclaration(ctx.declaration());
                 Predicate = visitLogicalExpressions(ctx.logicalExpressions());
@@ -463,7 +463,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         }
         else
         {
-            return new ForNodeAssign()
+            return new ForNode()
             {{
                 Var = visitAssignment(ctx.assignment(0));
                 Predicate = visitLogicalExpressions(ctx.logicalExpressions());

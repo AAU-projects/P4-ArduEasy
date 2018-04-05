@@ -54,9 +54,10 @@ public class PrettyPrint implements Visitor
         return null;
     }
 
+    private boolean indentPrettyPrintAssigment = true;
     @Override
     public Object Visit(AssignmentNode node) {
-        if (node.indentPrettyPrint)
+        if (indentPrettyPrintAssigment)
         {
             printIndent("");
         }
@@ -65,9 +66,13 @@ public class PrettyPrint implements Visitor
         System.out.print(" = ");
         node.Value.Accept(this);
 
-        if (node.indentPrettyPrint)
+        if (indentPrettyPrintAssigment)
         {
             System.out.println();
+        }
+        else
+        {
+            indentPrettyPrintAssigment = true;
         }
 
         return null;
@@ -112,9 +117,10 @@ public class PrettyPrint implements Visitor
         return null;
     }
 
+    private boolean indentPrettyPrintDeclaration = true;
     @Override
     public Object Visit(DeclarationNode node) {
-        if (node.indentPrettyPrint)
+        if (indentPrettyPrintDeclaration)
         {
             printIndent("");
         }
@@ -124,10 +130,15 @@ public class PrettyPrint implements Visitor
         System.out.print(" = ");
         node.Value.Accept(this);
 
-        if (node.indentPrettyPrint)
+        if (indentPrettyPrintDeclaration)
         {
             System.out.println();
         }
+        else
+        {
+            indentPrettyPrintAssigment = true;
+        }
+
         return null;
     }
 
@@ -198,14 +209,16 @@ public class PrettyPrint implements Visitor
     }
 
     @Override
-    public Object Visit(ForNodeAssign node) {
+    public Object Visit(ForNode node) {
         printIndent("for (");
-        node.Var.indentPrettyPrint = false;
+        indentPrettyPrintAssigment = false;
+        indentPrettyPrintDeclaration = false;
         node.Var.Accept(this);
         System.out.print("; ");
         node.Predicate.Accept(this);
         System.out.print("; ");
-        node.Increment.indentPrettyPrint = false;
+        indentPrettyPrintAssigment = false;
+        indentPrettyPrintDeclaration = false;
         node.Increment.Accept(this);
         System.out.println(")");
         printIndentln("{");
@@ -218,31 +231,6 @@ public class PrettyPrint implements Visitor
 
         tabsIndent--;
         printIndentln("}");
-
-        return null;
-    }
-
-    @Override
-    public Object Visit(ForNodeDecl node) {
-        printIndent("for (");
-        node.Var.indentPrettyPrint = false;
-        node.Var.Accept(this);
-        System.out.print("; ");
-        node.Predicate.Accept(this);
-        System.out.print("; ");
-        node.Increment.indentPrettyPrint = false;
-        node.Increment.Accept(this);
-        System.out.println(")");
-        printIndentln("{");
-        tabsIndent++;
-
-        for (StatementsNode Statement : node.body )
-        {
-            Statement.Accept(this);
-        }
-
-        tabsIndent--;
-        printIndentln("} ");
 
         return null;
     }
