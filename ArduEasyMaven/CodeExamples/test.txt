@@ -1,4 +1,15 @@
+// Hej med dig
+
 house
 {
-    int light1 = 2
+    room Kitchen
+    {
+        bob = {bob,bob,bob}
+    }
+} // comments are working now
+
+function void bob1(string hey)
+{
+    bob = house.bob.bob.bob.bob.bob.bob.bob
+
 }
