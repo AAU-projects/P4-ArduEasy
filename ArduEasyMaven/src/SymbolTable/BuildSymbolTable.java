@@ -1,7 +1,10 @@
 package SymbolTable;
 
 import AST.Nodes.*;
+import jdk.vm.ci.meta.Value;
 import visitor.Visitor;
+
+import java.util.ArrayList;
 
 public class BuildSymbolTable implements Visitor
 {
@@ -25,6 +28,24 @@ public class BuildSymbolTable implements Visitor
     @Override
     public Object Visit(ArrayDeclarationNode node)
     {
+        final String identifier = (String)node.Identifier.Accept(this);
+        final String type = "array";
+        final ArrayList<String> values = new ArrayList<String>();
+
+        for (IdentifierNode childNode : node.Values)
+        {
+            values.add(childNode.toString());
+        }
+
+        Variable var = new Variable()
+        {{
+            Identifier = identifier;
+            Type = type;
+            Values = values;
+        }};
+
+        symbolTable.SymbolTables.get(symbolTable.SymbolTables.size() - 1).Insert(identifier, var);
+        symbolTable.Insert(identifier, var);
         return null;
     }
 
@@ -59,19 +80,17 @@ public class BuildSymbolTable implements Visitor
     {
         final String identifier = (String)node.Identifier.Accept(this);
         final String value = (String)node.Value.Accept(this);
+        final String type = node.Type;
 
         Variable var = new Variable()
         {{
             Identifier = identifier;
-            Value = value;
+            Values.add(value);
+            Type = type;
         }};
 
         symbolTable.SymbolTables.get(symbolTable.SymbolTables.size() - 1).Insert(identifier, var);
-        return null;
-    }
-
-    public Object Visit(DeclarationNode node, String scope)
-    {
+        symbolTable.Insert(identifier, var);
         return null;
     }
 
@@ -252,6 +271,20 @@ public class BuildSymbolTable implements Visitor
     @Override
     public Object Visit(PinDeclarationNode node)
     {
+        final String identifier = (String)node.Identifier.Accept(this);
+        final String value = (String)node.Pin.Accept(this);
+        final String type = (String)node.IoStatus.Accept(this);
+
+        Variable var = new Variable()
+        {{
+            Identifier = identifier;
+            Values.add(value);
+            Type = type;
+        }};
+
+        symbolTable.SymbolTables.get(symbolTable.SymbolTables.size() - 1).Insert(identifier, var);
+        symbolTable.Insert(identifier, var);
+
         return null;
     }
 
@@ -264,6 +297,25 @@ public class BuildSymbolTable implements Visitor
     @Override
     public Object Visit(RoomDeclaration node)
     {
+        final String identifier = (String)node.Identifier.Accept(this);
+        final String type = "room";
+
+        Variable var = new Variable()
+        {{
+            Identifier = identifier;
+            Type = type;
+        }};
+
+        symbolTable.SymbolTables.get(symbolTable.SymbolTables.size() - 1).Insert(identifier, var);
+        symbolTable.Insert(identifier, var);
+        symbolTable.CreateScope();
+
+        for (RoomBlockNode childNode : node.body)
+        {
+            childNode.Accept(this);
+        }
+
+
         return null;
     }
 

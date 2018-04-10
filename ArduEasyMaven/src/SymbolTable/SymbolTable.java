@@ -37,14 +37,14 @@ public class SymbolTable
         return false;
     }
 
-    public void Update(String key, String value)
+    public void Update(String key, ArrayList<String> values)
     {
         if(!LookUp(key))
         {
             System.out.println("Compile Error: Tried to edit value of non-existing variable: " + key);
         }
 
-        Variables.get(key).Value = value;
+        Variables.get(key).Values = values;
     }
 
     public String GetTypeofVariable(String key)
