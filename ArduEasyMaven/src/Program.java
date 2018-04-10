@@ -3,6 +3,8 @@ import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import java.io.IOException;
+import java.util.Arrays;
+
 import AST.*;
 import antlr4.*;
 import AST.Nodes.*;
@@ -26,8 +28,12 @@ public class Program
 
             root = (RootNode) new BuildAst().visitR(programContext);
 
-            PrettyPrint printer = new PrettyPrint();
-            printer.Visit(root);
+            if (Arrays.asList(args).contains("-P"))
+            {
+                PrettyPrint printer = new PrettyPrint();
+                printer.Visit(root);
+            }
+
 
         } catch (Exception e)
         {
