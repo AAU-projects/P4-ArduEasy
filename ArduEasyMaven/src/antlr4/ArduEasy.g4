@@ -94,12 +94,12 @@ logicalExpressions  : logicalExpressions logicalOperator logicalExpressions
 
 logicalExpression   : addSubExpression comparisonOperator addSubExpression
                     | addSubExpression
-                 	| NEGATEOPERATOR (identifier | houseaccess)
                  	;
 
 expression          : identifier
                     | houseaccess
                     | SUBTRACTIVEOPERATOR identifier
+                 	| NEGATEOPERATOR (identifier | houseaccess)
  					| value
  					;
 

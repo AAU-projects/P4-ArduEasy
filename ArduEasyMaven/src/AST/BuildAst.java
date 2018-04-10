@@ -632,18 +632,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         {
             return visitAddSubExpression(ctx.addSubExpression(0));
         }
-
-        return new NegateNode()
-        {{
-            if (ctx.houseaccess() != null)
-            {
-                child = visitHouseaccess(ctx.houseaccess());
-            }
-            else
-            {
-                child = visitIdentifier(ctx.identifier());
-            }
-        }};
+        return null;
     }
 
     @Override
@@ -663,6 +652,20 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         else if (ctx.value() != null)
         {
             return determinateValue(ctx.value());
+        }
+        else if (ctx.NEGATEOPERATOR() != null)
+        {
+            return new NegateNode()
+            {{
+                if (ctx.houseaccess() != null)
+                {
+                    child = visitHouseaccess(ctx.houseaccess());
+                }
+                else
+                {
+                    child = visitIdentifier(ctx.identifier());
+                }
+            }};
         }
 
         System.out.println("visitExpression | " + ctx.getText() + " " + ctx.start);
