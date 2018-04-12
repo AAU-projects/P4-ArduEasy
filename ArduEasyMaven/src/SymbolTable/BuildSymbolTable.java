@@ -52,27 +52,38 @@ public class BuildSymbolTable implements Visitor
     @Override
     public Object Visit(AssignmentNode node)
     {
-        node.Identifier.Accept(this);
-        node.Value.Accept(this);
+        final String identifier = (String)node.Identifier.Accept(this);
+        final ArrayList<String> values = new ArrayList<String>();
+        final String value = (String)node.Value.Accept(this);
+
+        values.add(value);
+        symbolTable.Update(identifier, values);
         return null;
     }
 
     @Override
     public Object Visit(BoolNode node)
     {
-        return null;
+        return node.toString();
     }
 
     @Override
     public Object Visit(CaseNode node)
     {
+        symbolTable.CreateScope();
+
+        for (StatementsNode childNode : node.Body)
+        {
+            childNode.Accept(this);
+        }
+
         return null;
     }
 
     @Override
     public Object Visit(DayNode node)
     {
-        return null;
+        return node.toString();
     }
 
     @Override
@@ -97,42 +108,69 @@ public class BuildSymbolTable implements Visitor
     @Override
     public Object Visit(DigitalPinNode node)
     {
-        return null;
+        return String.valueOf(node.Value);
     }
 
     @Override
     public Object Visit(DivisionNode node)
     {
-        return null;
+        String left = (String)node.LeftChild.Accept(this);
+        String right = (String)node.RightChild.Accept(this);
+
+        return left + " / " + right;
     }
 
     @Override
     public Object Visit(ElseIfNode node)
     {
+        node.Predicate.Accept(this);
+
+        for (StatementsNode childNode : node.Body)
+        {
+            childNode.Accept(this);
+        }
+        node.Alternative.Accept(this);
+
         return null;
     }
 
     @Override
     public Object Visit(ElseNode node)
     {
+        for (StatementsNode childNode : node.Body)
+        {
+            childNode.Accept(this);
+        }
+
         return null;
     }
 
     @Override
     public Object Visit(EqualsNode node)
     {
+        node.Left.Accept(this);
+        node.Right.Accept(this);
+
         return null;
     }
 
     @Override
     public Object Visit(FloatNode node)
     {
-        return null;
+        return node.toString();
     }
 
     @Override
     public Object Visit(ForNode node)
     {
+        node.Predicate.Accept(this);
+        node.Increment.Accept(this);
+        node.Var.Accept(this);
+        for (StatementsNode childNode : node.body)
+        {
+            childNode.Accept(this);
+        }
+
         return null;
     }
 
@@ -157,12 +195,18 @@ public class BuildSymbolTable implements Visitor
     @Override
     public Object Visit(GreaterOrEqualNode node)
     {
+        node.Left.Accept(this);
+        node.Right.Accept(this);
+
         return null;
     }
 
     @Override
     public Object Visit(GreaterThanNode node)
     {
+        node.Left.Accept(this);
+        node.Right.Accept(this);
+
         return null;
     }
 
@@ -175,6 +219,13 @@ public class BuildSymbolTable implements Visitor
     @Override
     public Object Visit(IfNode node)
     {
+        node.Predicate.Accept(this);
+        node.Alternative.Accept(this);
+        for (StatementsNode childNode : node.Body)
+        {
+            childNode.Accept(this);
+        }
+
         return null;
     }
 
@@ -187,60 +238,80 @@ public class BuildSymbolTable implements Visitor
     @Override
     public Object Visit(IntNode node)
     {
-        return null;
+        return node.toString();
     }
 
     @Override
     public Object Visit(IoStatusNode node)
     {
-        return null;
+        return String.valueOf(node.Value);
     }
 
     @Override
     public Object Visit(LessOrEqualNode node)
     {
+        node.Left.Accept(this);
+        node.Right.Accept(this);
+
         return null;
     }
 
     @Override
     public Object Visit(LessThanNode node)
     {
+        node.Left.Accept(this);
+        node.Right.Accept(this);
+
         return null;
     }
 
     @Override
     public Object Visit(LogicalAndNode node)
     {
+        node.Left.Accept(this);
+        node.Right.Accept(this);
+
         return null;
     }
 
     @Override
     public Object Visit(LogicalOrNode node)
     {
+        node.Left.Accept(this);
+        node.Right.Accept(this);
+
         return null;
     }
 
     @Override
     public Object Visit(MonthNode node)
     {
-        return null;
+        return node.toString();
     }
 
     @Override
     public Object Visit(MultiplicationNode node)
     {
-        return null;
+        String left = (String)node.LeftChild.Accept(this);
+        String right = (String)node.RightChild.Accept(this);
+
+        return left + " * " + right;
     }
 
     @Override
     public Object Visit(NegateNode node)
     {
+        node.child.Accept(this);
+
         return null;
     }
 
     @Override
     public Object Visit(NotEqualsNode node)
     {
+        node.Left.Accept(this);
+        node.Right.Accept(this);
+
         return null;
     }
 
