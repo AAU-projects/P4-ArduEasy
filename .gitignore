@@ -2,6 +2,7 @@ ArduEasyParser*
 ArduEasyBase*
 ArduEasyLexer*
 ArduEasyListener*
+ArduEasyVisitor*
 ArduEasy.interp
 ArduEasy.tokens
 ArduEasyMaven/.idea*
