@@ -1,7 +1,6 @@
 package SymbolTable;
 
 import AST.Nodes.*;
-import jdk.vm.ci.meta.Value;
 import visitor.Visitor;
 
 import java.util.ArrayList;
@@ -22,7 +21,7 @@ public class BuildSymbolTable implements Visitor
     @Override
     public Object Visit(AnalogPinNode node)
     {
-        return null;
+        return "A " + node.Value;
     }
 
     @Override
@@ -44,7 +43,6 @@ public class BuildSymbolTable implements Visitor
             Values = values;
         }};
 
-        symbolTable.SymbolTables.get(symbolTable.SymbolTables.size() - 1).Insert(identifier, var);
         symbolTable.Insert(identifier, var);
         return null;
     }
@@ -77,6 +75,7 @@ public class BuildSymbolTable implements Visitor
             childNode.Accept(this);
         }
 
+        symbolTable.CloseScope();
         return null;
     }
 
@@ -100,7 +99,6 @@ public class BuildSymbolTable implements Visitor
             Type = type;
         }};
 
-        symbolTable.SymbolTables.get(symbolTable.SymbolTables.size() - 1).Insert(identifier, var);
         symbolTable.Insert(identifier, var);
         return null;
     }
@@ -125,11 +123,15 @@ public class BuildSymbolTable implements Visitor
     {
         node.Predicate.Accept(this);
 
+        symbolTable.CreateScope();
+
         for (StatementsNode childNode : node.Body)
         {
             childNode.Accept(this);
         }
         node.Alternative.Accept(this);
+
+        symbolTable.CloseScope();
 
         return null;
     }
@@ -137,10 +139,14 @@ public class BuildSymbolTable implements Visitor
     @Override
     public Object Visit(ElseNode node)
     {
+        symbolTable.CreateScope();
+
         for (StatementsNode childNode : node.Body)
         {
             childNode.Accept(this);
         }
+
+        symbolTable.CloseScope();
 
         return null;
     }
@@ -163,6 +169,8 @@ public class BuildSymbolTable implements Visitor
     @Override
     public Object Visit(ForNode node)
     {
+        symbolTable.CreateScope();
+
         node.Predicate.Accept(this);
         node.Increment.Accept(this);
         node.Var.Accept(this);
@@ -170,6 +178,8 @@ public class BuildSymbolTable implements Visitor
         {
             childNode.Accept(this);
         }
+
+        symbolTable.CloseScope();
 
         return null;
     }
@@ -188,6 +198,8 @@ public class BuildSymbolTable implements Visitor
         {
             childNode.Accept(this);
         }
+
+        symbolTable.CloseScope();
 
         return null;
     }
@@ -219,12 +231,16 @@ public class BuildSymbolTable implements Visitor
     @Override
     public Object Visit(IfNode node)
     {
+        symbolTable.CreateScope();
+
         node.Predicate.Accept(this);
         node.Alternative.Accept(this);
         for (StatementsNode childNode : node.Body)
         {
             childNode.Accept(this);
         }
+
+        symbolTable.CloseScope();
 
         return null;
     }
@@ -318,24 +334,48 @@ public class BuildSymbolTable implements Visitor
     @Override
     public Object Visit(ParameterNode node)
     {
+        node.Identifier.Accept(this);
+
         return null;
     }
 
     @Override
     public Object Visit(PercentNode node)
     {
-        return null;
+        return node.toString();
     }
 
     @Override
     public Object Visit(PerformTimes node)
     {
+        symbolTable.CreateScope();
+
+        node.value.Accept(this);
+
+        for (StatementsNode statementsNode : node.Body)
+        {
+            statementsNode.Accept(this);
+        }
+
+        symbolTable.CloseScope();
+
         return null;
     }
 
     @Override
     public Object Visit(PerformUntil node)
     {
+        symbolTable.CreateScope();
+
+        node.Predicate.Accept(this);
+
+        for (StatementsNode statementsNode : node.Body)
+        {
+            statementsNode.Accept(this);
+        }
+
+        symbolTable.CloseScope();
+
         return null;
     }
 
@@ -353,7 +393,6 @@ public class BuildSymbolTable implements Visitor
             Type = type;
         }};
 
-        symbolTable.SymbolTables.get(symbolTable.SymbolTables.size() - 1).Insert(identifier, var);
         symbolTable.Insert(identifier, var);
 
         return null;
@@ -362,6 +401,8 @@ public class BuildSymbolTable implements Visitor
     @Override
     public Object Visit(ReturnNode node)
     {
+        node.Value.Accept(this);
+
         return null;
     }
 
@@ -377,7 +418,6 @@ public class BuildSymbolTable implements Visitor
             Type = type;
         }};
 
-        symbolTable.SymbolTables.get(symbolTable.SymbolTables.size() - 1).Insert(identifier, var);
         symbolTable.Insert(identifier, var);
         symbolTable.CreateScope();
 
@@ -386,6 +426,7 @@ public class BuildSymbolTable implements Visitor
             childNode.Accept(this);
         }
 
+        symbolTable.CloseScope();
 
         return null;
     }
@@ -406,60 +447,103 @@ public class BuildSymbolTable implements Visitor
     @Override
     public Object Visit(SetupNode node)
     {
-        symbolTable.CreateScope();
-
         for (DefinitionNode childNode: node.Childs)
         {
             childNode.Accept(this);
         }
+
         return null;
     }
 
     @Override
     public Object Visit(StringNode node)
     {
-        return null;
+        return node.toString();
     }
 
     @Override
     public Object Visit(SubtractiveNode node)
     {
-        return null;
+        String left = (String) node.LeftChild.Accept(this);
+        String right = (String) node.RightChild.Accept(this);
+
+        return left + " - " + right;
     }
 
     @Override
     public Object Visit(SwitchNode node)
     {
+        node.expression.Accept(this);
+
+        for (CaseNode caseNode : node.Body)
+        {
+            caseNode.Accept(this);
+        }
+
+        if(node.defaultCase != null)
+            node.defaultCase.Accept(this);
+
         return null;
     }
 
     @Override
     public Object Visit(TimeNode node)
     {
-        return null;
+        return node.toString();
     }
 
     @Override
     public Object Visit(WhenNode node)
     {
+        symbolTable.CreateScope();
+
+        node.Predicate.Accept(this);
+
+        for (StatementsNode statementsNode : node.Body)
+        {
+            statementsNode.Accept(this);
+        }
+
+        symbolTable.CloseScope();
+
         return null;
     }
 
     @Override
     public Object Visit(WhileNode node)
     {
+        symbolTable.CreateScope();
+
+        node.Predicate.Accept(this);
+
+        for (StatementsNode statementsNode : node.Body)
+        {
+            statementsNode.Accept(this);
+        }
+
+        symbolTable.CloseScope();
+
         return null;
     }
 
     @Override
     public Object Visit(HouseNode node)
     {
+        node.Identifiers.Accept(this);
+
         return null;
     }
 
     @Override
     public Object Visit(MethodCallNode node)
     {
+        node.identifier.Accept(this);
+
+        for (ExpressionNode expression : node.expressions)
+        {
+            expression.Accept(this);
+        }
+
         return null;
     }
 }
