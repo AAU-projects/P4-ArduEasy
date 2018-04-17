@@ -435,6 +435,8 @@ public class BuildSymbolTable implements Visitor
     @Override
     public Object Visit(RootNode node)
     {
+        symbolTable.CreateScope();
+
         node.Setup.Accept(this);
 
         for (FunctionsNode childNode: node.Functions)
@@ -448,6 +450,7 @@ public class BuildSymbolTable implements Visitor
     @Override
     public Object Visit(SetupNode node)
     {
+
         for (DefinitionNode childNode: node.Childs)
         {
             childNode.Accept(this);

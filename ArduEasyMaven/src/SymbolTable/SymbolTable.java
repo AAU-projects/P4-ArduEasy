@@ -10,6 +10,7 @@ public class SymbolTable
 {
     public Map<String, Variable> Variables = new HashMap<String, Variable>();
     public List<SymbolTable> SymbolTables = new ArrayList<SymbolTable>();
+    public List<SymbolTable> ClosedSymbolTables = new ArrayList<SymbolTable>();
 
 
     public void Insert(String key, Variable var)
@@ -78,14 +79,16 @@ public class SymbolTable
         }
     }
 
-
     public void CloseScope()
     {
-        for (String s : Variables.keySet())
-        {
-            if(!SymbolTables.get(SymbolTables.size() - 2).Variables.containsKey(s))
-                Delete(s);
-        }
+        ClosedSymbolTables.add(SymbolTables.get(SymbolTables.size() - 1));
+        SymbolTables.remove(SymbolTables.size() - 1);
+        System.out.println("Før");
+
+        Variables.clear();
+        Variables.putAll(SymbolTables.get(SymbolTables.size() - 1).Variables);
+
+        System.out.println("Efter");
 
     }
 }
