@@ -34,8 +34,8 @@ public class Program
                 printer.Visit(root);
             }
 
-            //BuildSymbolTable SymbolTable = new BuildSymbolTable();
-            //SymbolTable.Visit(root);
+            BuildSymbolTable SymbolTable = new BuildSymbolTable();
+            SymbolTable.Visit(root);
 
 
         } catch (Exception e)

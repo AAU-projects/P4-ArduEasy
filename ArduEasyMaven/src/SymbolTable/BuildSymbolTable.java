@@ -190,9 +190,10 @@ public class BuildSymbolTable implements Visitor
         symbolTable.CreateScope();
         System.out.println("Opened a for scope");
 
+        node.Var.Accept(this);
         node.Predicate.Accept(this);
         node.Increment.Accept(this);
-        node.Var.Accept(this);
+
         for (StatementsNode childNode : node.body)
         {
             childNode.Accept(this);
@@ -257,7 +258,8 @@ public class BuildSymbolTable implements Visitor
         System.out.println("Opened an if scope");
 
         node.Predicate.Accept(this);
-        node.Alternative.Accept(this);
+        if(node.Alternative != null)
+            node.Alternative.Accept(this);
         for (StatementsNode childNode : node.Body)
         {
             childNode.Accept(this);
@@ -454,6 +456,8 @@ public class BuildSymbolTable implements Visitor
         {
             childNode.Accept(this);
         }
+
+        symbolTable.MoveUp();
 
         symbolTable.CloseScope();
         System.out.println("Closed a room scope");

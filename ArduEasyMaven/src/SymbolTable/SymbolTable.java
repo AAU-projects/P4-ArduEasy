@@ -65,6 +65,15 @@ public class SymbolTable
         return Variables.get(key).Type;
     }
 
+    public void MoveUp()
+    {
+        for (Map.Entry<String, Variable> entry : Variables.entrySet())
+        {
+            if(!SymbolTables.get(SymbolTables.size() - 2).LookUp(entry.getKey()))
+                SymbolTables.get(SymbolTables.size() - 2).Variables.put(entry.getKey(), entry.getValue());
+        }
+    }
+
     public void CreateScope()
     {
         SymbolTable scope = new SymbolTable();
