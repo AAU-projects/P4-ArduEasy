@@ -1,4 +1,5 @@
 import PrettyPrint.PrettyPrint;
+import SymbolTable.BuildSymbolTable;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -33,6 +34,9 @@ public class Program
                 PrettyPrint printer = new PrettyPrint();
                 printer.Visit(root);
             }
+
+            BuildSymbolTable SymbolTable = new BuildSymbolTable();
+            SymbolTable.Visit(root);
 
 
         } catch (Exception e)
