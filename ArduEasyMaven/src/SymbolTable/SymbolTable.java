@@ -84,12 +84,8 @@ public class SymbolTable
     {
         ClosedSymbolTables.add(SymbolTables.get(SymbolTables.size() - 1));
         SymbolTables.remove(SymbolTables.size() - 1);
-        System.out.println("Før");
 
         Variables.clear();
         Variables.putAll(SymbolTables.get(SymbolTables.size() - 1).Variables);
-
-        System.out.println("Efter");
-
     }
 }
