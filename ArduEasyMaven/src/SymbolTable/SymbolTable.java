@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import ErrorHandler.*;
+import ErrorHandler.Errors.SyntaxError;
 
 public class SymbolTable
 {
@@ -17,7 +18,7 @@ public class SymbolTable
     {
         if (LookUp(key))
         {
-            System.out.println("Compile Error: Tried to add existing key: " + key);
+            ErrorHandler.FireInstantError(new SyntaxError(this,"Compile Error: Tried to add existing key: " + key));
             return;
         }
 
@@ -31,7 +32,7 @@ public class SymbolTable
     {
         if(Variables.remove(key) == null)
         {
-            System.out.println("Compile Error: Tried to remove invalid key: " + key);
+            ErrorHandler.FireInstantError(new SyntaxError(this,"Compile Error: Tried to remove invalid key: " + key));
         }
     }
 
@@ -46,7 +47,7 @@ public class SymbolTable
     {
         if(!LookUp(key))
         {
-            System.out.println("Compile Error: Tried to edit value of non-existing variable: " + key);
+            ErrorHandler.FireInstantError(new SyntaxError(this,"Compile Error: Tried to edit value of non-existing variable: " + key));
             return;
         }
 
@@ -57,7 +58,7 @@ public class SymbolTable
     {
         if(!LookUp(key))
         {
-            System.out.println("Compile Error: Tried to get type of non-existing variable: " + key);
+            ErrorHandler.FireInstantError(new SyntaxError(this,"Compile Error: Tried to get type of non-existing variable: " + key));
             return null;
         }
 

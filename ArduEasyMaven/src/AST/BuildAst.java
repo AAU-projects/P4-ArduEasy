@@ -4,6 +4,7 @@ import AST.Nodes.*;
 import java.util.ArrayList;
 import java.util.List;
 import antlr4.*;
+import org.antlr.v4.runtime.ParserRuleContext;
 
 public class BuildAst extends ArduEasyBaseVisitor<Node>
 {
@@ -15,6 +16,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         {{
             Setup = visitSetup(ctx.setup());
             Functions = new ArrayList<FunctionsNode>(visitFunctionsList(ctx.function()));
+            LineNumber = getLineNumber(ctx);
         }};
     }
 
@@ -24,6 +26,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         return new SetupNode()
         {{
             Childs = new ArrayList<DefinitionNode>(visitSetupDefs(ctx.definition()));
+            LineNumber = getLineNumber(ctx);
         }};
     }
 
@@ -55,6 +58,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         {{
             Predicate = visitLogicalExpressions(ctx.logicalExpressions());
             Body = visitStatementList(ctx.statement());
+            LineNumber = getLineNumber(ctx);
         }};
     }
 
@@ -84,6 +88,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
                 Parameters = visitParameterList(ctx.parameters());
                 Body = visitStatementList(ctx.statement());
                 Return = visitReturn(ctx.logicalExpressions());
+                LineNumber = getLineNumber(ctx);
             }};
         }
         else if (ctx.VOIDDEC() != null)
@@ -94,6 +99,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
                 Identifier = visitIdentifier(ctx.identifier());
                 Parameters = visitParameterList(ctx.parameters());
                 Body = visitStatementList(ctx.statement());
+                LineNumber = getLineNumber(ctx);
             }};
         }
         System.out.println("visitFunctionFunction");
@@ -105,6 +111,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         return new ReturnNode()
         {{
             Value = visitLogicalExpressions(ctx);
+            LineNumber = getLineNumber(ctx);
         }};
     }
 
@@ -129,6 +136,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         {{
             Type = ctx.typeSpecifier().getText();
             Identifier = visitIdentifier(ctx.identifier());
+            LineNumber = getLineNumber(ctx);
         }};
     }
 
@@ -179,6 +187,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
             Identifier = visitIdentifier(ctx.identifier());
             Pin = visitPin(ctx.pin());
             IoStatus = visitIoStatus(ctx.ioStatus());
+            LineNumber = getLineNumber(ctx);
         }};
     }
 
@@ -189,6 +198,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         {{
             Type = ctx.typeSpecifier().getText();
             Identifier = visitIdentifier(ctx.identifier());
+            LineNumber = getLineNumber(ctx);
 
             if (ctx.logicalExpressions() != null)
             {
@@ -209,6 +219,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         {{
             identifier = visitIdentifier(ctx.identifier());
             expressions = visitExpressionList(ctx.expression());
+            LineNumber = getLineNumber(ctx);
         }};
     }
 
@@ -225,7 +236,8 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
             {
                 Identifier = visitHouseaccess(ctx.houseaccess());
             }
-           Value = visitLogicalExpressions(ctx.logicalExpressions());
+            Value = visitLogicalExpressions(ctx.logicalExpressions());
+            LineNumber = getLineNumber(ctx);
         }};
     }
 
@@ -236,6 +248,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         {{
             Identifier = visitIdentifier(ctx.identifier());
             body = visitRoomBlockList(ctx.roomblock());
+            LineNumber = getLineNumber(ctx);
         }};
     }
 
@@ -269,6 +282,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         {{
             Identifier = visitIdentifier(ctx.identifier().remove(0));
             Values = visitIdentifierList(ctx.identifier());
+            LineNumber = getLineNumber(ctx);
         }};
     }
 
@@ -290,6 +304,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         return new IdentifierNode()
         {{
             Value = ctx.IDENTIFIER().getText();
+            LineNumber = getLineNumber(ctx);
         }};
     }
 
@@ -298,29 +313,40 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
     {
         return new HouseNode()
         {{
-            Identifiers = SplitDotNotation(ctx.DOT_NOTATION().getText());
+            Identifiers = SplitDotNotation(ctx);
+            LineNumber = getLineNumber(ctx);
         }};
     }
 
-    private IdentifierNode SplitDotNotation(final String notation)
+    private IdentifierNode SplitDotNotation(final ArduEasyParser.HouseaccessContext ctx)
     {
         return new IdentifierNode()
         {{
-            Value = notation;
+            Value = ctx.DOT_NOTATION().getText();
+            LineNumber = getLineNumber(ctx);
         }};
     }
 
     @Override
     public PinNode visitPin(final ArduEasyParser.PinContext ctx)
     {
-        if (ctx.A() == null) return new DigitalPinNode(){{ Value = Integer.parseInt(ctx.INT().toString()); }};
-        return new AnalogPinNode(){{ Value = Integer.parseInt(ctx.INT().toString()); }};
+        if (ctx.A() == null) return new DigitalPinNode()
+        {{
+            Value = Integer.parseInt(ctx.INT().toString());
+            LineNumber = getLineNumber(ctx);
+        }};
+
+        return new AnalogPinNode()
+        {{
+            Value = Integer.parseInt(ctx.INT().toString());
+            LineNumber = getLineNumber(ctx);
+        }};
     }
 
     @Override
     public IoStatusNode visitIoStatus(final ArduEasyParser.IoStatusContext ctx)
     {
-        return new IoStatusNode(){{ Value = ctx.getText(); }};
+        return new IoStatusNode(){{ Value = ctx.getText(); LineNumber = getLineNumber(ctx);}};
     }
 
     @Override
@@ -364,6 +390,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         {{
             expression = visitExpression(ctx.expression()); //TODO not totaly sure here
             Body = visitCaseList(ctx.cases());
+            LineNumber = getLineNumber(ctx);
             if (ctx.cases().statement().size() != 0) // for some reaon statements is not null so i check for size
             {
                 defaultCase = visitDefaultCase(ctx.cases());
@@ -381,6 +408,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         {{
             Value = ctx.DEFAULT().getText();
             Body = visitStatementList(ctx.statement());
+            LineNumber = getLineNumber(ctx);
         }};
     }
 
@@ -404,6 +432,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         {{
             Value = ctx.value().getText();
             Body = visitStatementList(ctx.statement());
+            LineNumber = getLineNumber(ctx);
         }};
     }
 
@@ -413,6 +442,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         {{
             Predicate = visitLogicalExpressions(ctx.logicalExpressions());
             Body = visitStatementList(ctx.statement());
+            LineNumber = getLineNumber(ctx);
         }};
     }
 
@@ -436,6 +466,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         {{
             value = visitExpression(ctx.expression());
             Body = visitStatementList(ctx.statement());
+            LineNumber = getLineNumber(ctx);
         }};
     }
 
@@ -445,6 +476,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         {{
             Predicate = visitLogicalExpressions(ctx.logicalExpressions()); //TODO skal ikke være logical
             Body = visitStatementList(ctx.statement());
+            LineNumber = getLineNumber(ctx);
         }};
     }
 
@@ -458,7 +490,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
                 Predicate = visitLogicalExpressions(ctx.logicalExpressions());
                 Increment = visitAssignment(ctx.assignment(0)); // takes the second assignment in the for loop
                 body = visitStatementList(ctx.statement());
-
+                LineNumber = getLineNumber(ctx);
             }};
         }
         else
@@ -469,7 +501,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
                 Predicate = visitLogicalExpressions(ctx.logicalExpressions());
                 Increment = visitAssignment(ctx.assignment(1)); // takes the second assignment in the for loop
                 body = visitStatementList(ctx.statement());
-
+                LineNumber = getLineNumber(ctx);
             }};
         }
     }
@@ -480,6 +512,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         {{
             Body = visitStatementList(ctx.statement());
             Predicate = visitLogicalExpressions(ctx.logicalExpressions());
+            LineNumber = getLineNumber(ctx);
 
             if (ctx.ifElse() != null)
             {
@@ -497,6 +530,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         return new ElseNode()
         {{
             Body = visitStatementList(ctx.statement());
+            LineNumber = getLineNumber(ctx);
         }};
     }
 
@@ -506,6 +540,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         {{
             Predicate = visitLogicalExpressions(ctx.logicalExpressions());
             Body = visitStatementList(ctx.statement());
+            LineNumber = getLineNumber(ctx);
 
             if (ctx.ifElse() != null)
             {
@@ -559,6 +594,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
                 {{
                     Left = visitLogicalExpressions(ctx.logicalExpressions(0));
                     Right = visitLogicalExpressions(ctx.logicalExpressions(1));
+                    LineNumber = getLineNumber(ctx);
                 }};
             }
             else if (ctx.logicalOperator().OROPERATOR() != null)
@@ -567,6 +603,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
                 {{
                     Left = visitLogicalExpressions(ctx.logicalExpressions(0));
                     Right = visitLogicalExpressions(ctx.logicalExpressions(1));
+                    LineNumber = getLineNumber(ctx);
                 }};
             }
         }
@@ -585,6 +622,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
                 {{
                     Left = visitAddSubExpression(ctx.addSubExpression(0));
                     Right = visitAddSubExpression(ctx.addSubExpression(1));
+                    LineNumber = getLineNumber(ctx);
                 }};
             }
             else if (ctx.comparisonOperator().BELOWOPERATOR() != null)
@@ -593,6 +631,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
                 {{
                     Left = visitAddSubExpression(ctx.addSubExpression(0));
                     Right = visitAddSubExpression(ctx.addSubExpression(1));
+                    LineNumber = getLineNumber(ctx);
                 }};
             }
             else if (ctx.comparisonOperator().ABOVEOPERATOR() != null)
@@ -601,6 +640,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
                 {{
                     Left = visitAddSubExpression(ctx.addSubExpression(0));
                     Right = visitAddSubExpression(ctx.addSubExpression(1));
+                    LineNumber = getLineNumber(ctx);
                 }};
             }
             else if (ctx.comparisonOperator().EQUALSORBELOWOPERATOR() != null)
@@ -609,6 +649,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
                 {{
                     Left = visitAddSubExpression(ctx.addSubExpression(0));
                     Right = visitAddSubExpression(ctx.addSubExpression(1));
+                    LineNumber = getLineNumber(ctx);
                 }};
             }
             else if (ctx.comparisonOperator().EQUALSORABOVEOPERATOR() != null)
@@ -617,6 +658,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
                 {{
                     Left = visitAddSubExpression(ctx.addSubExpression(0));
                     Right = visitAddSubExpression(ctx.addSubExpression(1));
+                    LineNumber = getLineNumber(ctx);
                 }};
             }
             else if (ctx.comparisonOperator().ISNOTOPERATOR() != null)
@@ -625,6 +667,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
                 {{
                     Left = visitAddSubExpression(ctx.addSubExpression(0));
                     Right = visitAddSubExpression(ctx.addSubExpression(1));
+                    LineNumber = getLineNumber(ctx);
                 }};
             }
         }
@@ -639,7 +682,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
     public ExpressionNode visitExpression(final ArduEasyParser.ExpressionContext ctx) {
         if (ctx.SUBTRACTIVEOPERATOR() != null)
         {
-            return new NegateNode(){{ child = visitIdentifier(ctx.identifier());}};
+            return new NegateNode(){{ child = visitIdentifier(ctx.identifier()); LineNumber = getLineNumber(ctx);}};
         }
         else if (ctx.identifier() != null)
         {
@@ -657,6 +700,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         {
             return new NegateNode()
             {{
+                LineNumber = getLineNumber(ctx);
                 if (ctx.houseaccess() != null)
                 {
                     child = visitHouseaccess(ctx.houseaccess());
@@ -679,49 +723,57 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         {
             if (ctx.SUBTRACTIVEOPERATOR() != null)
             {
-                return new IntNode(){{ Value = -Integer.parseInt(ctx.INT().getText());}};
+                return new IntNode(){{ Value = -Integer.parseInt(ctx.INT().getText()); LineNumber = getLineNumber(ctx);}};
             }
 
-            return new IntNode(){{ Value = Integer.parseInt(ctx.INT().getText());}};
+            return new IntNode(){{ Value = Integer.parseInt(ctx.INT().getText()); LineNumber = getLineNumber(ctx);}};
 
         }
         else if (ctx.FLOAT() != null)
         {
             if (ctx.SUBTRACTIVEOPERATOR() != null)
             {
-                return new FloatNode(){{ Value = -Float.parseFloat(ctx.FLOAT().getText());}};
+                return new FloatNode(){{ Value = -Float.parseFloat(ctx.FLOAT().getText()); LineNumber = getLineNumber(ctx);}};
             }
 
-            return new FloatNode(){{ Value = Float.parseFloat(ctx.FLOAT().getText());}};
+            return new FloatNode(){{ Value = Float.parseFloat(ctx.FLOAT().getText()); LineNumber = getLineNumber(ctx);}};
         }
         else if (ctx.PERCENTAGE() != null)
         {
-            return new PercentNode(){{ Value = Integer.parseInt(ctx.PERCENTAGE().getText().replaceAll("%",""));}};
+            return new PercentNode(){{ Value = Integer.parseInt(ctx.PERCENTAGE().getText().replaceAll("%","")); LineNumber = getLineNumber(ctx);}};
         }
         else if (ctx.STRING() != null)
         {
-            return new StringNode(){{ Value = ctx.STRING().getText();}};
+            return new StringNode(){{ Value = ctx.STRING().getText(); LineNumber = getLineNumber(ctx);}};
         }
         else if (ctx.BOOL() != null)
         {
             if (ctx.NEGATEOPERATOR() != null)
             {
-                return new NegateNode(){{ child = new BoolNode(){{ Value = Boolean.valueOf(ctx.BOOL().getText());}};}};
+                return new NegateNode()
+                {{
+                    LineNumber = getLineNumber(ctx);
+                    child = new BoolNode()
+                    {{
+                        Value = Boolean.valueOf(ctx.BOOL().getText());
+                        LineNumber = getLineNumber(ctx);
+                    }};
+                }};
             }
 
-            return new BoolNode(){{ Value = Boolean.valueOf(ctx.BOOL().getText());}};
+            return new BoolNode(){{ Value = Boolean.valueOf(ctx.BOOL().getText()); LineNumber = getLineNumber(ctx);}};
         }
         else if (ctx.TIME() != null)
         {
-            return new TimeNode(){{ Value = ctx.TIME().getText();}};
+            return new TimeNode(){{ Value = ctx.TIME().getText(); LineNumber = getLineNumber(ctx);}};
         }
         else if (ctx.DAY() != null)
         {
-            return new DayNode(){{ Value = ctx.DAY().getText();}};
+            return new DayNode(){{ Value = ctx.DAY().getText(); LineNumber = getLineNumber(ctx);}};
         }
         else if (ctx.MONTH() != null)
         {
-            return new MonthNode(){{ Value = ctx.MONTH().getText();}};
+            return new MonthNode(){{ Value = ctx.MONTH().getText(); LineNumber = getLineNumber(ctx);}};
         }
         System.out.println("DeterminateValue");
         return null;
@@ -734,6 +786,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         {
             return new AdditiveNode()
             {{
+                LineNumber = getLineNumber(ctx);
                 LeftChild = visitAddSubExpression(ctx.addSubExpression());
                 RightChild = visitMultiDivExpression(ctx.multiDivExpression());
             }};
@@ -742,6 +795,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         {
             return new SubtractiveNode()
             {{
+                LineNumber = getLineNumber(ctx);
                 LeftChild = visitAddSubExpression(ctx.addSubExpression());
                 RightChild = visitMultiDivExpression(ctx.multiDivExpression());
             }};
@@ -759,6 +813,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         {
             return new MultiplicationNode()
             {{
+                LineNumber = getLineNumber(ctx);
                 LeftChild = visitExpression(ctx.expression());
                 RightChild = visitMultiDivExpression(ctx.multiDivExpression());
             }};
@@ -767,6 +822,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         {
             return new DivisionNode()
             {{
+                LineNumber = getLineNumber(ctx);
                 LeftChild = visitExpression(ctx.expression());
                 RightChild = visitMultiDivExpression(ctx.multiDivExpression());
             }};
@@ -775,5 +831,10 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         {
             return visitExpression(ctx.expression());
         }
+    }
+
+    private int getLineNumber(ParserRuleContext ctx)
+    {
+        return ctx.start.getLine();
     }
 }

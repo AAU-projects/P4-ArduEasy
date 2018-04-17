@@ -376,7 +376,6 @@ public class BuildSymbolTable implements Visitor
 
         symbolTable.CloseScope();
 
-
         return null;
     }
 

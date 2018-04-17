@@ -22,7 +22,7 @@ public class ErrorHandler
 
     private static void printErorr(ErrorEvent e)
     {
-        System.out.println(e.Message);
+        System.out.println(e.Message + " @ " + e.getSource());
     }
 
     public static void PrintErorrs()
