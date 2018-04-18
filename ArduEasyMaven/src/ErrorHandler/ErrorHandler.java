@@ -2,6 +2,8 @@ package ErrorHandler;
 
 import AST.Nodes.Node;
 import ErrorHandler.Errors.ErrorEvent;
+import com.diogonunes.jcdp.color.ColoredPrinter;
+import com.diogonunes.jcdp.color.api.Ansi;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +11,9 @@ import java.util.List;
 public class ErrorHandler
 {
     private static List<ErrorEvent> errors = new ArrayList<ErrorEvent>();
+
+    private static ColoredPrinter cp = new ColoredPrinter.Builder(1, false)
+            .foreground(Ansi.FColor.RED).build();
 
     public static void AddError(ErrorEvent e)
     {
@@ -29,6 +34,7 @@ public class ErrorHandler
 
     public static void PrintErorrs()
     {
+        cp.println("hello");
         for (ErrorEvent error : errors)
         {
             printErorr(error);
