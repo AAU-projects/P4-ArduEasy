@@ -1,3 +1,4 @@
+import ErrorHandler.ErrorHandler;
 import PrettyPrint.PrettyPrint;
 import SymbolTable.BuildSymbolTable;
 import org.antlr.v4.runtime.CharStream;
@@ -36,6 +37,8 @@ public class Program
 
             BuildSymbolTable SymbolTable = new BuildSymbolTable();
             SymbolTable.Visit(root);
+
+            ErrorHandler.PrintErorrs();
 
 
         } catch (Exception e)

@@ -2,6 +2,8 @@ package ErrorHandler;
 
 import AST.Nodes.Node;
 import ErrorHandler.Errors.ErrorEvent;
+import com.diogonunes.jcdp.color.ColoredPrinter;
+import com.diogonunes.jcdp.color.api.Ansi;
 
 import java.util.ArrayList;
 import java.util.List;
