@@ -6,14 +6,14 @@ import java.util.List;
 import java.util.Map;
 
 import AST.Nodes.DefinitionNode;
+import AST.Nodes.Node;
 import ErrorHandler.*;
 import ErrorHandler.Errors.SyntaxError;
+import SymbolTable.Variables.*;
 
 public class SymbolTable
 {
     public Map<String, Variable> Variables = new HashMap<String, Variable>();
-    public List<SymbolTable> SymbolTables = new ArrayList<SymbolTable>();
-    public List<SymbolTable> ClosedSymbolTables = new ArrayList<SymbolTable>();
 
 
     public void Insert(DefinitionNode node, String key, Variable var)
@@ -23,9 +23,6 @@ public class SymbolTable
             ErrorHandler.FireInstantError(new SyntaxError(node,"Compile Error: Tried to add existing key: " + key));
             return;
         }
-
-        if(SymbolTables.size() != 0)
-            SymbolTables.get(SymbolTables.size() - 1).Variables.put(key, var);
 
         Variables.put(key, var);
     }
@@ -45,7 +42,7 @@ public class SymbolTable
         return false;
     }
 
-    public void Update(DefinitionNode node, String key, ArrayList<String> values)
+    public void Update(DefinitionNode node, String key, Object value)
     {
         if(!LookUp(key))
         {
@@ -53,7 +50,7 @@ public class SymbolTable
             return;
         }
 
-        Variables.get(key).Values = values;
+        Variables.get(key).SetValue(value);
     }
 
     public String GetTypeofVariable(DefinitionNode node, String key)
@@ -67,36 +64,26 @@ public class SymbolTable
         return Variables.get(key).Type;
     }
 
-    public void MoveUp()
+    public SymbolTable GetScope(String scopeName)
     {
-        for (Map.Entry<String, Variable> entry : Variables.entrySet())
-        {
-            if(!SymbolTables.get(SymbolTables.size() - 2).LookUp(entry.getKey()))
-                SymbolTables.get(SymbolTables.size() - 2).Variables.put(entry.getKey(), entry.getValue());
-        }
+        return (SymbolTable) Variables.get(scopeName).Value();
     }
 
-    public void CreateScope()
+    public void CreateScope(final Node node)
     {
-        SymbolTable scope = new SymbolTable();
+        Variable var = new ScopeVariable()
+        {{
+            Identifier = "ScopeLine:"+node.LineNumber;
+            Type = "scope";
+            Value = new SymbolTable(){{Variables = new HashMap<String, Variable>(Variables);}};
+        }};
 
-        if(SymbolTables.size() == 0)
+        if (LookUp(var.Identifier))
         {
-            SymbolTables.add(scope);
+            ErrorHandler.FireInstantError(new SyntaxError(node,"Compile Error: Tried to add existing scope: " + var.Identifier));
+            return;
         }
-        else
-        {
-            scope.Variables.putAll(SymbolTables.get(SymbolTables.size() - 1).Variables);
-            SymbolTables.add(scope);
-        }
-    }
 
-    public void CloseScope()
-    {
-        ClosedSymbolTables.add(SymbolTables.get(SymbolTables.size() - 1));
-        SymbolTables.remove(SymbolTables.size() - 1);
-
-        Variables.clear();
-        Variables.putAll(SymbolTables.get(SymbolTables.size() - 1).Variables);
+        Variables.put(var.Identifier, var);
     }
 }

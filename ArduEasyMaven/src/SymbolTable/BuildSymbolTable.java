@@ -1,8 +1,7 @@
 package SymbolTable;
 
 import AST.Nodes.*;
-import ErrorHandler.ErrorHandler;
-import ErrorHandler.Errors.SyntaxError;
+import SymbolTable.Variables.Variable;
 import visitor.Visitor;
 
 import java.util.ArrayList;
