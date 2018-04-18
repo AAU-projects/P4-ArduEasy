@@ -5,7 +5,6 @@ import visitor.Visitor;
 public class DeclarationNode extends DefinitionNode
 {
     public String Type;
-    public IdentifierNode Identifier;
     public ExpressionNode Value;
 
     @Override

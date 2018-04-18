@@ -4,7 +4,6 @@ import visitor.Visitor;
 
 public class AssignmentNode extends DefinitionNode
 {
-    public IdentifierNode Identifier;
     public ExpressionNode Value;
 
     @Override

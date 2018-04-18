@@ -1,5 +1,7 @@
 package ErrorHandler.Errors;
 
+import AST.Nodes.Node;
+
 import java.util.EventObject;
 
 public abstract class ErrorEvent extends EventObject
