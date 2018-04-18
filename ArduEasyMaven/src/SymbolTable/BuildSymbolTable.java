@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class BuildSymbolTable implements Visitor
 {
-    private SymbolTable symbolTable = new SymbolTable();
+    public SymbolTable symbolTable = new SymbolTable();
     private String room;
 
     @Override

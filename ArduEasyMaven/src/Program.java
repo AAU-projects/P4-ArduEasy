@@ -1,5 +1,7 @@
+import ErrorHandler.ErrorHandler;
 import PrettyPrint.PrettyPrint;
 import SymbolTable.BuildSymbolTable;
+import TypeChecker.TypeChecker;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -9,6 +11,7 @@ import java.util.Arrays;
 import AST.*;
 import antlr4.*;
 import AST.Nodes.*;
+import visitor.Visitor;
 
 public class Program
 {
@@ -37,6 +40,13 @@ public class Program
             BuildSymbolTable SymbolTable = new BuildSymbolTable();
             SymbolTable.Visit(root);
 
+            TypeChecker typeChecker = new TypeChecker(SymbolTable.symbolTable);
+
+            System.out.println("Type Checker:");
+            typeChecker.Visit(root);
+
+
+            ErrorHandler.PrintErorrs();
 
         } catch (Exception e)
         {
