@@ -12,9 +12,6 @@ public class ErrorHandler
 {
     private static List<ErrorEvent> errors = new ArrayList<ErrorEvent>();
 
-    private static ColoredPrinter cp = new ColoredPrinter.Builder(1, false)
-            .foreground(Ansi.FColor.RED).build();
-
     public static void AddError(ErrorEvent e)
     {
         errors.add(e);
@@ -34,7 +31,6 @@ public class ErrorHandler
 
     public static void PrintErorrs()
     {
-        cp.println("hello");
         for (ErrorEvent error : errors)
         {
             printErorr(error);
