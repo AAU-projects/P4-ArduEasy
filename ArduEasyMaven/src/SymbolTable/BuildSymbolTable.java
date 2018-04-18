@@ -1,6 +1,8 @@
 package SymbolTable;
 
 import AST.Nodes.*;
+import ErrorHandler.ErrorHandler;
+import ErrorHandler.Errors.SyntaxError;
 import visitor.Visitor;
 
 import java.util.ArrayList;
@@ -8,6 +10,7 @@ import java.util.ArrayList;
 public class BuildSymbolTable implements Visitor
 {
     private SymbolTable symbolTable = new SymbolTable();
+    private String room;
 
     @Override
     public Object Visit(AdditiveNode node)
@@ -43,31 +46,24 @@ public class BuildSymbolTable implements Visitor
             Values = values;
         }};
 
-        symbolTable.Insert(identifier, var);
+        if(symbolTable.SymbolTables.size() == 1)
+            symbolTable.Insert(node, "house." + identifier, var);
+        else
+            symbolTable.Insert(node, "house." + room + "." + identifier, var);
+
         return null;
     }
 
     @Override
     public Object Visit(AssignmentNode node)
     {
-        String identifier = "N/A";
-        String temp = (String)node.Identifier.Accept(this);
-        String[] StrAr = temp.split("\\.");
-
-        if(StrAr.length == 1)
-            identifier = StrAr[0];
-        else if (StrAr.length == 2)
-            identifier =  StrAr[1];
-        else if (StrAr.length == 3)
-            identifier =  StrAr[2];
-        else
-            System.out.println("Something went terribly wrong with identifiers!");
+        String identifier = (String)node.Identifier.Accept(this);
 
         final ArrayList<String> values = new ArrayList<String>();
         final String value = (String)node.Value.Accept(this);
 
         values.add(value);
-        symbolTable.Update(identifier, values);
+        symbolTable.Update(node, identifier, values);
         return null;
     }
 
@@ -113,7 +109,7 @@ public class BuildSymbolTable implements Visitor
             Type = type;
         }};
 
-        symbolTable.Insert(identifier, var);
+        symbolTable.Insert(node, identifier, var);
         return null;
     }
 
@@ -423,7 +419,10 @@ public class BuildSymbolTable implements Visitor
             Type = type;
         }};
 
-        symbolTable.Insert(identifier, var);
+        if(symbolTable.SymbolTables.size() == 1)
+            symbolTable.Insert(node, "house." + identifier, var);
+        else
+            symbolTable.Insert(node, "house." + room + "." + identifier, var);
 
         return null;
     }
@@ -441,6 +440,7 @@ public class BuildSymbolTable implements Visitor
     {
         final String identifier = (String)node.Identifier.Accept(this);
         final String type = "room";
+        room = identifier;
 
         Variable var = new Variable()
         {{
@@ -448,7 +448,7 @@ public class BuildSymbolTable implements Visitor
             Type = type;
         }};
 
-        symbolTable.Insert(identifier, var);
+        symbolTable.Insert(node, identifier, var);
         symbolTable.CreateScope();
         System.out.println("Opened a room scope");
 

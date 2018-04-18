@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import AST.Nodes.DefinitionNode;
 import ErrorHandler.*;
 import ErrorHandler.Errors.SyntaxError;
 
@@ -14,25 +16,25 @@ public class SymbolTable
     public List<SymbolTable> ClosedSymbolTables = new ArrayList<SymbolTable>();
 
 
-    public void Insert(String key, Variable var)
+    public void Insert(DefinitionNode node, String key, Variable var)
     {
         if (LookUp(key))
         {
-            ErrorHandler.FireInstantError(new SyntaxError(this,"Compile Error: Tried to add existing key: " + key));
+            ErrorHandler.FireInstantError(new SyntaxError(node,"Compile Error: Tried to add existing key: " + key));
             return;
         }
 
         if(SymbolTables.size() != 0)
-            SymbolTables.get(SymbolTables.size() - 1).Insert(key, var);
+            SymbolTables.get(SymbolTables.size() - 1).Variables.put(key, var);
 
         Variables.put(key, var);
     }
 
-    public void Delete(String key)
+    public void Delete(DefinitionNode node, String key)
     {
         if(Variables.remove(key) == null)
         {
-            ErrorHandler.FireInstantError(new SyntaxError(this,"Compile Error: Tried to remove invalid key: " + key));
+            ErrorHandler.FireInstantError(new SyntaxError(node,"Compile Error: Tried to remove invalid key: " + key));
         }
     }
 
@@ -43,22 +45,22 @@ public class SymbolTable
         return false;
     }
 
-    public void Update(String key, ArrayList<String> values)
+    public void Update(DefinitionNode node, String key, ArrayList<String> values)
     {
         if(!LookUp(key))
         {
-            ErrorHandler.FireInstantError(new SyntaxError(this,"Compile Error: Tried to edit value of non-existing variable: " + key));
+            ErrorHandler.FireInstantError(new SyntaxError(node,"Compile Error: Tried to edit value of non-existing variable: " + key));
             return;
         }
 
         Variables.get(key).Values = values;
     }
 
-    public String GetTypeofVariable(String key)
+    public String GetTypeofVariable(DefinitionNode node, String key)
     {
         if(!LookUp(key))
         {
-            ErrorHandler.FireInstantError(new SyntaxError(this,"Compile Error: Tried to get type of non-existing variable: " + key));
+            ErrorHandler.FireInstantError(new SyntaxError(node,"Compile Error: Tried to get type of non-existing variable: " + key));
             return null;
         }
 
