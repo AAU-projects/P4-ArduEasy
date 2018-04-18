@@ -1,5 +1,6 @@
 package ErrorHandler;
 
+import AST.Nodes.Node;
 import ErrorHandler.Errors.ErrorEvent;
 
 import java.util.ArrayList;
@@ -22,7 +23,8 @@ public class ErrorHandler
 
     private static void printErorr(ErrorEvent e)
     {
-        System.out.println(e.Message + " @ " + e.getSource());
+        Node s = (Node) e.getSource();
+        System.out.println("Error at line " + s.LineNumber + "\n" + e.Message + " @ " + e.getSource());
     }
 
     public static void PrintErorrs()

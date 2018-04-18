@@ -1,13 +1,15 @@
 package ErrorHandler.Errors;
 
+import AST.Nodes.Node;
+
 public class SyntaxError extends ErrorEvent
 {
-    public SyntaxError(Object source)
+    public SyntaxError(Node source)
     {
         super(source);
     }
 
-    public SyntaxError(Object source, String message)
+    public SyntaxError(Node source, String message)
     {
         super(source, message);
     }

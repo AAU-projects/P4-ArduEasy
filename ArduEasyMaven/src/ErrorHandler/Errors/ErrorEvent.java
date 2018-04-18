@@ -8,13 +8,13 @@ public abstract class ErrorEvent extends EventObject
 {
     public final String Message;
 
-    public ErrorEvent(Object source)
+    public ErrorEvent(Node source)
     {
         super(source);
         Message = "";
     }
 
-    public ErrorEvent(Object source, String message)
+    public ErrorEvent(Node source, String message)
     {
         super(source);
         Message = message;
