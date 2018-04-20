@@ -2,8 +2,6 @@ package ErrorHandler;
 
 import AST.Nodes.Node;
 import ErrorHandler.Errors.ErrorEvent;
-import com.diogonunes.jcdp.color.ColoredPrinter;
-import com.diogonunes.jcdp.color.api.Ansi;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +27,7 @@ public class ErrorHandler
         System.out.println("Error at line " + s.LineNumber + "\n" + e.Message + " @ " + e.getSource());
     }
 
-    public static void PrintErorrs()
+    public static void PrintErrors()
     {
         for (ErrorEvent error : errors)
         {

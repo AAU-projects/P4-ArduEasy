@@ -313,7 +313,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
     {
         return new HouseNode()
         {{
-            Identifiers = SplitDotNotation(ctx);
+            Identifier = SplitDotNotation(ctx);
             LineNumber = getLineNumber(ctx);
         }};
     }

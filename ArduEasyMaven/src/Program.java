@@ -38,7 +38,7 @@ public class Program
             BuildSymbolTable SymbolTable = new BuildSymbolTable();
             SymbolTable.Visit(root);
 
-            ErrorHandler.PrintErorrs();
+            ErrorHandler.PrintErrors();
 
 
         } catch (Exception e)
