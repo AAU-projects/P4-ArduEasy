@@ -42,6 +42,25 @@ public class Program
 
             TypeChecker typeChecker = new TypeChecker(SymbolTable.symbolTable);
 
+            /*SwitchNode testSwitch = new SwitchNode()
+            {{
+               expression = new IdentifierNode(){{Value = "hej";}};
+               Body.add(new CaseNode(){{Value = "hejhej";}});
+               Body.add(new CaseNode(){{Value = "hejhejhej";}});
+            }};
+            /*DeclarationNode testDec = new DeclarationNode()
+            {{
+                Type = "string";
+                Value = new IdentifierNode(){{}};
+            }};
+            /*DivisionNode testDiv = new DivisionNode()
+            {{
+                LeftChild = new IdentifierNode() {{Value = "hej";}};
+                RightChild = new IdentifierNode() {{Value = "hejhej";}};
+            }};
+            System.out.println("Type Checker TEST:");
+            typeChecker.Visit(testDiv);*/
+
             System.out.println("Type Checker:");
             typeChecker.Visit(root);
 

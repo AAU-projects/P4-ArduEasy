@@ -4,11 +4,8 @@ import visitor.Visitor;
 
 import java.util.ArrayList;
 
-public class WhileNode extends StatementsNode
+public class WhileNode extends IterationNode
 {
-    public ExpressionNode Predicate;
-    public ArrayList<StatementsNode> Body = new ArrayList<StatementsNode>();
-
     @Override
     public String toString()
     {
