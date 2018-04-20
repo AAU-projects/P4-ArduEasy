@@ -1,5 +1,6 @@
 package SymbolTable;
 
+import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,82 +9,140 @@ import java.util.Map;
 import AST.Nodes.DefinitionNode;
 import AST.Nodes.Node;
 import ErrorHandler.*;
+import ErrorHandler.Errors.SemanticError;
 import ErrorHandler.Errors.SyntaxError;
 import SymbolTable.Variables.*;
 
 public class SymbolTable
 {
     public Map<String, Variable> Variables = new HashMap<String, Variable>();
+    public SymbolTable CurrentOpenScope = this;
+    public SymbolTable ParrentScope = this;
 
 
     public void Insert(DefinitionNode node, String key, Variable var)
     {
         if (LookUp(key))
         {
-            ErrorHandler.FireInstantError(new SyntaxError(node,"Compile Error: Tried to add existing key: " + key));
+            ErrorHandler.FireInstantError(new SemanticError(node,"Compile Error: Tried to add existing key: " + key));
             return;
         }
 
-        Variables.put(key, var);
+        CurrentOpenScope.Variables.put(key,var);
     }
 
     public void Delete(DefinitionNode node, String key)
     {
+        if (CurrentOpenScope != this)
+        {
+            if(CurrentOpenScope.Variables.remove(key) == null)
+            {
+                ErrorHandler.FireInstantError(new SemanticError(node,"Compile Error: Tried to remove invalid key: " + key));
+            }
+        }
+
         if(Variables.remove(key) == null)
         {
-            ErrorHandler.FireInstantError(new SyntaxError(node,"Compile Error: Tried to remove invalid key: " + key));
+            ErrorHandler.FireInstantError(new SemanticError(node,"Compile Error: Tried to remove invalid key: " + key));
         }
     }
 
     public Boolean LookUp(String key)
     {
-        if(Variables.containsKey(key))
-            return true;
-        return false;
+        if (CurrentOpenScope != this)
+            return CurrentOpenScope.Variables.containsKey(key);
+
+        return Variables.containsKey(key);
     }
 
     public void Update(DefinitionNode node, String key, Object value)
     {
-        if(!LookUp(key))
+        if (key.startsWith("house"))
         {
-            ErrorHandler.FireInstantError(new SyntaxError(node,"Compile Error: Tried to edit value of non-existing variable: " + key));
+            String[] temp = key.split("\\.");
+            if (temp.length > 2)
+            {
+                GetScope(temp[1]).Update(node,temp[2],value);
+                return;
+            }
+        }else if(!LookUp(key))
+        {
+            ErrorHandler.FireInstantError(new SemanticError(node,"Compile Error: Tried to edit value of non-existing variable: " + key + " in scope"));
             return;
         }
 
-        Variables.get(key).SetValue(value);
+        CurrentOpenScope.Variables.get(key).SetValue(value);
     }
 
     public String GetTypeofVariable(DefinitionNode node, String key)
     {
         if(!LookUp(key))
         {
-            ErrorHandler.FireInstantError(new SyntaxError(node,"Compile Error: Tried to get type of non-existing variable: " + key));
+            ErrorHandler.FireInstantError(new SemanticError(node,"Compile Error: Tried to get type of non-existing variable: " + key + " in scope"));
             return null;
         }
 
-        return Variables.get(key).Type;
+        return CurrentOpenScope.Variables.get(key).Type;
     }
 
     public SymbolTable GetScope(String scopeName)
     {
-        return (SymbolTable) Variables.get(scopeName).Value();
+        SymbolTable result = (SymbolTable) Variables.get(scopeName).Value();
+
+        if (result == null)
+        {
+            for (String scope : Variables.keySet())
+            {
+                if (Variables.get(scope) instanceof ScopeVariable)
+                {
+                    result = (SymbolTable) Variables.get(scope).Value();
+                    result = result.GetScope(scopeName);
+
+                    if (result != null)
+                        return result;
+                }
+            }
+        }
+
+        return result;
     }
 
     public void CreateScope(final Node node)
     {
-        Variable var = new ScopeVariable()
+        final Map<String, Variable> test = this.CurrentOpenScope.Variables;
+        ScopeVariable var = new ScopeVariable()
         {{
-            Identifier = "ScopeLine:"+node.LineNumber;
+            Identifier = String.valueOf(node.LineNumber);
             Type = "scope";
-            Value = new SymbolTable(){{Variables = new HashMap<String, Variable>(Variables);}};
+            Value = new SymbolTable()
+            {{
+                Variables = new HashMap<String, Variable>(test);
+                ParrentScope = CurrentOpenScope;
+            }};
         }};
 
         if (LookUp(var.Identifier))
         {
-            ErrorHandler.FireInstantError(new SyntaxError(node,"Compile Error: Tried to add existing scope: " + var.Identifier));
+            ErrorHandler.FireInstantError(new SemanticError(node,"Compile Error: Tried to add existing scope: " + var.Identifier));
             return;
         }
 
-        Variables.put(var.Identifier, var);
+        CurrentOpenScope.Variables.put(var.Identifier, var);
+        CurrentOpenScope = var.Value;
+    }
+
+    public void OpenScope(String scope)
+    {
+        OpenScope(GetScope(scope));
+    }
+
+    public void OpenScope(SymbolTable scope)
+    {
+        CurrentOpenScope = scope;
+    }
+
+    public void CloseScope()
+    {
+        CurrentOpenScope = CurrentOpenScope.ParrentScope;
     }
 }

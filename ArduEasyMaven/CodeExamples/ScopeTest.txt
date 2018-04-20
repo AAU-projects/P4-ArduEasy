@@ -1,0 +1,27 @@
+house
+{
+    Temp = PIN A 12 as input
+    CurrentTime = PIN A 13 as input
+    time SavedTime = 00:00
+
+    room Kitchen
+    {
+        Lamp1 = PIN 1 as output
+        Lamp2 = PIN 2 as output
+
+        Lamps = {Lamp1, Lamp2}
+    }
+
+    room Bedroom
+    {
+        Lamp1 = PIN 1 as output
+        Lamp2 = PIN 2 as output
+
+        Lamps = {Lamp1, Lamp2}
+    }
+}
+
+when (true)
+{
+    SavedTime = 00:01
+}

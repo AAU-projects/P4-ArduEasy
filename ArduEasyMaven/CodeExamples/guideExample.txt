@@ -28,7 +28,8 @@ house
 
 when (house.Kitchen.Button is true)
 {
-    float Fahrenheit = CelciusToFahrenheit(temp)
+    house.Temp = true
+    float Fahrenheit = CelciusToFahrenheit(house.Temp)
     house.Kitchen.CoffeeMachine = true
     SavedTime = CurrentTime
 

@@ -606,7 +606,7 @@ public class PrettyPrint implements Visitor
     @Override
     public Object Visit(HouseNode node)
     {
-        System.out.print(node.Identifiers);
+        System.out.print(node.Identifier);
         return null;
     }
 
