@@ -4,7 +4,6 @@ import AST.Nodes.*;
 import ErrorHandler.ErrorHandler;
 import ErrorHandler.Errors.SemanticError;
 import SymbolTable.SymbolTable;
-import SymbolTable.Variable;
 import visitor.Visitor;
 
 import java.util.Arrays;
@@ -12,7 +11,7 @@ import java.util.Arrays;
 public class TypeChecker implements Visitor
 {
     private SymbolTable symbolTable;
-    private int idx = 0;
+    private int lastScopeLine;
 
     public TypeChecker(SymbolTable table)
     {
@@ -91,8 +90,7 @@ public class TypeChecker implements Visitor
     @Override
     public Object Visit(AssignmentNode node)
     {
-        IdentifierNode identifier = (IdentifierNode)node.Identifier.Accept(this);
-        String identifierType = symbolTable.ClosedSymbolTables.get(idx).Variables.get(identifier.Value).Type;
+        String identifierType = (String)node.Identifier.Accept(this);
 
         String valueType = (String)node.Value.Accept(this);
 
@@ -116,12 +114,12 @@ public class TypeChecker implements Visitor
     @Override
     public String Visit(CaseNode node)
     {
-        idx++;
+        lastScopeLine = node.LineNumber;
         for (StatementsNode statementsNode : node.Body)
         {
             statementsNode.Accept(this);
         }
-        return symbolTable.ClosedSymbolTables.get(idx).Variables.get(node.Value).Type;
+        return (String) node.Value.Accept(this);
     }
 
     @Override
@@ -172,7 +170,7 @@ public class TypeChecker implements Visitor
     @Override
     public Object Visit(ElseIfNode node)
     {
-        idx++;
+        lastScopeLine = node.LineNumber;
         String predicateType = (String)node.Predicate.Accept(this);
         if (!predicateType.equals(boolType))
         {
@@ -189,7 +187,7 @@ public class TypeChecker implements Visitor
     @Override
     public Object Visit(ElseNode node)
     {
-        idx++;
+        lastScopeLine = node.LineNumber;
         for (StatementsNode statementsNode : node.Body)
         {
             statementsNode.Accept(this);
@@ -232,14 +230,14 @@ public class TypeChecker implements Visitor
     @Override
     public Object Visit(ForNode node)
     {
-        idx++;
+        lastScopeLine = node.LineNumber;
         return null;
     }
 
     @Override
     public Object Visit(FunctionNode node)
     {
-        idx++;
+        lastScopeLine = node.LineNumber;
         return null;
     }
 
@@ -300,13 +298,13 @@ public class TypeChecker implements Visitor
     @Override
     public String Visit(IdentifierNode node)
     {
-        return symbolTable.ClosedSymbolTables.get(idx).Variables.get(node.Value).Type;
+        return symbolTable.GetScope((String.valueOf(lastScopeLine))).GetTypeofVariable(node, node.Value);
     }
 
     @Override
     public Object Visit(IfNode node)
     {
-        idx++;
+        lastScopeLine = node.LineNumber;
         String predicateType = (String)node.Predicate.Accept(this);
         if (!predicateType.equals(boolType))
         {
@@ -437,26 +435,26 @@ public class TypeChecker implements Visitor
     {
         String[] MultiplicationTypes = {intType, floatType};
 
-        Variable leftVar = (Variable)node.LeftChild.Accept(this);
-        Variable rightVar = (Variable)node.RightChild.Accept(this);
+        String leftType = (String)node.LeftChild.Accept(this);
+        String rightType = (String)node.RightChild.Accept(this);
 
-        boolean matchFound = Arrays.asList(MultiplicationTypes).contains(leftVar.Type);
-
-        if(!matchFound)
-            ErrorHandler.AddError(new SemanticError(node, "Tried to multiply invalid type " + leftVar.Type));
-
-        matchFound = Arrays.asList(MultiplicationTypes).contains(rightVar.Type);
+        boolean matchFound = Arrays.asList(MultiplicationTypes).contains(leftType);
 
         if(!matchFound)
-            ErrorHandler.AddError(new SemanticError(node, "Tried to multiply invalid type " + rightVar.Type));
+            ErrorHandler.AddError(new SemanticError(node, "Tried to multiply invalid type " + leftType));
 
-        if(leftVar.Type.equals(intType) && rightVar.Type.equals(floatType) || leftVar.Type.equals(floatType) && rightVar.Type.equals(intType))
+        matchFound = Arrays.asList(MultiplicationTypes).contains(rightType);
+
+        if(!matchFound)
+            ErrorHandler.AddError(new SemanticError(node, "Tried to multiply invalid type " + rightType));
+
+        if(leftType.equals(intType) && rightType.equals(floatType) || leftType.equals(floatType) && rightType.equals(intType))
         {
             return floatType;
         }
-        if(leftVar.Type.equals(rightVar.Type))
+        if(leftType.equals(rightType))
         {
-            return leftVar.Type;
+            return leftType;
         }
         return floatType;
     }
@@ -511,7 +509,7 @@ public class TypeChecker implements Visitor
     @Override
     public Object Visit(PerformTimes node)
     {
-        idx++;
+        lastScopeLine = node.LineNumber;
         String iteratorType = (String)node.value.Accept(this);
         if (!iteratorType.equals(intType))
         {
@@ -527,7 +525,7 @@ public class TypeChecker implements Visitor
     @Override
     public Object Visit(PerformUntil node)
     {
-        idx++;
+        lastScopeLine = node.LineNumber;
         IterationChecker(node);
         return null;
     }
@@ -549,7 +547,7 @@ public class TypeChecker implements Visitor
     @Override
     public String Visit(RoomDeclaration node)
     {
-        idx++;
+        lastScopeLine = node.LineNumber;
         for (RoomBlockNode roomBlockNode : node.body)
         {
             roomBlockNode.Accept(this);
@@ -592,34 +590,34 @@ public class TypeChecker implements Visitor
     {
         String[] SubtractiveTypes = {intType, floatType, percentageType, timeType};
 
-        Variable leftVar = (Variable)node.LeftChild.Accept(this);
-        Variable rightVar = (Variable)node.RightChild.Accept(this);
+        String LeftType = (String)node.LeftChild.Accept(this);
+        String rightVar = (String)node.RightChild.Accept(this);
 
-        boolean matchFound = Arrays.asList(SubtractiveTypes).contains(leftVar.Type);
-
-        if(!matchFound)
-            ErrorHandler.AddError(new SemanticError(node, "Tried to subtract invalid type " + leftVar.Type));
-
-        matchFound = Arrays.asList(SubtractiveTypes).contains(rightVar.Type);
+        boolean matchFound = Arrays.asList(SubtractiveTypes).contains(LeftType);
 
         if(!matchFound)
-            ErrorHandler.AddError(new SemanticError(node, "Tried to subtract invalid type " + rightVar.Type));
+            ErrorHandler.AddError(new SemanticError(node, "Tried to subtract invalid type " + LeftType));
 
-        if(leftVar.Type.equals(intType) && rightVar.Type.equals(floatType) || leftVar.Type.equals(floatType) && rightVar.Type.equals(intType))
+        matchFound = Arrays.asList(SubtractiveTypes).contains(rightVar);
+
+        if(!matchFound)
+            ErrorHandler.AddError(new SemanticError(node, "Tried to subtract invalid type " + rightVar));
+
+        if(LeftType.equals(intType) && rightVar.equals(floatType) || LeftType.equals(floatType) && rightVar.equals(intType))
         {
             return floatType;
         }
-        if(!leftVar.Type.equals(rightVar.Type))
+        if(!LeftType.equals(rightVar))
         {
-            ErrorHandler.AddError(new SemanticError(node, "Tried to subtract " + leftVar.Type + " with a  " + rightVar.Type));
+            ErrorHandler.AddError(new SemanticError(node, "Tried to subtract " + LeftType + " with a  " + rightVar));
         }
-        return leftVar.Type;
+        return LeftType;
     }
 
     @Override
     public Object Visit(SwitchNode node)
     {
-        idx++;
+        lastScopeLine = node.LineNumber;
         String switchType = (String)node.expression.Accept(this);
 
         for (CaseNode caseNode : node.Body)
@@ -643,7 +641,7 @@ public class TypeChecker implements Visitor
     @Override
     public Object Visit(WhenNode node)
     {
-        idx++;
+        lastScopeLine = node.LineNumber;
         String predicateType = (String)node.Predicate.Accept(this);
         if (!predicateType.equals(boolType))
         {
@@ -659,7 +657,7 @@ public class TypeChecker implements Visitor
     @Override
     public Object Visit(WhileNode node)
     {
-        idx++;
+        lastScopeLine = node.LineNumber;
         IterationChecker(node);
         return null;
     }
@@ -680,7 +678,8 @@ public class TypeChecker implements Visitor
     @Override
     public Object Visit(HouseNode node)
     {
-        node.Identifiers.Accept(this);
+        lastScopeLine = node.LineNumber;
+        node.Identifier.Accept(this);
         return null;
     }
 

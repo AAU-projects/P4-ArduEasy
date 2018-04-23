@@ -2,7 +2,7 @@ package AST.Nodes;
 
 import visitor.Visitor;
 
-public class FloatNode extends ExpressionNode
+public class FloatNode extends ValueNode
 {
     public Float Value;
 

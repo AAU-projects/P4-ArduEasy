@@ -2,7 +2,7 @@ package AST.Nodes;
 
 import visitor.Visitor;
 
-public class BoolNode extends ExpressionNode
+public class BoolNode extends ValueNode
 {
     public Boolean Value;
 

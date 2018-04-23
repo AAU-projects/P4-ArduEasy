@@ -18,6 +18,17 @@ public class BuildSymbolTable implements Visitor
     public SymbolTable symbolTable = new SymbolTable();
     private String room;
 
+    private String intType = "int";
+    private String floatType = "float";
+    private String percentageType = "percentage";
+    private String stringType = "string";
+    private String boolType = "bool";
+    private String timeType = "time";
+    private String dayType = "day";
+    private String monthType = "month";
+    private String arrayType = "array";
+    private String roomType = "room";
+
     @Override
     public Object Visit(AdditiveNode node)
     {
@@ -87,7 +98,7 @@ public class BuildSymbolTable implements Visitor
     @Override
     public Object Visit(BoolNode node)
     {
-        return node.toString();
+        return boolType;
     }
 
     @Override
@@ -109,7 +120,7 @@ public class BuildSymbolTable implements Visitor
     @Override
     public Object Visit(DayNode node)
     {
-        return node.toString();
+        return dayType;
     }
 
     @Override
@@ -194,7 +205,7 @@ public class BuildSymbolTable implements Visitor
     @Override
     public Object Visit(FloatNode node)
     {
-        return node.toString();
+        return floatType;
     }
 
     @Override
@@ -293,7 +304,7 @@ public class BuildSymbolTable implements Visitor
     @Override
     public Object Visit(IntNode node)
     {
-        return node.toString();
+        return intType;
     }
 
     @Override
@@ -341,7 +352,7 @@ public class BuildSymbolTable implements Visitor
     @Override
     public Object Visit(MonthNode node)
     {
-        return node.toString();
+        return monthType;
     }
 
     @Override
@@ -381,7 +392,7 @@ public class BuildSymbolTable implements Visitor
     @Override
     public Object Visit(PercentNode node)
     {
-        return node.toString();
+        return percentageType;
     }
 
     @Override
@@ -512,7 +523,7 @@ public class BuildSymbolTable implements Visitor
     @Override
     public Object Visit(StringNode node)
     {
-        return node.toString();
+        return stringType;
     }
 
     @Override
@@ -543,7 +554,7 @@ public class BuildSymbolTable implements Visitor
     @Override
     public Object Visit(TimeNode node)
     {
-        return node.toString();
+        return timeType;
     }
 
     @Override

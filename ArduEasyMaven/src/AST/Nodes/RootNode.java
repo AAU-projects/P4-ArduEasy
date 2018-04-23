@@ -12,7 +12,7 @@ public class RootNode extends Node
     @Override
     public String toString()
     {
-        return "Root";
+        return "root";
     }
 
     @Override

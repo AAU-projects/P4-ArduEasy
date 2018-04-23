@@ -406,7 +406,6 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
     {
         return new CaseNode()
         {{
-            Value = ctx.DEFAULT().getText();
             Body = visitStatementList(ctx.statement());
             LineNumber = getLineNumber(ctx);
         }};
@@ -430,7 +429,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
     public CaseNode visitCase_r(final ArduEasyParser.Case_rContext ctx) {
         return new CaseNode()
         {{
-            Value = ctx.value().getText();
+            Value = determinateValue(ctx.value());
             Body = visitStatementList(ctx.statement());
             LineNumber = getLineNumber(ctx);
         }};
@@ -717,7 +716,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         return null;
     }
 
-    private ExpressionNode determinateValue(final ArduEasyParser.ValueContext ctx)
+    private ValueNode determinateValue(final ArduEasyParser.ValueContext ctx)
     {
         if (ctx.INT() != null)
         {

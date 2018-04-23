@@ -20,7 +20,7 @@ public class SymbolTable
     public SymbolTable ParrentScope = this;
 
 
-    public void Insert(DefinitionNode node, String key, Variable var)
+    public void Insert(Node node, String key, Variable var)
     {
         if (LookUp(key))
         {
@@ -31,7 +31,7 @@ public class SymbolTable
         CurrentOpenScope.Variables.put(key,var);
     }
 
-    public void Delete(DefinitionNode node, String key)
+    public void Delete(Node node, String key)
     {
         if (CurrentOpenScope != this)
         {
@@ -55,7 +55,7 @@ public class SymbolTable
         return Variables.containsKey(key);
     }
 
-    public void Update(DefinitionNode node, String key, Object value)
+    public void Update(Node node, String key, Object value)
     {
         if (key.startsWith("house"))
         {
@@ -74,7 +74,7 @@ public class SymbolTable
         CurrentOpenScope.Variables.get(key).SetValue(value);
     }
 
-    public String GetTypeofVariable(DefinitionNode node, String key)
+    public String GetTypeofVariable(Node node, String key)
     {
         if(!LookUp(key))
         {
