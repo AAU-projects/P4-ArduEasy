@@ -27,7 +27,7 @@ public class ErrorHandler
         System.out.println("Error at line " + s.LineNumber + "\n" + e.Message + " @ " + e.getSource());
     }
 
-    public static void PrintErorrs()
+    public static void PrintErrors()
     {
         for (ErrorEvent error : errors)
         {

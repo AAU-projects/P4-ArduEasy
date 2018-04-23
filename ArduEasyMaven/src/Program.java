@@ -65,7 +65,7 @@ public class Program
             typeChecker.Visit(root);
 
 
-            ErrorHandler.PrintErorrs();
+            ErrorHandler.PrintErrors();
 
         } catch (Exception e)
         {

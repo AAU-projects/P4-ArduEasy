@@ -6,7 +6,7 @@ import java.util.List;
 
 public class HouseNode extends IdentifierNode
 {
-    public IdentifierNode Identifiers;
+    public IdentifierNode Identifier;
 
     @Override
     public Object Accept(Visitor visitor) {

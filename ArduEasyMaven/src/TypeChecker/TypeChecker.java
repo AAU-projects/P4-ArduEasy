@@ -41,28 +41,28 @@ public class TypeChecker implements Visitor
     {
         String[] AdditiveTypes = {intType, floatType, percentageType, timeType};
 
-        Variable leftVar = (Variable)node.LeftChild.Accept(this);
-        Variable rightVar = (Variable)node.RightChild.Accept(this);
+        String leftType = (String)node.LeftChild.Accept(this);
+        String rightType = (String)node.RightChild.Accept(this);
 
-        boolean matchFound = Arrays.asList(AdditiveTypes).contains(leftVar.Type);
-
-        if(!matchFound)
-            ErrorHandler.AddError(new SemanticError(node, "Tried to add invalid type " + leftVar.Type));
-
-        matchFound = Arrays.asList(AdditiveTypes).contains(rightVar.Type);
+        boolean matchFound = Arrays.asList(AdditiveTypes).contains(leftType);
 
         if(!matchFound)
-            ErrorHandler.AddError(new SemanticError(node, "Tried to add invalid type " + rightVar.Type));
+            ErrorHandler.AddError(new SemanticError(node, "Tried to add invalid type " + leftType));
 
-        if(leftVar.Type.equals(intType) && rightVar.Type.equals(floatType) || leftVar.Type.equals(floatType) && rightVar.Type.equals(intType))
+        matchFound = Arrays.asList(AdditiveTypes).contains(rightType);
+
+        if(!matchFound)
+            ErrorHandler.AddError(new SemanticError(node, "Tried to add invalid type " + rightType));
+
+        if(leftType.equals(intType) && rightType.equals(floatType) ||leftType.equals(floatType) && rightType.equals(intType))
         {
             return floatType;
         }
-        if(!leftVar.Type.equals(rightVar.Type))
+        if(!leftType.equals(rightType))
         {
-            ErrorHandler.AddError(new SemanticError(node, "Tried to add " + leftVar.Type + " with a  " + rightVar.Type));
+            ErrorHandler.AddError(new SemanticError(node, "Tried to add " + leftType + " with a  " + rightType));
         }
-        return leftVar.Type;
+        return leftType;
     }
 
     @Override
@@ -74,9 +74,15 @@ public class TypeChecker implements Visitor
     @Override
     public String Visit(ArrayDeclarationNode node)
     {
+        String arrayType = (String)node.Identifier.Accept(this);
+
         for (IdentifierNode value : node.Values)
         {
-            value.Accept(this);
+            String valueType = (String)value.Accept(this);
+            if (!valueType.equals(arrayType))
+            {
+                ErrorHandler.AddError(new SemanticError(node, "Tried to add invalid " + valueType + " to a " + arrayType + " array"));
+            }
         }
 
         return arrayType;
@@ -146,21 +152,19 @@ public class TypeChecker implements Visitor
     {
         String[] DivisionTypes = {intType, floatType};
 
-        Variable leftVar = (Variable)node.LeftChild.Accept(this);
-        Variable rightVar = (Variable)node.RightChild.Accept(this);
+        String leftType = (String)node.LeftChild.Accept(this);
+        String rightType = (String)node.RightChild.Accept(this);
 
-        boolean matchFound = Arrays.asList(DivisionTypes).contains(leftVar.Type);
-
-        if(!matchFound)
-            ErrorHandler.AddError(new SemanticError(node, "Tried to divide invalid type " + leftVar.Type));
-
-        matchFound = Arrays.asList(DivisionTypes).contains(rightVar.Type);
+        boolean matchFound = Arrays.asList(DivisionTypes).contains(leftType);
 
         if(!matchFound)
-            ErrorHandler.AddError(new SemanticError(node, "Tried to divide invalid type " + rightVar.Type));
+            ErrorHandler.AddError(new SemanticError(node, "Tried to divide invalid type " + leftType));
 
-        if (leftVar.Values.get(0).equals("0") || rightVar.Values.get(0).equals("0"))
-            ErrorHandler.AddError(new SemanticError(node, "Cannot divide by zero!"));
+        matchFound = Arrays.asList(DivisionTypes).contains(rightType);
+
+        if(!matchFound)
+            ErrorHandler.AddError(new SemanticError(node, "Tried to divide invalid type " + rightType));
+
 
         return floatType;
     }
@@ -294,9 +298,9 @@ public class TypeChecker implements Visitor
     }
 
     @Override
-    public Variable Visit(IdentifierNode node)
+    public String Visit(IdentifierNode node)
     {
-        return symbolTable.ClosedSymbolTables.get(idx).Variables.get(node.Value);
+        return symbolTable.ClosedSymbolTables.get(idx).Variables.get(node.Value).Type;
     }
 
     @Override

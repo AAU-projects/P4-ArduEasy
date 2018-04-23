@@ -1,102 +1,148 @@
 package SymbolTable;
 
+import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import AST.Nodes.DefinitionNode;
+import AST.Nodes.Node;
 import ErrorHandler.*;
+import ErrorHandler.Errors.SemanticError;
 import ErrorHandler.Errors.SyntaxError;
+import SymbolTable.Variables.*;
 
 public class SymbolTable
 {
     public Map<String, Variable> Variables = new HashMap<String, Variable>();
-    public List<SymbolTable> SymbolTables = new ArrayList<SymbolTable>();
-    public List<SymbolTable> ClosedSymbolTables = new ArrayList<SymbolTable>();
+    public SymbolTable CurrentOpenScope = this;
+    public SymbolTable ParrentScope = this;
 
 
     public void Insert(DefinitionNode node, String key, Variable var)
     {
         if (LookUp(key))
         {
-            ErrorHandler.FireInstantError(new SyntaxError(node,"Compile Error: Tried to add existing key: " + key));
+            ErrorHandler.FireInstantError(new SemanticError(node,"Compile Error: Tried to add existing key: " + key));
             return;
         }
 
-        if(SymbolTables.size() != 0)
-            SymbolTables.get(SymbolTables.size() - 1).Variables.put(key, var);
-
-        Variables.put(key, var);
+        CurrentOpenScope.Variables.put(key,var);
     }
 
     public void Delete(DefinitionNode node, String key)
     {
+        if (CurrentOpenScope != this)
+        {
+            if(CurrentOpenScope.Variables.remove(key) == null)
+            {
+                ErrorHandler.FireInstantError(new SemanticError(node,"Compile Error: Tried to remove invalid key: " + key));
+            }
+        }
+
         if(Variables.remove(key) == null)
         {
-            ErrorHandler.FireInstantError(new SyntaxError(node,"Compile Error: Tried to remove invalid key: " + key));
+            ErrorHandler.FireInstantError(new SemanticError(node,"Compile Error: Tried to remove invalid key: " + key));
         }
     }
 
     public Boolean LookUp(String key)
     {
-        if(Variables.containsKey(key))
-            return true;
-        return false;
+        if (CurrentOpenScope != this)
+            return CurrentOpenScope.Variables.containsKey(key);
+
+        return Variables.containsKey(key);
     }
 
-    public void Update(DefinitionNode node, String key, ArrayList<String> values)
+    public void Update(DefinitionNode node, String key, Object value)
     {
-        if(!LookUp(key))
+        if (key.startsWith("house"))
         {
-            ErrorHandler.FireInstantError(new SyntaxError(node,"Compile Error: Tried to edit value of non-existing variable: " + key));
+            String[] temp = key.split("\\.");
+            if (temp.length > 2)
+            {
+                GetScope(temp[1]).Update(node,temp[2],value);
+                return;
+            }
+        }else if(!LookUp(key))
+        {
+            ErrorHandler.FireInstantError(new SemanticError(node,"Compile Error: Tried to edit value of non-existing variable: " + key + " in scope"));
             return;
         }
 
-        Variables.get(key).Values = values;
+        CurrentOpenScope.Variables.get(key).SetValue(value);
     }
 
     public String GetTypeofVariable(DefinitionNode node, String key)
     {
         if(!LookUp(key))
         {
-            ErrorHandler.FireInstantError(new SyntaxError(node,"Compile Error: Tried to get type of non-existing variable: " + key));
+            ErrorHandler.FireInstantError(new SemanticError(node,"Compile Error: Tried to get type of non-existing variable: " + key + " in scope"));
             return null;
         }
 
-        return Variables.get(key).Type;
+        return CurrentOpenScope.Variables.get(key).Type;
     }
 
-    public void MoveUp()
+    public SymbolTable GetScope(String scopeName)
     {
-        for (Map.Entry<String, Variable> entry : Variables.entrySet())
+        SymbolTable result = (SymbolTable) Variables.get(scopeName).Value();
+
+        if (result == null)
         {
-            if(!SymbolTables.get(SymbolTables.size() - 2).LookUp(entry.getKey()))
-                SymbolTables.get(SymbolTables.size() - 2).Variables.put(entry.getKey(), entry.getValue());
+            for (String scope : Variables.keySet())
+            {
+                if (Variables.get(scope) instanceof ScopeVariable)
+                {
+                    result = (SymbolTable) Variables.get(scope).Value();
+                    result = result.GetScope(scopeName);
+
+                    if (result != null)
+                        return result;
+                }
+            }
         }
+
+        return result;
     }
 
-    public void CreateScope()
+    public void CreateScope(final Node node)
     {
-        SymbolTable scope = new SymbolTable();
+        final Map<String, Variable> test = this.CurrentOpenScope.Variables;
+        ScopeVariable var = new ScopeVariable()
+        {{
+            Identifier = String.valueOf(node.LineNumber);
+            Type = "scope";
+            Value = new SymbolTable()
+            {{
+                Variables = new HashMap<String, Variable>(test);
+                ParrentScope = CurrentOpenScope;
+            }};
+        }};
 
-        if(SymbolTables.size() == 0)
+        if (LookUp(var.Identifier))
         {
-            SymbolTables.add(scope);
+            ErrorHandler.FireInstantError(new SemanticError(node,"Compile Error: Tried to add existing scope: " + var.Identifier));
+            return;
         }
-        else
-        {
-            scope.Variables.putAll(SymbolTables.get(SymbolTables.size() - 1).Variables);
-            SymbolTables.add(scope);
-        }
+
+        CurrentOpenScope.Variables.put(var.Identifier, var);
+        CurrentOpenScope = var.Value;
+    }
+
+    public void OpenScope(String scope)
+    {
+        OpenScope(GetScope(scope));
+    }
+
+    public void OpenScope(SymbolTable scope)
+    {
+        CurrentOpenScope = scope;
     }
 
     public void CloseScope()
     {
-        ClosedSymbolTables.add(SymbolTables.get(SymbolTables.size() - 1));
-        SymbolTables.remove(SymbolTables.size() - 1);
-
-        Variables.clear();
-        Variables.putAll(SymbolTables.get(SymbolTables.size() - 1).Variables);
+        CurrentOpenScope = CurrentOpenScope.ParrentScope;
     }
 }
