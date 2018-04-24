@@ -109,15 +109,17 @@ public class SymbolTable
 
     public void CreateScope(final Node node)
     {
-        final Map<String, Variable> test = this.CurrentOpenScope.Variables;
+        final HashMap<String, Variable> temp = new HashMap<String, Variable>();
+        final SymbolTable tempCurrentScope = CurrentOpenScope;
+        temp.putAll(CurrentOpenScope.Variables);
         ScopeVariable var = new ScopeVariable()
         {{
             Identifier = String.valueOf(node.LineNumber);
             Type = "scope";
             Value = new SymbolTable()
             {{
-                Variables = new HashMap<String, Variable>(test);
-                ParrentScope = CurrentOpenScope;
+                Variables = temp;
+                ParrentScope = tempCurrentScope;
             }};
         }};
 
