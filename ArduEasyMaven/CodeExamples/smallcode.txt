@@ -12,10 +12,11 @@ house
 	}
 }
 
-function int test2(string bool)
+
+function int test2(string what)
 {
     string hey = "test"
-	float jul = testFunction(hey)
+	float jul = 5.0
 
 	return jul
 }
@@ -41,4 +42,8 @@ function int testFunction(int bob)
 when (2 is not 5)
 {
 	int bob = 42
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/ScopeFix

@@ -69,10 +69,10 @@ when (Time is 18:00)
         {
             bob = bob + val
         }
-        default:
-        {
-            val = val + val
-        }
+        //default:
+        //{
+        //    val = val + val
+        //}
     }
 }
 
