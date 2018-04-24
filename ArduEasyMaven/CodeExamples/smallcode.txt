@@ -42,8 +42,4 @@ function int testFunction(int bob)
 when (2 is not 5)
 {
 	int bob = 42
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> origin/ScopeFix

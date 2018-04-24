@@ -18,7 +18,7 @@ public class SymbolTable
     public Map<String, Variable> Variables = new HashMap<String, Variable>();
     public SymbolTable CurrentOpenScope = this;
     public SymbolTable ParrentScope = this;
-    public static Map<String, FunctionVariable> FunctionList = new HashMap<String, FunctionVariable>();
+    public static HashMap<String, FunctionVariable> FunctionList = new HashMap<String, FunctionVariable>();
 
 
     public void Insert(Node node, String key, Variable var)
@@ -88,7 +88,13 @@ public class SymbolTable
 
     public SymbolTable GetScope(String scopeName)
     {
-        SymbolTable result = (SymbolTable) Variables.get(scopeName).Value();
+        Variable variable =  Variables.get(scopeName);
+        SymbolTable result = null;
+
+        if (variable != null)
+        {
+            result = (SymbolTable) variable.Value();
+        }
 
         if (result == null)
         {
