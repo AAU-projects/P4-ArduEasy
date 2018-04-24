@@ -3,15 +3,13 @@ package SymbolTable;
 import AST.Nodes.*;
 import ErrorHandler.ErrorHandler;
 import ErrorHandler.Errors.SemanticError;
-import SymbolTable.Variables.ArrayVariable;
-import SymbolTable.Variables.IdentifierVariable;
-import SymbolTable.Variables.ScopeVariable;
-import SymbolTable.Variables.Variable;
+import SymbolTable.Variables.*;
 import visitor.Visitor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BuildSymbolTable implements Visitor
 {
@@ -230,19 +228,35 @@ public class BuildSymbolTable implements Visitor
     }
 
     @Override
-    public Object Visit(FunctionNode node)
+    public Object Visit(final FunctionNode node)
     {
         symbolTable.CreateScope(node);
         System.out.println("Opened a function scope");
 
+        final List<String[]> parameters = new ArrayList<String[]>();
         for (ParameterNode childNode: node.Parameters)
         {
             childNode.Accept(this);
+            parameters.add(new String[] {childNode.Identifier.Value, childNode.Type});
         }
 
         for (StatementsNode childNode: node.Body)
         {
             childNode.Accept(this);
+        }
+
+        if (SymbolTable.FunctionList.get(node.Identifier.Value) != null)
+        {
+            ErrorHandler.FireInstantError(new SemanticError(node, "Compile Error: Tried to create a method with a already existing identifier " + node.Identifier.Value));
+        }
+        else
+        {
+            SymbolTable.FunctionList.put(node.Identifier.Value, new FunctionVariable()
+            {{
+                Identifier = node.Identifier.Value;
+                Type = node.ReturnType;
+                Parameters = parameters;
+            }});
         }
 
         symbolTable.CloseScope();
@@ -481,7 +495,7 @@ public class BuildSymbolTable implements Visitor
             }};
         }};
 
-        symbolTable.Insert(node, identifier, var);
+        symbolTable.Insert(node, String.valueOf(node.LineNumber), var);
         symbolTable.OpenScope(var.Value);
         System.out.println("Opened a room scope");
 

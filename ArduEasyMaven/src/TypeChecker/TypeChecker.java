@@ -6,7 +6,7 @@ import ErrorHandler.Errors.SemanticError;
 import SymbolTable.SymbolTable;
 import visitor.Visitor;
 
-import java.util.Arrays;
+import java.util.*;
 
 public class TypeChecker implements Visitor
 {
@@ -18,10 +18,7 @@ public class TypeChecker implements Visitor
         symbolTable = table;
     }
 
-    public boolean IsNumber(Node node)
-    {
-        return false;
-    }
+    public Map<String, List<String>> FunctionList = new HashMap<String, List<String>>();
 
     //Variables
     private String intType = "int";
@@ -115,11 +112,13 @@ public class TypeChecker implements Visitor
     public String Visit(CaseNode node)
     {
         lastScopeLine = node.LineNumber;
+        String caseType = (String) node.Value.Accept(this);
+
         for (StatementsNode statementsNode : node.Body)
         {
             statementsNode.Accept(this);
         }
-        return (String) node.Value.Accept(this);
+        return caseType;
     }
 
     @Override
@@ -131,11 +130,14 @@ public class TypeChecker implements Visitor
     @Override
     public Object Visit(DeclarationNode node)
     {
+        String identifierType = (String) node.Identifier.Accept(this);
         String expressionType = (String) node.Value.Accept(this);
-        if (!expressionType.equals(node.Type))
+
+        if (!expressionType.equals(identifierType))
         {
             ErrorHandler.AddError(new SemanticError(node, "Tried to declare object of type: " + node.Type + " with type: " + expressionType));
         }
+
         return null;
     }
 
@@ -238,6 +240,24 @@ public class TypeChecker implements Visitor
     public Object Visit(FunctionNode node)
     {
         lastScopeLine = node.LineNumber;
+        
+        String typeOfReturn = ((String) node.Return.Accept(this));
+
+        if (!typeOfReturn.equals(node.ReturnType))
+        {
+            ErrorHandler.AddError(new SemanticError(node, "Tried to return a " + typeOfReturn + " in a " + node.ReturnType + " method"));
+        }
+
+        for (ParameterNode parameter : node.Parameters)
+        {
+            parameter.Accept(this);
+        }
+
+        for (StatementsNode statementsNode : node.Body)
+        {
+            statementsNode.Accept(this);
+        }
+
         return null;
     }
 
@@ -298,7 +318,14 @@ public class TypeChecker implements Visitor
     @Override
     public String Visit(IdentifierNode node)
     {
-        return symbolTable.GetScope((String.valueOf(lastScopeLine))).GetTypeofVariable(node, node.Value);
+        if (lastScopeLine == 0)
+        {
+            return symbolTable.GetTypeofVariable(node, node.Value);
+        }
+        else
+        {
+            return symbolTable.GetScope((String.valueOf(lastScopeLine))).GetTypeofVariable(node, node.Value);
+        }
     }
 
     @Override
@@ -460,10 +487,9 @@ public class TypeChecker implements Visitor
     }
 
     @Override
-    public Object Visit(NegateNode node)
+    public String Visit(NegateNode node)
     {
-        node.child.Accept(this);
-        return null;
+        return (String) node.child.Accept(this);
     }
 
     @Override
@@ -494,10 +520,9 @@ public class TypeChecker implements Visitor
     }
 
     @Override
-    public Object Visit(ParameterNode node)
+    public String Visit(ParameterNode node)
     {
-        node.Identifier.Accept(this);
-        return null;
+        return ((String) node.Identifier.Accept(this));
     }
 
     @Override
@@ -539,9 +564,9 @@ public class TypeChecker implements Visitor
     }
 
     @Override
-    public Object Visit(ReturnNode node)
+    public String Visit(ReturnNode node)
     {
-        return null;
+        return (String) node.Value.Accept(this);
     }
 
     @Override
@@ -558,7 +583,11 @@ public class TypeChecker implements Visitor
     @Override
     public Object Visit(RootNode node)
     {
+        System.out.println("Root before setup");
+
         node.Setup.Accept(this);
+
+        System.out.println("Root after setup");
 
         for (FunctionsNode function : node.Functions)
         {
@@ -571,10 +600,14 @@ public class TypeChecker implements Visitor
     @Override
     public Object Visit(SetupNode node)
     {
+        System.out.println("Setup before setup");
+
         for (DefinitionNode child : node.Childs)
         {
             child.Accept(this);
         }
+
+        System.out.println("Setup after setup");
 
         return node;
     }
@@ -686,11 +719,17 @@ public class TypeChecker implements Visitor
     @Override
     public Object Visit(MethodCallNode node)
     {
-        node.identifier.Accept(this);
+        List<String[]> parameters = SymbolTable.FunctionList.get(node.identifier.Value).Parameters;
+
+        int i = 0;
         for (ExpressionNode expression : node.expressions)
         {
-            expression.Accept(this);
+            String parameterType = (String) expression.Accept(this);
+            if (!parameters.get(i++)[1].equals(parameterType))
+            {
+                ErrorHandler.AddError(new SemanticError(node, "Tried to use a " + parameterType + " when expecting a " + parameters.get(i - 1)[1] + " type in the method call parameters"));
+            }
         }
-        return null;
+        return SymbolTable.FunctionList.get(node.identifier.Value).Type;
     }
 }

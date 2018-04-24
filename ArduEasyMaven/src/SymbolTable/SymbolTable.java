@@ -18,6 +18,7 @@ public class SymbolTable
     public Map<String, Variable> Variables = new HashMap<String, Variable>();
     public SymbolTable CurrentOpenScope = this;
     public SymbolTable ParrentScope = this;
+    public static Map<String, FunctionVariable> FunctionList = new HashMap<String, FunctionVariable>();
 
 
     public void Insert(Node node, String key, Variable var)
