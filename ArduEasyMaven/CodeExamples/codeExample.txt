@@ -19,8 +19,6 @@ house
 	}
 }
 
-
-
 when (2 is not curtainsCounter)
 {
 	curtainsCounter = curtainsCounter + 1

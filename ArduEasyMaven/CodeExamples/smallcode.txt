@@ -12,7 +12,7 @@ house
 	}
 }
 
-function int test2(string kool)
+function int test2(string bool)
 {
     string hey = "test"
 	float jul = testFunction(hey)
