@@ -431,7 +431,17 @@ public class BuildSymbolTable implements Visitor
     @Override
     public Object Visit(ParameterNode node)
     {
-        node.Identifier.Accept(this);
+        final String identifier = (String)node.Identifier.Accept(this);
+        final String type = node.Type;
+
+        Variable var = new IdentifierVariable()
+        {{
+            Identifier = identifier;
+            Type = type;
+            Value = null;
+        }};
+
+        symbolTable.Insert(node, identifier, var);
 
         return null;
     }
