@@ -75,7 +75,7 @@ public class TypeChecker implements Visitor
         for (IdentifierNode value : node.Values)
         {
             String valueType = (String)value.Accept(this);
-            if (!valueType.equals(arrayType))
+            if (!valueType.equals(arrayType) && !valueType.equals("input") && !valueType.equals("output"))
             {
                 ErrorHandler.AddError(new SemanticError(node, "Tried to add invalid " + valueType + " to a " + arrayType + " array"));
             }
@@ -182,7 +182,10 @@ public class TypeChecker implements Visitor
         {
             statementsNode.Accept(this);
         }
-        node.Alternative.Accept(this);
+        if (node.Alternative != null)
+        {
+            node.Alternative.Accept(this);
+        }
         return null;
     }
 
@@ -215,10 +218,14 @@ public class TypeChecker implements Visitor
         if(!matchFound)
             ErrorHandler.AddError(new SemanticError(node, "Tried to compare invalid type " + rightType));
 
-        if(!(leftType.equals(intType) && rightType.equals(floatType)) || !(leftType.equals(floatType) && rightType.equals(intType)) || !leftType.equals(rightType))
+        if (leftType != null && rightType != null)
         {
-            ErrorHandler.AddError(new SemanticError(node, "Invalid equals comparison"));
+            if(!(leftType.equals(intType) && rightType.equals(floatType)) && !(leftType.equals(floatType) && rightType.equals(intType)) && !leftType.equals(rightType))
+            {
+                ErrorHandler.AddError(new SemanticError(node, "Invalid equals comparison " + leftType + " and " + rightType));
+            }
         }
+
 
         return boolType;
     }
@@ -233,6 +240,20 @@ public class TypeChecker implements Visitor
     public Object Visit(ForNode node)
     {
         lastScopeLine = node.LineNumber;
+        String predicateType = (String)node.Predicate.Accept(this);
+        if (!predicateType.equals(boolType))
+        {
+            ErrorHandler.AddError(new SemanticError(node, "Predicate not of type boolean"));
+        }
+
+        node.Increment.Accept(this);
+        node.Var.Accept(this);
+
+        for (StatementsNode statementsNode : node.body)
+        {
+            statementsNode.Accept(this);
+        }
+
         return null;
     }
 
@@ -280,9 +301,9 @@ public class TypeChecker implements Visitor
             ErrorHandler.AddError(new SemanticError(node, "Tried to compare invalid type " + rightType));
 
 
-        if(!(leftType.equals(intType) && rightType.equals(floatType)) || !(leftType.equals(floatType) && rightType.equals(intType)) || !leftType.equals(rightType))
+        if(!(leftType.equals(intType) && rightType.equals(floatType)) && !(leftType.equals(floatType) && rightType.equals(intType)) && !leftType.equals(rightType))
         {
-            ErrorHandler.AddError(new SemanticError(node, "Invalid greater or equals comparison"));
+            ErrorHandler.AddError(new SemanticError(node, "Invalid greater or equals comparison "+ leftType + " and " + rightType));
         }
 
         return boolType;
@@ -307,9 +328,9 @@ public class TypeChecker implements Visitor
             ErrorHandler.AddError(new SemanticError(node, "Tried to compare invalid type " + rightType));
 
 
-        if(!(leftType.equals(intType) && rightType.equals(floatType)) || !(leftType.equals(floatType) && rightType.equals(intType)) || !leftType.equals(rightType))
+        if(!(leftType.equals(intType) && rightType.equals(floatType)) && !(leftType.equals(floatType) && rightType.equals(intType)) && !leftType.equals(rightType))
         {
-            ErrorHandler.AddError(new SemanticError(node, "Invalid greater than comparison"));
+            ErrorHandler.AddError(new SemanticError(node, "Invalid greater than comparison "+ leftType + " and " + rightType));
         }
 
         return boolType;
@@ -341,7 +362,10 @@ public class TypeChecker implements Visitor
         {
             statementsNode.Accept(this);
         }
-        node.Alternative.Accept(this);
+        if (node.Alternative != null)
+        {
+            node.Alternative.Accept(this);
+        }
         return null;
     }
 
@@ -380,9 +404,9 @@ public class TypeChecker implements Visitor
             ErrorHandler.AddError(new SemanticError(node, "Tried to compare invalid type " + rightType));
 
 
-        if(!(leftType.equals(intType) && rightType.equals(floatType)) || !(leftType.equals(floatType) && rightType.equals(intType)) || !leftType.equals(rightType))
+        if(!(leftType.equals(intType) && rightType.equals(floatType)) && !(leftType.equals(floatType) && rightType.equals(intType)) && !leftType.equals(rightType))
         {
-            ErrorHandler.AddError(new SemanticError(node, "Invalid less or equal comparison"));
+            ErrorHandler.AddError(new SemanticError(node, "Invalid less or equal comparison "+ leftType + " and " + rightType));
         }
 
         return boolType;
@@ -407,9 +431,9 @@ public class TypeChecker implements Visitor
             ErrorHandler.AddError(new SemanticError(node, "Tried to compare invalid type " + rightType));
 
 
-        if(!(leftType.equals(intType) && rightType.equals(floatType)) || !(leftType.equals(floatType) && rightType.equals(intType)) || !leftType.equals(rightType))
+        if(!(leftType.equals(intType) && rightType.equals(floatType)) && !(leftType.equals(floatType) && rightType.equals(intType)) && !leftType.equals(rightType))
         {
-            ErrorHandler.AddError(new SemanticError(node, "Invalid less than comparison "));
+            ErrorHandler.AddError(new SemanticError(node, "Invalid less than comparison " + leftType + " and " + rightType));
         }
 
         return boolType;
@@ -511,9 +535,9 @@ public class TypeChecker implements Visitor
             ErrorHandler.AddError(new SemanticError(node, "Tried to compare invalid type " + rightType));
 
 
-        if(!(leftType.equals(intType) && rightType.equals(floatType)) || !(leftType.equals(floatType) && rightType.equals(intType)) || !leftType.equals(rightType))
+        if(!(leftType.equals(intType) && rightType.equals(floatType)) && !(leftType.equals(floatType) && rightType.equals(intType)) && !leftType.equals(rightType))
         {
-            ErrorHandler.AddError(new SemanticError(node, "Invalid not equals comparison"));
+            ErrorHandler.AddError(new SemanticError(node, "Invalid not equals comparison "+ leftType + " and " + rightType));
         }
 
         return boolType;
