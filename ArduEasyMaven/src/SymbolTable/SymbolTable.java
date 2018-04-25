@@ -20,7 +20,7 @@ public class SymbolTable
     public SymbolTable ParrentScope = this;
 
 
-    public void Insert(DefinitionNode node, String key, Variable var)
+    public void Insert(Node node, String key, Variable var)
     {
         if (LookUp(key))
         {
