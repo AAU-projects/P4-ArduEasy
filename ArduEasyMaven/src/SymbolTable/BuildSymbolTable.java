@@ -16,7 +16,6 @@ import java.util.List;
 public class BuildSymbolTable implements Visitor
 {
     private SymbolTable symbolTable = new SymbolTable();
-    private String room;
 
     @Override
     public Object Visit(AdditiveNode node)
@@ -78,7 +77,12 @@ public class BuildSymbolTable implements Visitor
                 if (!thing.equals(temp[2]))
                     symbolTable.GetScope(temp[1]).Update(node, thing, value);
             }
-        } else
+        }
+        else if (temp.length > 2)
+        {
+            symbolTable.GetScope(temp[1]).Update(node, temp[2], value);
+        }
+        else
             symbolTable.Update(node, identifier, value);
 
         return null;
@@ -94,15 +98,19 @@ public class BuildSymbolTable implements Visitor
     public Object Visit(CaseNode node)
     {
         symbolTable.CreateScope(node);
-        System.out.println("Opened a case scope");
+        System.out.println("Opened a case (" + node.LineNumber + ")");
 
         for (StatementsNode childNode : node.Body)
         {
             childNode.Accept(this);
         }
 
+        for (String s : symbolTable.CurrentOpenScope.Variables.keySet())
+        {
+            System.out.println("    " + s);
+        }
         symbolTable.CloseScope();
-        System.out.println("Closed a case scope");
+        System.out.println("Closed a case (" + node.LineNumber + ")");
         return null;
     }
 
@@ -151,7 +159,7 @@ public class BuildSymbolTable implements Visitor
         node.Predicate.Accept(this);
 
         symbolTable.CreateScope(node);
-        System.out.println("Opened an ElseIf scope");
+        System.out.println("Opened an ElseIf (" + node.LineNumber + ")");
 
         for (StatementsNode childNode : node.Body)
         {
@@ -159,8 +167,13 @@ public class BuildSymbolTable implements Visitor
         }
         node.Alternative.Accept(this);
 
+        for (String s : symbolTable.CurrentOpenScope.Variables.keySet())
+        {
+            System.out.println("    " + s);
+        }
+
         symbolTable.CloseScope();
-        System.out.println("Closed an ElseIf scope");
+        System.out.println("Closed an ElseIf (" + node.LineNumber + ")");
 
         return null;
     }
@@ -169,15 +182,20 @@ public class BuildSymbolTable implements Visitor
     public Object Visit(ElseNode node)
     {
         symbolTable.CreateScope(node);
-        System.out.println("Opened an else scope");
+        System.out.println("Opened an else (" + node.LineNumber + ")");
 
         for (StatementsNode childNode : node.Body)
         {
             childNode.Accept(this);
         }
 
+        for (String s : symbolTable.CurrentOpenScope.Variables.keySet())
+        {
+            System.out.println("    " + s);
+        }
+
         symbolTable.CloseScope();
-        System.out.println("Closed an else scope");
+        System.out.println("Closed an else (" + node.LineNumber + ")");
 
         return null;
     }
@@ -201,7 +219,7 @@ public class BuildSymbolTable implements Visitor
     public Object Visit(ForNode node)
     {
         symbolTable.CreateScope(node);
-        System.out.println("Opened a for scope");
+        System.out.println("Opened a for (" + node.LineNumber + ")");
 
         node.Var.Accept(this);
         node.Predicate.Accept(this);
@@ -212,8 +230,13 @@ public class BuildSymbolTable implements Visitor
             childNode.Accept(this);
         }
 
+        for (String s : symbolTable.CurrentOpenScope.Variables.keySet())
+        {
+            System.out.println("    " + s);
+        }
+
         symbolTable.CloseScope();
-        System.out.println("Closed a for scope");
+        System.out.println("Closed a for (" + node.LineNumber + ")");
 
         return null;
     }
@@ -222,7 +245,7 @@ public class BuildSymbolTable implements Visitor
     public Object Visit(FunctionNode node)
     {
         symbolTable.CreateScope(node);
-        System.out.println("Opened a function scope");
+        System.out.println("Opened a function (" + node.LineNumber + ")");
 
         for (ParameterNode childNode: node.Parameters)
         {
@@ -234,8 +257,13 @@ public class BuildSymbolTable implements Visitor
             childNode.Accept(this);
         }
 
+        for (String s : symbolTable.CurrentOpenScope.Variables.keySet())
+        {
+            System.out.println("    " + s);
+        }
+
         symbolTable.CloseScope();
-        System.out.println("Closed a function scope");
+        System.out.println("Closed a function (" + node.LineNumber + ")");
 
         return null;
     }
@@ -268,7 +296,7 @@ public class BuildSymbolTable implements Visitor
     public Object Visit(IfNode node)
     {
         symbolTable.CreateScope(node);
-        System.out.println("Opened an if scope");
+        System.out.println("Opened an if (" + node.LineNumber + ")");
 
         node.Predicate.Accept(this);
         if(node.Alternative != null)
@@ -278,8 +306,13 @@ public class BuildSymbolTable implements Visitor
             childNode.Accept(this);
         }
 
+        for (String s : symbolTable.CurrentOpenScope.Variables.keySet())
+        {
+            System.out.println("    " + s);
+        }
+
         symbolTable.CloseScope();
-        System.out.println("Closed an if scope");
+        System.out.println("Closed an if (" + node.LineNumber + ")");
 
         return null;
     }
@@ -373,7 +406,17 @@ public class BuildSymbolTable implements Visitor
     @Override
     public Object Visit(ParameterNode node)
     {
-        node.Identifier.Accept(this);
+        final String identifier = (String)node.Identifier.Accept(this);
+        final String type = node.Type;
+
+        Variable var = new IdentifierVariable()
+        {{
+            Identifier = identifier;
+            Type = type;
+            Value = null;
+        }};
+
+        symbolTable.Insert(node, identifier, var);
 
         return null;
     }
@@ -388,7 +431,7 @@ public class BuildSymbolTable implements Visitor
     public Object Visit(PerformTimes node)
     {
         symbolTable.CreateScope(node);
-        System.out.println("Opened a perform scope");
+        System.out.println("Opened a perform (" + node.LineNumber + ")");
 
         node.value.Accept(this);
 
@@ -397,8 +440,13 @@ public class BuildSymbolTable implements Visitor
             statementsNode.Accept(this);
         }
 
+        for (String s : symbolTable.CurrentOpenScope.Variables.keySet())
+        {
+            System.out.println("    " + s);
+        }
+
         symbolTable.CloseScope();
-        System.out.println("Closed a perform scope");
+        System.out.println("Closed a perform (" + node.LineNumber + ")");
 
         return null;
     }
@@ -407,7 +455,7 @@ public class BuildSymbolTable implements Visitor
     public Object Visit(PerformUntil node)
     {
         symbolTable.CreateScope(node);
-        System.out.println("Opened a perform scope");
+        System.out.println("Opened a perform (" + node.LineNumber + ")");
 
         node.Predicate.Accept(this);
 
@@ -416,8 +464,13 @@ public class BuildSymbolTable implements Visitor
             statementsNode.Accept(this);
         }
 
+        for (String s : symbolTable.CurrentOpenScope.Variables.keySet())
+        {
+            System.out.println("    " + s);
+        }
+
         symbolTable.CloseScope();
-        System.out.println("Closed a perform scope");
+        System.out.println("Closed a perform (" + node.LineNumber + ")");
 
         return null;
     }
@@ -457,7 +510,6 @@ public class BuildSymbolTable implements Visitor
     {
         final String identifier = (String)node.Identifier.Accept(this);
         final String type = "room";
-        room = identifier;
 
         ScopeVariable var = new ScopeVariable()
         {{
@@ -472,15 +524,20 @@ public class BuildSymbolTable implements Visitor
 
         symbolTable.Insert(node, identifier, var);
         symbolTable.OpenScope(var.Value);
-        System.out.println("Opened a room scope");
+        System.out.println("Opened a room (" + node.LineNumber + ")");
 
         for (RoomBlockNode childNode : node.body)
         {
             childNode.Accept(this);
         }
 
+        for (String s : symbolTable.CurrentOpenScope.Variables.keySet())
+        {
+            System.out.println("    " + s);
+        }
+
         symbolTable.CloseScope();
-        System.out.println("Closed a room scope");
+        System.out.println("Closed a room (" + node.LineNumber + ")");
 
         return null;
     }
@@ -550,7 +607,7 @@ public class BuildSymbolTable implements Visitor
     public Object Visit(WhenNode node)
     {
         symbolTable.CreateScope(node);
-        System.out.println("Opened a when scope");
+        System.out.println("Opened a when scope(" + node.LineNumber + ")");
 
         node.Predicate.Accept(this);
 
@@ -559,8 +616,13 @@ public class BuildSymbolTable implements Visitor
             statementsNode.Accept(this);
         }
 
+        for (String s : symbolTable.CurrentOpenScope.Variables.keySet())
+        {
+            System.out.println("    " + s);
+        }
+
         symbolTable.CloseScope();
-        System.out.println("Closed a when scope");
+        System.out.println("Closed a when (" + node.LineNumber + ")");
 
         return null;
     }
@@ -569,7 +631,7 @@ public class BuildSymbolTable implements Visitor
     public Object Visit(WhileNode node)
     {
         symbolTable.CreateScope(node);
-        System.out.println("Opened a While scope");
+        System.out.println("Opened a While (" + node.LineNumber + ")");
 
         node.Predicate.Accept(this);
 
@@ -578,8 +640,13 @@ public class BuildSymbolTable implements Visitor
             statementsNode.Accept(this);
         }
 
+        for (String s : symbolTable.CurrentOpenScope.Variables.keySet())
+        {
+            System.out.println("    " + s);
+        }
+
         symbolTable.CloseScope();
-        System.out.println("Closed a while scope");
+        System.out.println("Closed a while (" + node.LineNumber + ")");
 
         return null;
     }
