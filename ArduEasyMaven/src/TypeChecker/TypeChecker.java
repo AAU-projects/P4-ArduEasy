@@ -12,6 +12,7 @@ public class TypeChecker implements Visitor
 {
     private SymbolTable symbolTable;
     private int lastScopeLine;
+    private String isRoom = null;
 
     public TypeChecker(SymbolTable table)
     {
@@ -23,14 +24,19 @@ public class TypeChecker implements Visitor
     //Variables
     private String intType = "int";
     private String floatType = "float";
-    private String percentageType = "percentage";
+    private String percentageType = "percent";
     private String stringType = "string";
     private String boolType = "bool";
     private String timeType = "time";
     private String dayType = "day";
     private String monthType = "month";
-    private String arrayType = "array";
+    private String arrayDType = "array";
     private String roomType = "room";
+    private String inputType = "input";
+    private String outputType = "output";
+    private String AinputType = "Analog input";
+    private String AoutputType = "Analog output";
+    private String voidType = "void";
 
     @Override
     public Object Visit(AdditiveNode node)
@@ -75,9 +81,14 @@ public class TypeChecker implements Visitor
         for (IdentifierNode value : node.Values)
         {
             String valueType = (String)value.Accept(this);
-            if (!valueType.equals(arrayType) && !valueType.equals("input") && !valueType.equals("output"))
+            if (arrayDType.equals(arrayType) && (valueType.equals("int.input") || valueType.equals("int.output") || valueType.equals("bool.input") || valueType.equals("bool.output")))
             {
-                ErrorHandler.AddError(new SemanticError(node, "Tried to add invalid " + valueType + " to a " + arrayType + " array"));
+                arrayType = valueType;
+                symbolTable.GetScope(isRoom).Update(node, node.Values.get(0).Value, CheckPinType(arrayType));
+            }
+            if (!arrayType.equals(valueType))
+            {
+                ErrorHandler.AddError(new SemanticError(node, "Tried to add " + valueType + " to an " + arrayType + " array"));
             }
         }
 
@@ -88,8 +99,9 @@ public class TypeChecker implements Visitor
     public Object Visit(AssignmentNode node)
     {
         String identifierType = (String)node.Identifier.Accept(this);
-
+        identifierType = CheckPinType(identifierType);
         String valueType = (String)node.Value.Accept(this);
+        valueType = CheckPinType(valueType);
 
         if(identifierType.equals(floatType))
         {
@@ -102,6 +114,11 @@ public class TypeChecker implements Visitor
         return node;
     }
 
+    private String CheckPinType(String type) {
+        // if identifier is a pin declaration then tried to split type to only get type because type in pin returns type and iostatus
+        return type.split("\\.")[0];
+    }
+
     @Override
     public String Visit(BoolNode node)
     {
@@ -112,11 +129,21 @@ public class TypeChecker implements Visitor
     public String Visit(CaseNode node)
     {
         lastScopeLine = node.LineNumber;
-        String caseType = (String) node.Value.Accept(this);
+        String caseType ;
+
+        if (node.Value != null)
+        {
+            caseType = (String) node.Value.Accept(this);
+        }
+        else
+        {
+            caseType = null;
+        }
 
         for (StatementsNode statementsNode : node.Body)
         {
             statementsNode.Accept(this);
+            lastScopeLine = node.LineNumber;
         }
         return caseType;
     }
@@ -181,10 +208,13 @@ public class TypeChecker implements Visitor
         for (StatementsNode statementsNode : node.Body)
         {
             statementsNode.Accept(this);
+            lastScopeLine = node.LineNumber;
+
         }
         if (node.Alternative != null)
         {
             node.Alternative.Accept(this);
+            lastScopeLine = node.LineNumber;
         }
         return null;
     }
@@ -196,6 +226,7 @@ public class TypeChecker implements Visitor
         for (StatementsNode statementsNode : node.Body)
         {
             statementsNode.Accept(this);
+            lastScopeLine = node.LineNumber;
         }
         return null;
     }
@@ -203,31 +234,45 @@ public class TypeChecker implements Visitor
     @Override
     public String Visit(EqualsNode node)
     {
-        String[] EqualsTypes = {intType, floatType, percentageType, timeType, dayType, monthType, boolType, stringType};
+        String[] EqualsTypes = {intType, floatType, percentageType, timeType, dayType, monthType, boolType, stringType, inputType, outputType, AinputType, AoutputType};
 
         String leftType = (String)node.Left.Accept(this);
+        leftType = CheckPinType(leftType);
         String rightType = (String)node.Right.Accept(this);
+        rightType = CheckPinType(rightType);
 
-        boolean matchFound = Arrays.asList(EqualsTypes).contains(leftType);
-
-        if(!matchFound)
-            ErrorHandler.AddError(new SemanticError(node, "Tried to compare invalid type " + leftType));
-
-        matchFound = Arrays.asList(EqualsTypes).contains(rightType);
-
-        if(!matchFound)
-            ErrorHandler.AddError(new SemanticError(node, "Tried to compare invalid type " + rightType));
-
-        if (leftType != null && rightType != null)
+        if(CheckComparisonOperators(EqualsTypes, leftType, rightType, node))
         {
-            if(!(leftType.equals(intType) && rightType.equals(floatType)) && !(leftType.equals(floatType) && rightType.equals(intType)) && !leftType.equals(rightType))
-            {
-                ErrorHandler.AddError(new SemanticError(node, "Invalid equals comparison " + leftType + " and " + rightType));
-            }
+            ErrorHandler.AddError(new SemanticError(node, "Invalid equals comparison " + leftType + " and " + rightType));
         }
 
-
         return boolType;
+    }
+
+    private boolean CheckComparisonOperators(String[] comparisonTypes, String leftType, String rightType, Node node)
+    {
+        if (leftType == null || rightType == null) return false;
+
+        boolean matchFound = Arrays.asList(comparisonTypes).contains(leftType);
+
+        if(!matchFound)
+        {
+            ErrorHandler.AddError(new SemanticError(node, "Tried to compare invalid type " + leftType));
+            return false;
+        }
+
+        matchFound = Arrays.asList(comparisonTypes).contains(rightType);
+
+        if(!matchFound)
+        {
+            ErrorHandler.AddError(new SemanticError(node, "Tried to compare invalid type " + rightType));
+            return false;
+        }
+
+        // this should be tested... for all comparisons
+        return !(leftType.equals(intType) && rightType.equals(floatType) // float and int comparison
+                || (leftType.equals(floatType) && rightType.equals(intType))
+                || leftType.equals(rightType));
     }
 
     @Override
@@ -252,8 +297,8 @@ public class TypeChecker implements Visitor
         for (StatementsNode statementsNode : node.body)
         {
             statementsNode.Accept(this);
+            lastScopeLine = node.LineNumber;
         }
-
         return null;
     }
 
@@ -261,12 +306,15 @@ public class TypeChecker implements Visitor
     public Object Visit(FunctionNode node)
     {
         lastScopeLine = node.LineNumber;
-        
-        String typeOfReturn = ((String) node.Return.Accept(this));
 
-        if (!typeOfReturn.equals(node.ReturnType))
+        if (!node.ReturnType.equals(voidType))
         {
-            ErrorHandler.AddError(new SemanticError(node, "Tried to return a " + typeOfReturn + " in a " + node.ReturnType + " method"));
+            String typeOfReturn = ((String) node.Return.Accept(this));
+
+            if (!typeOfReturn.equals(node.ReturnType))
+            {
+                ErrorHandler.AddError(new SemanticError(node, "Tried to return a " + typeOfReturn + " in a " + node.ReturnType + " method"));
+            }
         }
 
         for (ParameterNode parameter : node.Parameters)
@@ -277,31 +325,20 @@ public class TypeChecker implements Visitor
         for (StatementsNode statementsNode : node.Body)
         {
             statementsNode.Accept(this);
+            lastScopeLine = node.LineNumber;
         }
-
         return null;
     }
 
     @Override
     public String Visit(GreaterOrEqualNode node)
     {
-        String[] GreaterOrEqualTypes = {intType, floatType, percentageType, timeType, dayType, monthType};
+        String[] GreaterOrEqualTypes = {intType, floatType, percentageType, timeType, dayType, monthType, AinputType, AoutputType};
 
         String leftType = (String)node.Left.Accept(this);
         String rightType = (String)node.Right.Accept(this);
 
-        boolean matchFound = Arrays.asList(GreaterOrEqualTypes).contains(leftType);
-
-        if(!matchFound)
-            ErrorHandler.AddError(new SemanticError(node, "Tried to compare invalid type " + leftType));
-
-        matchFound = Arrays.asList(GreaterOrEqualTypes).contains(rightType);
-
-        if(!matchFound)
-            ErrorHandler.AddError(new SemanticError(node, "Tried to compare invalid type " + rightType));
-
-
-        if(!(leftType.equals(intType) && rightType.equals(floatType)) && !(leftType.equals(floatType) && rightType.equals(intType)) && !leftType.equals(rightType))
+        if(CheckComparisonOperators(GreaterOrEqualTypes, leftType, rightType, node))
         {
             ErrorHandler.AddError(new SemanticError(node, "Invalid greater or equals comparison "+ leftType + " and " + rightType));
         }
@@ -312,23 +349,12 @@ public class TypeChecker implements Visitor
     @Override
     public String Visit(GreaterThanNode node)
     {
-        String[] GreaterThanTypes = {intType, floatType, percentageType, timeType, dayType, monthType};
+        String[] GreaterThanTypes = {intType, floatType, percentageType, timeType, dayType, monthType, AinputType, AoutputType};
 
         String leftType = (String)node.Left.Accept(this);
         String rightType = (String)node.Right.Accept(this);
 
-        boolean matchFound = Arrays.asList(GreaterThanTypes).contains(leftType);
-
-        if(!matchFound)
-            ErrorHandler.AddError(new SemanticError(node, "Tried to compare invalid type " + leftType));
-
-        matchFound = Arrays.asList(GreaterThanTypes).contains(rightType);
-
-        if(!matchFound)
-            ErrorHandler.AddError(new SemanticError(node, "Tried to compare invalid type " + rightType));
-
-
-        if(!(leftType.equals(intType) && rightType.equals(floatType)) && !(leftType.equals(floatType) && rightType.equals(intType)) && !leftType.equals(rightType))
+        if(CheckComparisonOperators(GreaterThanTypes, leftType, rightType, node))
         {
             ErrorHandler.AddError(new SemanticError(node, "Invalid greater than comparison "+ leftType + " and " + rightType));
         }
@@ -339,14 +365,25 @@ public class TypeChecker implements Visitor
     @Override
     public String Visit(IdentifierNode node)
     {
+        String[] roomSplit = node.Value.split("\\.");
+
         if (lastScopeLine == 0)
         {
             return symbolTable.GetTypeofVariable(node, node.Value);
+        }
+        else if (isRoom != null)
+        {
+            return symbolTable.GetScope(isRoom).GetTypeofVariable(node, node.Value);
+        }
+        else if (roomSplit.length > 2)
+        {
+            return symbolTable.GetScope(roomSplit[1]).GetTypeofVariable(node, roomSplit[2]);
         }
         else
         {
             return symbolTable.GetScope((String.valueOf(lastScopeLine))).GetTypeofVariable(node, node.Value);
         }
+
     }
 
     @Override
@@ -354,6 +391,8 @@ public class TypeChecker implements Visitor
     {
         lastScopeLine = node.LineNumber;
         String predicateType = (String)node.Predicate.Accept(this);
+        predicateType = CheckPinType(predicateType);
+
         if (!predicateType.equals(boolType))
         {
             ErrorHandler.AddError(new SemanticError(node, "Predicate not of type boolean"));
@@ -361,11 +400,13 @@ public class TypeChecker implements Visitor
         for (StatementsNode statementsNode : node.Body)
         {
             statementsNode.Accept(this);
+            lastScopeLine = node.LineNumber;
         }
         if (node.Alternative != null)
         {
             node.Alternative.Accept(this);
         }
+        lastScopeLine = node.LineNumber;
         return null;
     }
 
@@ -388,23 +429,12 @@ public class TypeChecker implements Visitor
     @Override
     public String Visit(LessOrEqualNode node)
     {
-        String[] LessOrEqualTypes = {intType, floatType, percentageType, timeType, dayType, monthType};
+        String[] LessOrEqualTypes = {intType, floatType, percentageType, timeType, dayType, monthType, AinputType, AoutputType};
 
         String leftType = (String)node.Left.Accept(this);
         String rightType = (String)node.Right.Accept(this);
 
-        boolean matchFound = Arrays.asList(LessOrEqualTypes).contains(leftType);
-
-        if(!matchFound)
-            ErrorHandler.AddError(new SemanticError(node, "Tried to compare invalid type " + leftType));
-
-        matchFound = Arrays.asList(LessOrEqualTypes).contains(rightType);
-
-        if(!matchFound)
-            ErrorHandler.AddError(new SemanticError(node, "Tried to compare invalid type " + rightType));
-
-
-        if(!(leftType.equals(intType) && rightType.equals(floatType)) && !(leftType.equals(floatType) && rightType.equals(intType)) && !leftType.equals(rightType))
+        if(CheckComparisonOperators(LessOrEqualTypes, leftType, rightType, node))
         {
             ErrorHandler.AddError(new SemanticError(node, "Invalid less or equal comparison "+ leftType + " and " + rightType));
         }
@@ -415,23 +445,12 @@ public class TypeChecker implements Visitor
     @Override
     public String Visit(LessThanNode node)
     {
-        String[] LessThanTypes = {intType, floatType, percentageType, timeType, dayType, monthType};
+        String[] LessThanTypes = {intType, floatType, percentageType, timeType, dayType, monthType, AinputType, AoutputType};
 
         String leftType = (String)node.Left.Accept(this);
         String rightType = (String)node.Right.Accept(this);
 
-        boolean matchFound = Arrays.asList(LessThanTypes).contains(leftType);
-
-        if(!matchFound)
-            ErrorHandler.AddError(new SemanticError(node, "Tried to compare invalid type " + leftType));
-
-        matchFound = Arrays.asList(LessThanTypes).contains(rightType);
-
-        if(!matchFound)
-            ErrorHandler.AddError(new SemanticError(node, "Tried to compare invalid type " + rightType));
-
-
-        if(!(leftType.equals(intType) && rightType.equals(floatType)) && !(leftType.equals(floatType) && rightType.equals(intType)) && !leftType.equals(rightType))
+        if(CheckComparisonOperators(LessThanTypes, leftType, rightType, node))
         {
             ErrorHandler.AddError(new SemanticError(node, "Invalid less than comparison " + leftType + " and " + rightType));
         }
@@ -519,23 +538,12 @@ public class TypeChecker implements Visitor
     @Override
     public String Visit(NotEqualsNode node)
     {
-        String[] NotEqualsTypes = {intType, floatType, percentageType, timeType, dayType, monthType};
+        String[] NotEqualsTypes = {intType, floatType, percentageType, timeType, dayType, monthType, inputType, outputType, AinputType, AoutputType};
 
         String leftType = (String)node.Left.Accept(this);
         String rightType = (String)node.Right.Accept(this);
 
-        boolean matchFound = Arrays.asList(NotEqualsTypes).contains(leftType);
-
-        if(!matchFound)
-            ErrorHandler.AddError(new SemanticError(node, "Tried to compare invalid type " + leftType));
-
-        matchFound = Arrays.asList(NotEqualsTypes).contains(rightType);
-
-        if(!matchFound)
-            ErrorHandler.AddError(new SemanticError(node, "Tried to compare invalid type " + rightType));
-
-
-        if(!(leftType.equals(intType) && rightType.equals(floatType)) && !(leftType.equals(floatType) && rightType.equals(intType)) && !leftType.equals(rightType))
+        if(CheckComparisonOperators(NotEqualsTypes, leftType, rightType, node))
         {
             ErrorHandler.AddError(new SemanticError(node, "Invalid not equals comparison "+ leftType + " and " + rightType));
         }
@@ -560,13 +568,18 @@ public class TypeChecker implements Visitor
     {
         lastScopeLine = node.LineNumber;
         String iteratorType = (String)node.value.Accept(this);
-        if (!iteratorType.equals(intType))
+
+        if (iteratorType != null) // if no type is found the variable is not in the scope
         {
-            ErrorHandler.AddError(new SemanticError(node, "Iterator has to be of type int, is of type: " + iteratorType));
-        }
-        for (StatementsNode statementsNode : node.Body)
-        {
-            statementsNode.Accept(this);
+            if (!iteratorType.equals(intType))
+            {
+                ErrorHandler.AddError(new SemanticError(node, "Iterator has to be of type int, is of type: " + iteratorType));
+            }
+            for (StatementsNode statementsNode : node.Body)
+            {
+                statementsNode.Accept(this);
+                lastScopeLine = node.LineNumber;
+            }
         }
         return null;
     }
@@ -597,21 +610,22 @@ public class TypeChecker implements Visitor
     public String Visit(RoomDeclaration node)
     {
         lastScopeLine = node.LineNumber;
+        isRoom = node.Identifier.Value;
+
         for (RoomBlockNode roomBlockNode : node.body)
         {
             roomBlockNode.Accept(this);
+            lastScopeLine = node.LineNumber;
         }
+
+        isRoom = null;
         return roomType;
     }
 
     @Override
     public Object Visit(RootNode node)
     {
-        System.out.println("Root before setup");
-
         node.Setup.Accept(this);
-
-        System.out.println("Root after setup");
 
         for (FunctionsNode function : node.Functions)
         {
@@ -624,14 +638,10 @@ public class TypeChecker implements Visitor
     @Override
     public Object Visit(SetupNode node)
     {
-        System.out.println("Setup before setup");
-
         for (DefinitionNode child : node.Childs)
         {
             child.Accept(this);
         }
-
-        System.out.println("Setup after setup");
 
         return node;
     }
@@ -674,18 +684,21 @@ public class TypeChecker implements Visitor
     @Override
     public Object Visit(SwitchNode node)
     {
-        lastScopeLine = node.LineNumber;
         String switchType = (String)node.expression.Accept(this);
 
         for (CaseNode caseNode : node.Body)
         {
             String caseType = (String) caseNode.Accept(this);
+
             if (!caseType.equals(switchType))
             {
                 ErrorHandler.AddError(new SemanticError(node, "Case type is: " + caseType + " expecting: " + switchType));
             }
         }
-        node.defaultCase.Accept(this);
+        if (node.defaultCase != null)
+        {
+            node.defaultCase.Accept(this);
+        }
         return null;
     }
 
@@ -707,6 +720,7 @@ public class TypeChecker implements Visitor
         for (StatementsNode statementsNode : node.Body)
         {
             statementsNode.Accept(this);
+            lastScopeLine = node.LineNumber;
         }
         return null;
     }
@@ -729,15 +743,14 @@ public class TypeChecker implements Visitor
         for (StatementsNode statementsNode : node.Body)
         {
             statementsNode.Accept(this);
+            lastScopeLine = node.LineNumber;
         }
     }
 
     @Override
-    public Object Visit(HouseNode node)
+    public String Visit(HouseNode node)
     {
-        lastScopeLine = node.LineNumber;
-        node.Identifier.Accept(this);
-        return null;
+        return (String) node.Identifier.Accept(this);
     }
 
     @Override
@@ -749,6 +762,7 @@ public class TypeChecker implements Visitor
         for (ExpressionNode expression : node.expressions)
         {
             String parameterType = (String) expression.Accept(this);
+            parameterType = CheckPinType(parameterType);
             if (!parameters.get(i++)[1].equals(parameterType))
             {
                 ErrorHandler.AddError(new SemanticError(node, "Tried to use a " + parameterType + " when expecting a " + parameters.get(i - 1)[1] + " type in the method call parameters"));

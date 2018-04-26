@@ -81,8 +81,11 @@ else_r              : ELSE LBRACK statement* RBRACK
 ifElse              : ELSE IF LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK (ifElse | else_r)?
                  	;
 
-cases               : case_r* DEFAULT COLON LBRACK statement* RBRACK
+cases               : case_r* default_case
 					| case_r*
+					;
+
+default_case        : DEFAULT COLON LBRACK statement* RBRACK
 					;
 
 case_r              : CASE value  COLON LBRACK statement* RBRACK

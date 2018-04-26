@@ -391,9 +391,9 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
             expression = visitExpression(ctx.expression()); //TODO not totaly sure here
             Body = visitCaseList(ctx.cases());
             LineNumber = getLineNumber(ctx);
-            if (ctx.cases().statement().size() != 0) // for some reaon statements is not null so i check for size
+            if (ctx.cases().default_case() != null) // for some reaon statements is not null so i check for size
             {
-                defaultCase = visitDefaultCase(ctx.cases());
+                defaultCase = visitDefaultCase(ctx.cases().default_case());
             }
             else
             {
@@ -402,7 +402,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         }};
     }
 
-    private CaseNode visitDefaultCase(final ArduEasyParser.CasesContext ctx)
+    private CaseNode visitDefaultCase(final ArduEasyParser.Default_caseContext ctx)
     {
         return new CaseNode()
         {{

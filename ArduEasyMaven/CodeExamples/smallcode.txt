@@ -6,7 +6,7 @@ house
 	room Hallway
 	{
 		Light1 = PIN A 12 as input
-		Light2 = PIN 11 as output
+		Light2 = PIN A 11 as input
 
 		Lights = { Light1, Light2 }
 	}
@@ -16,12 +16,12 @@ house
 function int test2(string what)
 {
     string hey = "test"
-	float jul = 5.0
+	int jul = 5
 
 	return jul
 }
 
-function int testFunction(int bob)
+function int testFunction(string bob)
 {
 	int returnValue = 42
 

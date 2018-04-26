@@ -2,13 +2,17 @@ house
 {
     Temp = PIN A 12 as input
     CurrentTime = PIN A 13 as input
+    float bob2 = 5 + 8.50
+    int hej = 10+5
+    int hejhej = 2
 
     time SavedTime = 00:00
+    time NextTime = 12:00
 
     room Kitchen
     {
-        Lamp1 = PIN 1 as output
-        Lamp2 = PIN 2 as output
+        Lamp1 = PIN A 1 as output
+        Lamp2 = PIN A 2 as output
         CoffeeMachine = PIN 3 as output
         Button = PIN 4 as input
         Window = PIN 5 as output
@@ -28,24 +32,24 @@ house
 
 when (house.Kitchen.Button is true)
 {
-    house.Temp = true
+    house.Temp = 55
     float Fahrenheit = CelciusToFahrenheit(house.Temp)
     house.Kitchen.CoffeeMachine = true
-    SavedTime = CurrentTime
+    bool test = SavedTime == NextTime
 
-    if (SavedTime + 00:15 is CurrentTime && Fahrenheit is above or equal 64)
+    if (SavedTime + 00:15 is NextTime && Fahrenheit is above or equal 64 and test)
     {
-        house.Kitchen.Window = true //Opens the window 15 mins after the coffee machine turned on if Fahrenheit >= 64.
+        house.Kitchen.Window = true //Opens the window 15 mins after the coffee machine turned on if Fahrenheit >= 64.0
     }
 }
 
-when (Time is 07:00)
+when (SavedTime is 07:00)
 {
     house.Bedroom.Blinds = true //This will open the blinds at 7.
-    house.Kitchen.Lamps = true //Turns on the Lamps in the Kitchen
+    house.Kitchen.Lamps = 255 //Turns on the Lamps in the Kitchen
 }
 
-when (Time is 18:00)
+when (SavedTime is 18:00)
 {
     house.Bedroom.Blinds = false //This will close the blinds at 18.
     int bob = 0
@@ -66,10 +70,10 @@ when (Time is 18:00)
         {
             bob = bob + val
         }
-        //default:
-        //{
-        //    val = val + val
-        //}
+        default:
+        {
+            val = val + val
+        }
     }
 }
 
@@ -79,8 +83,10 @@ function float CelciusToFahrenheit(int temp)
     day weekday = MONDAY
     month test = DECEMBER
     percent anothertest = 35%
+    int bob = 4
+    int i = 5
 
-    for (int i = 0; i < 10; i = i + 1)
+    for (int j = 0; i < 10; i = i + 1)
     {
 
     }

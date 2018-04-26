@@ -75,6 +75,7 @@ public class SymbolTable
         CurrentOpenScope.Variables.get(key).SetValue(value);
     }
 
+
     public String GetTypeofVariable(Node node, String key)
     {
         if(!LookUp(key))

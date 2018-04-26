@@ -2,6 +2,7 @@ import ErrorHandler.ErrorHandler;
 import PrettyPrint.PrettyPrint;
 import SymbolTable.BuildSymbolTable;
 import TypeChecker.TypeChecker;
+import org.antlr.v4.runtime.ANTLRErrorStrategy;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -17,11 +18,12 @@ public class Program
 {
     public static void main(String args[]) throws IOException
     {
-        String filePath = "CodeExamples/guideExample.txt";
+        String filePath = "CodeExamples/test.txt";
         CharStream inputStream = CharStreams.fromFileName(filePath);
         ArduEasyLexer lexer = new ArduEasyLexer(inputStream);
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
         ArduEasyParser parser = new ArduEasyParser(tokenStream);
+        System.out.println();
 
         RootNode root;
 
@@ -63,13 +65,15 @@ public class Program
 
             System.out.println("Type Checker:");
             typeChecker.Visit(root);
-
+            System.out.println("Complete...");
 
             ErrorHandler.PrintErrors();
 
         } catch (Exception e)
         {
             System.out.println(e.toString());
+            ErrorHandler.PrintErrors();
         }
+
     }
 }

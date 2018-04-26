@@ -29,7 +29,7 @@ when (2 is not curtainsCounter)
 
 function int testFunction(string bob)
 {
-	int returnValue = 42
+	int returnValue = 42.77
 	
 	if(2 is below or equal 6)
 	{

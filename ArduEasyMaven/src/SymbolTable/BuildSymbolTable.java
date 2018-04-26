@@ -36,11 +36,7 @@ public class BuildSymbolTable implements Visitor
         return left + " + " + right;
     }
 
-    @Override
-    public Object Visit(AnalogPinNode node)
-    {
-        return "A " + node.Value;
-    }
+
 
     @Override
     public Object Visit(ArrayDeclarationNode node)
@@ -149,12 +145,6 @@ public class BuildSymbolTable implements Visitor
     }
 
     @Override
-    public Object Visit(DigitalPinNode node)
-    {
-        return String.valueOf(node.Value);
-    }
-
-    @Override
     public Object Visit(DivisionNode node)
     {
         String left = (String)node.LeftChild.Accept(this);
@@ -175,7 +165,6 @@ public class BuildSymbolTable implements Visitor
         {
             childNode.Accept(this);
         }
-        node.Alternative.Accept(this);
 
         for (String s : symbolTable.CurrentOpenScope.Variables.keySet())
         {
@@ -184,6 +173,9 @@ public class BuildSymbolTable implements Visitor
 
         symbolTable.CloseScope();
         System.out.println("Closed an ElseIf (" + node.LineNumber + ")");
+
+        if(node.Alternative != null)
+            node.Alternative.Accept(this);
 
         return null;
     }
@@ -324,8 +316,6 @@ public class BuildSymbolTable implements Visitor
         System.out.println("Opened an if (" + node.LineNumber + ")");
 
         node.Predicate.Accept(this);
-        if(node.Alternative != null)
-            node.Alternative.Accept(this);
         for (StatementsNode childNode : node.Body)
         {
             childNode.Accept(this);
@@ -338,6 +328,9 @@ public class BuildSymbolTable implements Visitor
 
         symbolTable.CloseScope();
         System.out.println("Closed an if (" + node.LineNumber + ")");
+
+        if(node.Alternative != null)
+            node.Alternative.Accept(this);
 
         return null;
     }
@@ -501,17 +494,18 @@ public class BuildSymbolTable implements Visitor
     }
 
     @Override
-    public Object Visit(PinDeclarationNode node)
+    public Object Visit(final PinDeclarationNode node)
     {
         final String identifier = (String)node.Identifier.Accept(this);
-        final String value = (String)node.Pin.Accept(this);
+        final PinNode pin = (PinNode)node.Pin.Accept(this);
         final String type = (String)node.IoStatus.Accept(this);
 
-        Variable var = new IdentifierVariable()
+        Variable var = new PinVariable()
         {{
             Identifier = identifier;
-            Value = value;
-            Type = type;
+            Value = String.valueOf(pin.Value);
+            Type = pin.Type + "." + type;
+            IOStatus = type;
         }};
 
         if(symbolTable.CurrentOpenScope == symbolTable)
@@ -521,6 +515,27 @@ public class BuildSymbolTable implements Visitor
 
         return null;
     }
+
+    @Override
+    public PinNode Visit(final DigitalPinNode node)
+    {
+        return new DigitalPinNode()
+        {{
+            Value = node.Value;
+            Type = boolType;
+        }};
+    }
+
+    @Override
+    public Object Visit(final AnalogPinNode node)
+    {
+        return new AnalogPinNode()
+        {{
+            Value = node.Value;
+            Type = intType;
+        }};
+    }
+
 
     @Override
     public Object Visit(ReturnNode node)
@@ -547,7 +562,7 @@ public class BuildSymbolTable implements Visitor
             }};
         }};
 
-        symbolTable.Insert(node, String.valueOf(node.LineNumber), var);
+        symbolTable.Insert(node, identifier, var);
         symbolTable.OpenScope(var.Value);
         System.out.println("Opened a room (" + node.LineNumber + ")");
 
