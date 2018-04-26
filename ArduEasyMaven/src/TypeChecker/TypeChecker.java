@@ -81,7 +81,7 @@ public class TypeChecker implements Visitor
         for (IdentifierNode value : node.Values)
         {
             String valueType = (String)value.Accept(this);
-            if (arrayDType.equals(arrayType) && (valueType.equals("int.input") || valueType.equals("int.output") || valueType.equals("bool.input") || valueType.equals("bool.output")))
+            if (arrayDType.equals(arrayType) && (valueType.equals("int.input") || valueType.equals("int.output") || valueType.equals("bool.input") || valueType.equals("bool.output") || valueType.equals("bool.inputpullup") || valueType.equals("bool.inputpullup") ))
             {
                 arrayType = valueType;
                 symbolTable.GetScope(isRoom).Update(node, node.Values.get(0).Value, CheckPinType(arrayType));
