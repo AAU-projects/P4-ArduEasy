@@ -92,6 +92,12 @@ logicalExpressions  : logicalExpressions logicalOperator logicalExpressions
                  	| logicalExpression
                  	;
 
+logicalParan        : LPAREN logicalExpressions RPAREN
+                    ;
+
+parenExpression     : LPAREN logicalExpressions RPAREN
+                    ;
+
 logicalExpression   : addSubExpression comparisonOperator addSubExpression
                     | addSubExpression
                  	;
@@ -108,8 +114,11 @@ addSubExpression    : multiDivExpression
                  	| addSubExpression SUBTRACTIVEOPERATOR multiDivExpression
                  	;
 
-multiDivExpression  : expression MULTIPLICATIVEOPERATOR multiDivExpression
+multiDivExpression  : parenExpression
+                    | expression MULTIPLICATIVEOPERATOR multiDivExpression
                     | expression DIVISIONALOPERATOR multiDivExpression
+                    | parenExpression MULTIPLICATIVEOPERATOR multiDivExpression
+                    | parenExpression DIVISIONALOPERATOR multiDivExpression
                     | expression
                  	;
 
