@@ -2,7 +2,7 @@ package AST.Nodes;
 
 import visitor.Visitor;
 
-public class NegateNode extends ExpressionNode
+public class NegateNode extends ValueNode
 {
     public ExpressionNode child;
 

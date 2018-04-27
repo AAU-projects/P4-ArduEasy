@@ -18,9 +18,10 @@ public class SymbolTable
     public Map<String, Variable> Variables = new HashMap<String, Variable>();
     public SymbolTable CurrentOpenScope = this;
     public SymbolTable ParrentScope = this;
+    public static HashMap<String, FunctionVariable> FunctionList = new HashMap<String, FunctionVariable>();
 
 
-    public void Insert(DefinitionNode node, String key, Variable var)
+    public void Insert(Node node, String key, Variable var)
     {
         if (LookUp(key))
         {
@@ -31,7 +32,7 @@ public class SymbolTable
         CurrentOpenScope.Variables.put(key,var);
     }
 
-    public void Delete(DefinitionNode node, String key)
+    public void Delete(Node node, String key)
     {
         if (CurrentOpenScope != this)
         {
@@ -55,7 +56,7 @@ public class SymbolTable
         return Variables.containsKey(key);
     }
 
-    public void Update(DefinitionNode node, String key, Object value)
+    public void Update(Node node, String key, Object value)
     {
         if (key.startsWith("house"))
         {
@@ -74,7 +75,8 @@ public class SymbolTable
         CurrentOpenScope.Variables.get(key).SetValue(value);
     }
 
-    public String GetTypeofVariable(DefinitionNode node, String key)
+
+    public String GetTypeofVariable(Node node, String key)
     {
         if(!LookUp(key))
         {
@@ -87,7 +89,13 @@ public class SymbolTable
 
     public SymbolTable GetScope(String scopeName)
     {
-        SymbolTable result = (SymbolTable) Variables.get(scopeName).Value();
+        Variable variable =  Variables.get(scopeName);
+        SymbolTable result = null;
+
+        if (variable != null)
+        {
+            result = (SymbolTable) variable.Value();
+        }
 
         if (result == null)
         {
@@ -109,15 +117,17 @@ public class SymbolTable
 
     public void CreateScope(final Node node)
     {
-        final Map<String, Variable> test = this.CurrentOpenScope.Variables;
+        final HashMap<String, Variable> temp = new HashMap<String, Variable>();
+        final SymbolTable tempCurrentScope = CurrentOpenScope;
+        temp.putAll(CurrentOpenScope.Variables);
         ScopeVariable var = new ScopeVariable()
         {{
             Identifier = String.valueOf(node.LineNumber);
             Type = "scope";
             Value = new SymbolTable()
             {{
-                Variables = new HashMap<String, Variable>(test);
-                ParrentScope = CurrentOpenScope;
+                Variables = temp;
+                ParrentScope = tempCurrentScope;
             }};
         }};
 

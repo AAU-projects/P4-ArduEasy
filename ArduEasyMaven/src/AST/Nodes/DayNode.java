@@ -2,7 +2,7 @@ package AST.Nodes;
 
 import visitor.Visitor;
 
-public class DayNode extends ExpressionNode
+public class DayNode extends ValueNode
 {
     public String Value;
 

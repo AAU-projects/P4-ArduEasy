@@ -2,7 +2,7 @@ package AST.Nodes;
 
 import visitor.Visitor;
 
-public class TimeNode extends ExpressionNode
+public class TimeNode extends ValueNode
 {
     public String Value;
 

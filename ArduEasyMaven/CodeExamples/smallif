@@ -7,18 +7,17 @@ house
 
 function void IfTest1 ()
 {
+    int bob = 7
+    int jens = 10
+
     if(5>2)
     {
-        int bob = 7
-        int jens = 10
-
         if (bob is jens)
         {
 
         }
 
         bool PartyTime = true
-
     }
     else if (3>7)
     {
@@ -27,15 +26,13 @@ function void IfTest1 ()
 
         }
 
-       bool PartyTime = true
+        bool PartyTime = true
     }
     else
     {
         if (bob is jens)
         {
-
         }
-
         bool PartyTime = true
     }
 

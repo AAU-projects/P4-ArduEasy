@@ -22,6 +22,7 @@ function void LOOPtest1()
     {
 
     }
+    int bob = 5
     perform bob times
     {
 

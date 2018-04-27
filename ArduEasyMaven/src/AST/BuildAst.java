@@ -391,9 +391,9 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
             expression = visitExpression(ctx.expression()); //TODO not totaly sure here
             Body = visitCaseList(ctx.cases());
             LineNumber = getLineNumber(ctx);
-            if (ctx.cases().statement().size() != 0) // for some reaon statements is not null so i check for size
+            if (ctx.cases().default_case() != null) // for some reaon statements is not null so i check for size
             {
-                defaultCase = visitDefaultCase(ctx.cases());
+                defaultCase = visitDefaultCase(ctx.cases().default_case());
             }
             else
             {
@@ -402,11 +402,10 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         }};
     }
 
-    private CaseNode visitDefaultCase(final ArduEasyParser.CasesContext ctx)
+    private CaseNode visitDefaultCase(final ArduEasyParser.Default_caseContext ctx)
     {
         return new CaseNode()
         {{
-            Value = ctx.DEFAULT().getText();
             Body = visitStatementList(ctx.statement());
             LineNumber = getLineNumber(ctx);
         }};
@@ -430,7 +429,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
     public CaseNode visitCase_r(final ArduEasyParser.Case_rContext ctx) {
         return new CaseNode()
         {{
-            Value = ctx.value().getText();
+            Value = determinateValue(ctx.value());
             Body = visitStatementList(ctx.statement());
             LineNumber = getLineNumber(ctx);
         }};
@@ -717,7 +716,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         return null;
     }
 
-    private ExpressionNode determinateValue(final ArduEasyParser.ValueContext ctx)
+    private ValueNode determinateValue(final ArduEasyParser.ValueContext ctx)
     {
         if (ctx.INT() != null)
         {

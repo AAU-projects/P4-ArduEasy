@@ -31,7 +31,7 @@ function void AssTest1()
     bool jonas3 = !true
 
 
-    bob = 485 + 56 - 485 * 256 + 45 / 12 * -bob2
+    bob = 485 + 56 - 485 * 256 + 45 * -bob2
     jens = 50.25 * 32 * -1.4 / 26.48
 
 }

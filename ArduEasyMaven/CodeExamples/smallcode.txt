@@ -1,0 +1,45 @@
+house
+{
+	int curtainsCounter = 0
+	Light8 = PIN A 13 as input
+
+	room Hallway
+	{
+		Light1 = PIN A 12 as input
+		Light2 = PIN A 11 as input
+
+		Lights = { Light1, Light2 }
+	}
+}
+
+
+function int test2(string what)
+{
+    string hey = "test"
+	int jul = 5
+
+	return jul
+}
+
+function int testFunction(string bob)
+{
+	int returnValue = 42
+
+	if(2 is below or equal 6)
+	{
+		int test = 6
+		bool isTrue = true
+	}
+
+	if(bob is "hello")
+	{
+		returnValue = 420
+	}
+
+	return returnValue
+}
+
+when (2 is not 5)
+{
+	int bob = 42
+}

@@ -17,7 +17,6 @@ public class ArrayVariable extends Variable
     @Override
     public void SetValue(Object value)
     {
-        String[] values = (String[]) value;
-        Value = new ArrayList<String>(Arrays.asList(values));
+        Type = (String) value;
     }
 }
