@@ -710,6 +710,10 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
                 }
             }};
         }
+        else if (ctx.parenExpression() != null)
+        {
+            return visitParenExpression(ctx.parenExpression());
+        }
 
         System.out.println("visitExpression | " + ctx.getText() + " " + ctx.start);
         System.out.println(ctx.SUBTRACTIVEOPERATOR() + " | " + ctx.identifier() + " | " + ctx.value() + "\n");
@@ -830,6 +834,12 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         {
             return visitExpression(ctx.expression());
         }
+    }
+
+    @Override
+    public ExpressionNode visitParenExpression(final ArduEasyParser.ParenExpressionContext ctx)
+    {
+        return new ParanNode(){{child = visitLogicalExpressions(ctx.logicalExpressions()); LineNumber = getLineNumber(ctx);}};
     }
 
     private int getLineNumber(ParserRuleContext ctx)

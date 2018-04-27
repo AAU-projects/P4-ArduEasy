@@ -28,6 +28,12 @@ public class BuildSymbolTable implements Visitor
     private String roomType = "room";
 
     @Override
+    public Object Visit(ParanNode node)
+    {
+        return "(" + node.child.Accept(this) + ")";
+    }
+
+    @Override
     public Object Visit(AdditiveNode node)
     {
         String left = (String)node.LeftChild.Accept(this);

@@ -13,6 +13,15 @@ public class PrettyPrint implements Visitor
     //first printIndent and then system.out.print or printIndentln to print
 
     @Override
+    public Object Visit(ParanNode node)
+    {
+        System.out.print("(");
+        node.child.Accept(this);
+        System.out.print(")");
+        return null;
+    }
+
+    @Override
     public Object Visit(AdditiveNode node) {
         node.LeftChild.Accept(this);
         System.out.print(" + ");

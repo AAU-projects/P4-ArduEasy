@@ -88,11 +88,14 @@ function float CelciusToFahrenheit(int temp)
 
     for (int j = 0; i < 10; i = i + 1)
     {
-
+        int jens = (5 + 5) * 8
     }
     for(int j = 0; j < 10; j = j + 1)
     {
+        bool alec = true
+        bool magnus = false
 
+        bool party = (alec or magnus) and house.Bedroom.Blinds1
     }
     perform 158 times
     {

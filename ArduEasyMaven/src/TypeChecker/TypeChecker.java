@@ -39,6 +39,12 @@ public class TypeChecker implements Visitor
     private String voidType = "void";
 
     @Override
+    public Object Visit(ParanNode node)
+    {
+        return node.child.Accept(this);
+    }
+
+    @Override
     public Object Visit(AdditiveNode node)
     {
         String[] AdditiveTypes = {intType, floatType, percentageType, timeType};
@@ -461,8 +467,8 @@ public class TypeChecker implements Visitor
     @Override
     public String Visit(LogicalAndNode node)
     {
-        String leftType = (String)node.Left.Accept(this);
-        String rightType = (String)node.Right.Accept(this);
+        String leftType = CheckPinType((String)node.Left.Accept(this));
+        String rightType = CheckPinType((String)node.Right.Accept(this));
 
         if (!leftType.equals(boolType))
         {
@@ -479,8 +485,8 @@ public class TypeChecker implements Visitor
     @Override
     public String Visit(LogicalOrNode node)
     {
-        String leftType = (String)node.Left.Accept(this);
-        String rightType = (String)node.Right.Accept(this);
+        String leftType = CheckPinType((String)node.Left.Accept(this));
+        String rightType = CheckPinType((String)node.Right.Accept(this));
 
         if (!leftType.equals(boolType))
         {
