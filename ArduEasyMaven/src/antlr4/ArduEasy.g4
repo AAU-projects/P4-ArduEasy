@@ -88,7 +88,7 @@ cases               : case_r* default_case
 default_case        : DEFAULT COLON LBRACK statement* RBRACK
 					;
 
-case_r              : CASE value  COLON LBRACK statement* RBRACK
+case_r              : CASE value COLON LBRACK statement* RBRACK
 					;
 
 logicalExpressions  : logicalExpressions logicalOperator logicalExpressions

@@ -32,6 +32,11 @@ house
 
 when (house.Kitchen.Button is true)
 {
+    if (house.Kitchen.Lamp1 == true)
+    {
+
+    }
+
     house.Temp = 55
     float Fahrenheit = CelciusToFahrenheit(house.Temp)
     house.Kitchen.CoffeeMachine = true
