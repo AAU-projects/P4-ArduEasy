@@ -76,7 +76,7 @@ public class SymbolTable
     }
 
 
-    public String GetTypeofVariable(Node node, String key)
+    public Variable GetTypeofVariable(Node node, String key)
     {
         if(!LookUp(key))
         {
@@ -84,7 +84,7 @@ public class SymbolTable
             return null;
         }
 
-        return CurrentOpenScope.Variables.get(key).Type;
+        return CurrentOpenScope.Variables.get(key);
     }
 
     public SymbolTable GetScope(String scopeName)

@@ -28,6 +28,12 @@ public class BuildSymbolTable implements Visitor
     private String roomType = "room";
 
     @Override
+    public Object Visit(ParanNode node)
+    {
+        return "(" + node.child.Accept(this) + ")";
+    }
+
+    @Override
     public Object Visit(AdditiveNode node)
     {
         String left = (String)node.LeftChild.Accept(this);
@@ -73,7 +79,7 @@ public class BuildSymbolTable implements Visitor
         String[] temp = identifier.split("\\.");
         final String value = (String)node.Value.Accept(this);
 
-        if (temp.length > 2 && symbolTable.GetScope(temp[1]).GetTypeofVariable(node,temp[2]).equals("array"))
+        if (temp.length > 2 && symbolTable.GetScope(temp[1]).GetTypeofVariable(node,temp[2]).Type.equals("array"))
         {
 
             List<String> things = ((ArrayVariable) symbolTable.GetScope(temp[1]).Variables.get(temp[2])).Value();
@@ -498,14 +504,14 @@ public class BuildSymbolTable implements Visitor
     {
         final String identifier = (String)node.Identifier.Accept(this);
         final PinNode pin = (PinNode)node.Pin.Accept(this);
-        final String type = (String)node.IoStatus.Accept(this);
+        final String IOType = (String)node.IoStatus.Accept(this);
 
         Variable var = new PinVariable()
         {{
             Identifier = identifier;
             Value = String.valueOf(pin.Value);
-            Type = pin.Type + "." + type;
-            IOStatus = type;
+            Type = pin.Type;
+            IOStatus = IOType;
         }};
 
         if(symbolTable.CurrentOpenScope == symbolTable)

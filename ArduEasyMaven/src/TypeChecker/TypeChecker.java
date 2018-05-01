@@ -4,6 +4,9 @@ import AST.Nodes.*;
 import ErrorHandler.ErrorHandler;
 import ErrorHandler.Errors.SemanticError;
 import SymbolTable.SymbolTable;
+import SymbolTable.Variables.ArrayVariable;
+import SymbolTable.Variables.PinVariable;
+import SymbolTable.Variables.Variable;
 import visitor.Visitor;
 
 import java.util.*;
@@ -40,12 +43,18 @@ public class TypeChecker implements Visitor
     private String voidType = "void";
 
     @Override
+    public Object Visit(ParanNode node)
+    {
+        return node.child.Accept(this);
+    }
+
+    @Override
     public Object Visit(AdditiveNode node)
     {
         String[] AdditiveTypes = {intType, floatType, percentageType, timeType};
 
-        String leftType = (String)node.LeftChild.Accept(this);
-        String rightType = (String)node.RightChild.Accept(this);
+        String leftType = GetTypeNode(node.LeftChild);
+        String rightType = GetTypeNode(node.RightChild);
 
         boolean matchFound = Arrays.asList(AdditiveTypes).contains(leftType);
 
@@ -68,39 +77,63 @@ public class TypeChecker implements Visitor
         return leftType;
     }
 
+    private String GetTypeNode(Node node)
+    {
+       Object type = node.Accept(this);
+       if (type instanceof Variable)           // checks if the object is a instance of variable
+           return ((Variable) type).Type;
+       else                                    // if not a variable it can be casted to a string which returns the nodes string, e.g its a intnode and a int is returned.
+           return (String) type;
+    }
+
+
+    private String GetArrayTypeNode(Node node)
+    {
+        // this function is used for getting the arrayType as it have to return a different string, e.g int.output bool.intput
+        Object type = node.Accept(this);
+        if (type instanceof PinVariable) // if the object is a pin variable both the type and iostatus is returned as this data is needed
+        {
+            PinVariable pinType = (PinVariable) type;
+            return pinType.Type + "." + pinType.IOStatus;
+        }
+        return "array"; // array is returned if its not a pin variable as this is the identifier, e.g Lamps = {Lamp1, Lamp2}, Lamps are not a pinVariable and its type is an array
+    }
+
     @Override
     public Object Visit(AnalogPinNode node)
     {
-        return node;
+        return "analog";
     }
 
     @Override
     public String Visit(ArrayDeclarationNode node)
     {
-        String arrayType = (String)node.Identifier.Accept(this);
+        String arrayType = GetTypeNode(node.Identifier);
 
         for (IdentifierNode value : node.Values)
         {
-            String valueType = (String)value.Accept(this);
+            String valueType = GetArrayTypeNode(value);
             if (arrayDType.equals(arrayType) && CheckIfPinType(valueType)) // if arraytype is still array, and valuetype is one of the 5 array types, then arraytype is defined as the valuetype.
             {
                 arrayType = valueType;
-                symbolTable.GetScope(isRoom).Update(node, node.Values.get(0).Value, GetPinType(arrayType));
+                symbolTable.GetScope(isRoom).Update(node, node.Values.get(0).Value, arrayType);
             }
             if (!arrayType.equals(valueType))
             {
                 ErrorHandler.AddError(new SemanticError(node, "Tried to add " + valueType + " to an " + arrayType + " array"));
             }
         }
+        arrayType = GetPinType(arrayType); // when all objects in the array have been checked the array type is set to the correct type, e.g if int.output the array is set to int. this makes comparison easier.
 
         return arrayType;
     }
 
+
     @Override
     public Object Visit(AssignmentNode node)
     {
-        String identifierType = GetPinType((String)node.Identifier.Accept(this)); // tries to get pin type if expression is a pintype
-        String valueType =  GetPinType((String)node.Value.Accept(this));
+        String identifierType = GetTypeNode(node.Identifier); // tries to get pin type if expression is a pintype
+        String valueType =  GetTypeNode(node.Value);
 
         if(identifierType.equals(floatType))
         {
@@ -132,7 +165,7 @@ public class TypeChecker implements Visitor
 
         if (node.Value != null)
         {
-            caseType = (String) node.Value.Accept(this);
+            caseType = GetTypeNode(node.Value);
         }
         else
         {
@@ -156,8 +189,8 @@ public class TypeChecker implements Visitor
     @Override
     public Object Visit(DeclarationNode node)
     {
-        String identifierType = (String) node.Identifier.Accept(this);
-        String expressionType = (String) node.Value.Accept(this);
+        String identifierType = GetTypeNode(node.Identifier);
+        String expressionType = GetTypeNode(node.Value);
 
         if (!expressionType.equals(identifierType))
         {
@@ -170,7 +203,7 @@ public class TypeChecker implements Visitor
     @Override
     public Object Visit(DigitalPinNode node)
     {
-        return node;
+        return "digital";
     }
 
     @Override
@@ -178,8 +211,8 @@ public class TypeChecker implements Visitor
     {
         String[] DivisionTypes = {intType, floatType};
 
-        String leftType = (String)node.LeftChild.Accept(this);
-        String rightType = (String)node.RightChild.Accept(this);
+        String leftType = GetTypeNode(node.LeftChild);
+        String rightType = GetTypeNode(node.RightChild);
 
         boolean matchFound = Arrays.asList(DivisionTypes).contains(leftType);
 
@@ -199,7 +232,7 @@ public class TypeChecker implements Visitor
     public Object Visit(ElseIfNode node)
     {
         lastScopeLine = node.LineNumber;
-        String predicateType = (String)node.Predicate.Accept(this);
+        String predicateType = GetTypeNode(node.Predicate);
         if (!predicateType.equals(boolType))
         {
             ErrorHandler.AddError(new SemanticError(node, "Predicate not of type boolean "));
@@ -235,8 +268,8 @@ public class TypeChecker implements Visitor
     {
         String[] EqualsTypes = {intType, floatType, percentageType, timeType, dayType, monthType, boolType, stringType, digital_inputType, digital_outputType, analog_inputType, analog_outputType, pullup_inputType};
 
-        String leftType = (String)node.Left.Accept(this);
-        String rightType = (String)node.Right.Accept(this);
+        String leftType = GetTypeNode(node.Left);
+        String rightType = GetTypeNode(node.Right);
 
         if(CheckComparisonOperators(EqualsTypes, leftType, rightType, node))
         {
@@ -303,7 +336,7 @@ public class TypeChecker implements Visitor
     public Object Visit(ForNode node)
     {
         lastScopeLine = node.LineNumber;
-        String predicateType = (String)node.Predicate.Accept(this);
+        String predicateType = GetTypeNode(node.Predicate);
         if (!predicateType.equals(boolType))
         {
             ErrorHandler.AddError(new SemanticError(node, "Predicate not of type boolean"));
@@ -327,7 +360,7 @@ public class TypeChecker implements Visitor
 
         if (!node.ReturnType.equals(voidType))
         {
-            String typeOfReturn = ((String) node.Return.Accept(this));
+            String typeOfReturn = GetTypeNode(node.Return);
 
             if (!typeOfReturn.equals(node.ReturnType))
             {
@@ -353,8 +386,8 @@ public class TypeChecker implements Visitor
     {
         String[] GreaterOrEqualTypes = {intType, floatType, percentageType, timeType, dayType, monthType, analog_inputType, analog_outputType};
 
-        String leftType = (String)node.Left.Accept(this);
-        String rightType = (String)node.Right.Accept(this);
+        String leftType = GetTypeNode(node.Left);
+        String rightType = GetTypeNode(node.Right);
 
         if(CheckComparisonOperators(GreaterOrEqualTypes, leftType, rightType, node))
         {
@@ -369,8 +402,8 @@ public class TypeChecker implements Visitor
     {
         String[] GreaterThanTypes = {intType, floatType, percentageType, timeType, dayType, monthType, analog_inputType, analog_outputType};
 
-        String leftType = (String)node.Left.Accept(this);
-        String rightType = (String)node.Right.Accept(this);
+        String leftType = GetTypeNode(node.Left);
+        String rightType = GetTypeNode(node.Right);
 
         if(CheckComparisonOperators(GreaterThanTypes, leftType, rightType, node))
         {
@@ -385,6 +418,10 @@ public class TypeChecker implements Visitor
     {
         String[] roomSplit = node.Value.split("\\.");
 
+        if (roomSplit.length > 2)
+        {
+            return symbolTable.GetScope(roomSplit[1]).GetTypeofVariable(node, roomSplit[2]);
+        }
         if (lastScopeLine == 0)
         {
             return symbolTable.GetTypeofVariable(node, node.Value);
@@ -392,10 +429,6 @@ public class TypeChecker implements Visitor
         else if (isRoom != null)
         {
             return symbolTable.GetScope(isRoom).GetTypeofVariable(node, node.Value);
-        }
-        else if (roomSplit.length > 2)
-        {
-            return symbolTable.GetScope(roomSplit[1]).GetTypeofVariable(node, roomSplit[2]);
         }
         else
         {
@@ -408,7 +441,7 @@ public class TypeChecker implements Visitor
     public Object Visit(IfNode node)
     {
         lastScopeLine = node.LineNumber;
-        String predicateType = GetPinType((String)node.Predicate.Accept(this));
+        String predicateType = GetTypeNode(node.Predicate);
 
         if (!predicateType.equals(boolType))
         {
@@ -440,7 +473,7 @@ public class TypeChecker implements Visitor
 
     @Override
     public Object Visit(IoStatusNode node) {
-        return null;
+        return node.Value;
     }
 
     @Override
@@ -448,8 +481,8 @@ public class TypeChecker implements Visitor
     {
         String[] LessOrEqualTypes = {intType, floatType, percentageType, timeType, dayType, monthType, analog_inputType, analog_outputType};
 
-        String leftType = (String)node.Left.Accept(this);
-        String rightType = (String)node.Right.Accept(this);
+        String leftType = GetTypeNode(node.Left);
+        String rightType = GetTypeNode(node.Right);
 
         if(CheckComparisonOperators(LessOrEqualTypes, leftType, rightType, node))
         {
@@ -464,8 +497,8 @@ public class TypeChecker implements Visitor
     {
         String[] LessThanTypes = {intType, floatType, percentageType, timeType, dayType, monthType, analog_inputType, analog_outputType};
 
-        String leftType = (String)node.Left.Accept(this);
-        String rightType = (String)node.Right.Accept(this);
+        String leftType = GetTypeNode(node.Left);
+        String rightType = GetTypeNode(node.Right);
 
         if(CheckComparisonOperators(LessThanTypes, leftType, rightType, node))
         {
@@ -478,8 +511,8 @@ public class TypeChecker implements Visitor
     @Override
     public String Visit(LogicalAndNode node)
     {
-        String leftType = GetPinType((String)node.Left.Accept(this)); // tries to get pin type if expression is a pintype
-        String rightType = GetPinType((String)node.Right.Accept(this));
+        String leftType = GetTypeNode(node.Left);
+        String rightType = GetTypeNode(node.Right);
 
         if (!leftType.equals(boolType))
         {
@@ -496,8 +529,8 @@ public class TypeChecker implements Visitor
     @Override
     public String Visit(LogicalOrNode node)
     {
-        String leftType = GetPinType((String)node.Left.Accept(this)); // tries to get pin type if expression is a pintype
-        String rightType = GetPinType((String)node.Right.Accept(this));
+        String leftType = GetTypeNode(node.Left);
+        String rightType = GetTypeNode(node.Right);
 
         if (!leftType.equals(boolType))
         {
@@ -522,8 +555,8 @@ public class TypeChecker implements Visitor
     {
         String[] MultiplicationTypes = {intType, floatType};
 
-        String leftType = (String)node.LeftChild.Accept(this);
-        String rightType = (String)node.RightChild.Accept(this);
+        String leftType = GetTypeNode(node.LeftChild);
+        String rightType = GetTypeNode(node.RightChild);
 
         boolean matchFound = Arrays.asList(MultiplicationTypes).contains(leftType);
 
@@ -549,7 +582,7 @@ public class TypeChecker implements Visitor
     @Override
     public String Visit(NegateNode node)
     {
-        return (String) node.child.Accept(this);
+        return GetTypeNode(node.child);
     }
 
     @Override
@@ -557,8 +590,8 @@ public class TypeChecker implements Visitor
     {
         String[] NotEqualsTypes = {intType, floatType, percentageType, timeType, dayType, monthType, digital_inputType, digital_outputType, analog_inputType, analog_outputType, pullup_inputType};
 
-        String leftType = (String)node.Left.Accept(this);
-        String rightType = (String)node.Right.Accept(this);
+        String leftType = GetTypeNode(node.Left);
+        String rightType = GetTypeNode(node.Right);
 
         if(CheckComparisonOperators(NotEqualsTypes, leftType, rightType, node))
         {
@@ -571,7 +604,7 @@ public class TypeChecker implements Visitor
     @Override
     public String Visit(ParameterNode node)
     {
-        return ((String) node.Identifier.Accept(this));
+        return GetTypeNode(node.Identifier);
     }
 
     @Override
@@ -584,7 +617,7 @@ public class TypeChecker implements Visitor
     public Object Visit(PerformTimes node)
     {
         lastScopeLine = node.LineNumber;
-        String iteratorType = (String)node.value.Accept(this);
+        String iteratorType = GetTypeNode(node.value);
 
         if (iteratorType != null) // if no type is found the variable is not in the scope
         {
@@ -612,15 +645,22 @@ public class TypeChecker implements Visitor
     @Override
     public Object Visit(PinDeclarationNode node)
     {
-        node.Pin.Accept(this);
-        node.IoStatus.Accept(this);
+        String pinType = (String) node.Pin.Accept(this);
+        String IOType = (String) node.IoStatus.Accept(this);
+
+        if (pinType == "analog")
+            if (IOType.equals("inputpullup"))
+            {
+                ErrorHandler.AddError(new SemanticError(node, "Tried to create an Analog inputpullup, inputpull can only be digital"));
+            }
+
         return null;
     }
 
     @Override
     public String Visit(ReturnNode node)
     {
-        return (String) node.Value.Accept(this);
+        return GetTypeNode(node.Value);
     }
 
     @Override
@@ -674,8 +714,8 @@ public class TypeChecker implements Visitor
     {
         String[] SubtractiveTypes = {intType, floatType, percentageType, timeType};
 
-        String LeftType = (String)node.LeftChild.Accept(this);
-        String rightVar = (String)node.RightChild.Accept(this);
+        String LeftType = GetTypeNode(node.LeftChild);
+        String rightVar = GetTypeNode(node.RightChild);
 
         boolean matchFound = Arrays.asList(SubtractiveTypes).contains(LeftType);
 
@@ -701,11 +741,11 @@ public class TypeChecker implements Visitor
     @Override
     public Object Visit(SwitchNode node)
     {
-        String switchType = (String)node.expression.Accept(this);
+        String switchType = GetTypeNode(node.expression);
 
         for (CaseNode caseNode : node.Body)
         {
-            String caseType = (String) caseNode.Accept(this);
+            String caseType = GetTypeNode(caseNode);
 
             if (!caseType.equals(switchType))
             {
@@ -729,7 +769,7 @@ public class TypeChecker implements Visitor
     public Object Visit(WhenNode node)
     {
         lastScopeLine = node.LineNumber;
-        String predicateType = (String)node.Predicate.Accept(this);
+        String predicateType = GetTypeNode(node.Predicate);
         if (!predicateType.equals(boolType))
         {
             ErrorHandler.AddError(new SemanticError(node, "Predicate has to be of type boolean, is of type: " + predicateType));
@@ -752,7 +792,7 @@ public class TypeChecker implements Visitor
 
     private void IterationChecker(IterationNode node)
     {
-        String predicateType = (String)node.Predicate.Accept(this);
+        String predicateType = GetTypeNode(node.Predicate);
         if (!predicateType.equals(boolType))
         {
             ErrorHandler.AddError(new SemanticError(node, "Predicate has to be of type boolean, is of type: " + predicateType));
@@ -767,7 +807,7 @@ public class TypeChecker implements Visitor
     @Override
     public String Visit(HouseNode node)
     {
-        return (String) node.Identifier.Accept(this);
+        return GetTypeNode(node.Identifier);
     }
 
     @Override
@@ -778,7 +818,7 @@ public class TypeChecker implements Visitor
         int i = 0;
         for (ExpressionNode expression : node.expressions)
         {
-            String parameterType = (String) expression.Accept(this);
+            String parameterType = GetTypeNode(expression);
             parameterType = GetPinType(parameterType);
             if (!parameters.get(i++)[1].equals(parameterType))
             {

@@ -4,6 +4,7 @@ import AST.Nodes.*;
 
 public interface Visitor
 {
+    Object Visit(ParanNode node);
     Object Visit(AdditiveNode node);
     Object Visit(AnalogPinNode node);
     Object Visit(ArrayDeclarationNode node);

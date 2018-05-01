@@ -95,6 +95,9 @@ logicalExpressions  : logicalExpressions logicalOperator logicalExpressions
                  	| logicalExpression
                  	;
 
+parenExpression     : LPAREN logicalExpressions RPAREN
+                    ;
+
 logicalExpression   : addSubExpression comparisonOperator addSubExpression
                     | addSubExpression
                  	;
@@ -104,6 +107,7 @@ expression          : identifier
                     | SUBTRACTIVEOPERATOR identifier
                  	| NEGATEOPERATOR (identifier | houseaccess)
  					| value
+ 					| parenExpression
  					;
 
 addSubExpression    : multiDivExpression
