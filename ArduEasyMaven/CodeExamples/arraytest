@@ -1,0 +1,27 @@
+house
+{
+    room kitchen
+    {
+        Button1 = PIN A 0 as input
+        Lamp1 = PIN 1 as output
+        Lamp2 = PIN 2 as output
+        Button2 = PIN A 3 as input
+
+        Lamps = {Lamp1, Lamp2}
+    }
+}
+
+when(true)
+{
+    house.kitchen.Lamp1 = true
+    house.kitchen.Lamps = true
+
+    bool bob = house.kitchen.Lamp2
+
+    int bob2 = house.kitchen.Button1 + ( 5 + 5 ) + 5 + 5
+
+    if(house.kitchen.Button2 == 55 && house.kitchen.Lamp1)
+    {
+        int jens = 5 + house.kitchen.Button1
+    }
+}
