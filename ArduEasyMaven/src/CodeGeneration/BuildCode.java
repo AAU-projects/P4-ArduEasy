@@ -11,6 +11,7 @@ public class BuildCode implements Visitor
     private HashMap<String, String> pinMap = new HashMap<String, String>();
     private HashMap<String, List<String>> arrayList = new HashMap<String, List<String>>();
     private String room;
+    private boolean MethodInlineCall = false;
     private int indent = 0; //Used to indent statements
     private StringBuilder strB = new StringBuilder();
 
@@ -52,11 +53,31 @@ public class BuildCode implements Visitor
 
     private String ReadPin(Object node)
     {
+        if(node instanceof PinNode)
+        {
+            if (node instanceof AnalogPinNode)
+                return ReadPin("A" + ((AnalogPinNode) node).Value);
+            return ReadPin(((DigitalPinNode) node).Value);
+        }//FIXME This does not work yet returns null in methodcall parameters.
+
         if(!(node instanceof ExpressionNode)) return null;
 
-        String identifier = (String)((ExpressionNode)node).Accept(this);
+        if(node instanceof MethodCallNode)
+        {
+            MethodInlineCall = true;
+            return (String)((MethodCallNode) node).Accept(this);
+        }
+
+        String identifier;
+
+        if(!(node instanceof ValueNode))
+            identifier = (String)((ExpressionNode)node).Accept(this);
+        else
+            identifier = node.toString();
+
         if(node instanceof IdentifierNode)
             return pinMap.containsKey(identifier) ? ReadPin(pinMap.get(identifier)) : identifier;
+
 
         return identifier;
     }
@@ -112,6 +133,8 @@ public class BuildCode implements Visitor
     public Object Visit(AssignmentNode node)
     {
         String identifier = (String)node.Identifier.Accept(this);
+        if(node.Value instanceof MethodCallNode)
+            MethodInlineCall = true;
         String realvalue = (String)node.Value.Accept(this);
         String value = pinMap.containsKey(identifier) ? ReadPin(pinMap.get(identifier)) : realvalue;
 
@@ -177,7 +200,11 @@ public class BuildCode implements Visitor
         if(node.Value instanceof TimeNode || node.Value instanceof DayNode || node.Value instanceof StringNode || node.Value instanceof MonthNode)
             value = "\""+ node.Value.toString() + "\"";
         else
-            value = pinMap.containsKey(identifier) ? ReadPin(pinMap.get(identifier)) : (String)node.Value.Accept(this);
+        {
+            if(node.Value instanceof MethodCallNode)
+                MethodInlineCall = true;
+            value = pinMap.containsKey(identifier) ? ReadPin(pinMap.get(identifier)) : (String) node.Value.Accept(this);
+        }
 
         Addtextln(type + " " + identifier + " = " + value + ";");
         return null;
@@ -265,7 +292,7 @@ public class BuildCode implements Visitor
     @Override
     public Object Visit(FunctionNode node)
     {
-        Addtext(node.ReturnType + node.Identifier.Accept(this) + "(");
+        Addtext(node.ReturnType + " " + node.Identifier.Accept(this) + "(");
 
         int i = 1;
 
@@ -285,6 +312,9 @@ public class BuildCode implements Visitor
         {
             statementsNode.Accept(this);
         }
+
+        if(!node.ReturnType.equals("void"))
+            node.Return.Accept(this);
 
         DeacreaseIndent();
         Addtextln("}");
@@ -451,14 +481,15 @@ public class BuildCode implements Visitor
     {
         String pin = node.Pin instanceof AnalogPinNode ? "A" : "";
         pin += node.Pin.Value;
-        Addtextln("pinMode(" + pin + ", " + node.IoStatus.Value.toUpperCase() + ");");
+        Addtextln("pinMode(" + pin + ", " + node.IoStatus.Value.toUpperCase().replace("INPUTPULLUP", "INPUT_PULLUP") + ");");
         return null;
     }
 
     @Override
     public Object Visit(ReturnNode node)
     {
-        return node.Value.Accept(this);
+        Addtextln("return " +  node.Value.Accept(this) + ";");
+        return null;
     }
 
     @Override
@@ -685,19 +716,45 @@ public class BuildCode implements Visitor
     @Override
     public Object Visit(MethodCallNode node)
     {
-        Addtext(node.identifier.Accept(this) + "(");
-
-        int i = 1;
-
-        for (ExpressionNode expression : node.expressions)
+        if(!MethodInlineCall)
         {
-            expression.Accept(this);
+            Addtext(node.identifier.Accept(this) + "(");
 
-            if(i++ != node.expressions.size())
-                Addtext(", ");
+            int i = 1;
+
+            for (ExpressionNode expression : node.expressions)
+            {
+                Addtext((String) expression.Accept(this));
+
+                if (i++ != node.expressions.size())
+                    Addtext(", ");
+            }
+
+            Addtextln(");");
+
+            MethodInlineCall = false;
+
+            return null;
         }
+        else
+        {
+            String result;
 
-        Addtextln(");");
-        return null;
+            result =(node.identifier.Accept(this) + "(");
+
+            int i = 1;
+
+            for (ExpressionNode expression : node.expressions)
+            {
+                result += ReadPin(expression.Accept(this));
+
+                if (i++ != node.expressions.size())
+                    result += (", ");
+            }
+
+            result += (")");
+
+            return result;
+        }
     }
 }

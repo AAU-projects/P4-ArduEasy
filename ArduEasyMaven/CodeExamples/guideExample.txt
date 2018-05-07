@@ -1,7 +1,7 @@
 house
 {
-    Temp = PIN A 12 as input
-    CurrentTime = PIN A 13 as input
+    Temp = PIN A 1 as input
+    CurrentTime = PIN A 2 as input
     float bob2 = 5 + 8.50
     int hej = 10+5
     int hejhej = 2

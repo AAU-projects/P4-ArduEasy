@@ -20,7 +20,7 @@ definition          : pindeclaration
 houseaccess         : DOT_NOTATION
                     ;
 
-declaration         : typeSpecifier identifier ASSIGNMENTOPERATOR (logicalExpressions | methodCall)
+declaration         : typeSpecifier identifier ASSIGNMENTOPERATOR logicalExpressions
 					;
 
 methodCall          : identifier LPAREN (expression(','expression)*)? RPAREN
@@ -107,6 +107,7 @@ expression          : identifier
                     | SUBTRACTIVEOPERATOR identifier
                  	| NEGATEOPERATOR (identifier | houseaccess)
  					| value
+ 					| methodCall
  					| parenExpression
  					;
 

@@ -20,7 +20,7 @@ public class Program
 {
     public static void main(String args[]) throws IOException
     {
-        String filePath = "CodeExamples/arraytest";
+        String filePath = "CodeExamples/guideExample.txt";
         String outputFile = "Outputs/arduinogeneration.ino";
         CharStream inputStream = CharStreams.fromFileName(filePath);
         ArduEasyLexer lexer = new ArduEasyLexer(inputStream);
@@ -82,6 +82,7 @@ public class Program
         } catch (Exception e)
         {
             System.out.println(e.toString());
+            e.printStackTrace();
             ErrorHandler.PrintErrors();
         }
 

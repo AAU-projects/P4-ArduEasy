@@ -24,4 +24,15 @@ when(true)
     {
         int jens = 5 + house.kitchen.Button1
     }
+
+    int bob3 = add(3, 7) + add(2, 2)
+
+    bob2 = add(2, 3) + 5
 }
+
+function int add(int a, int b)
+{
+    int bob4 = 3 + 3
+    return a + b
+}
+
