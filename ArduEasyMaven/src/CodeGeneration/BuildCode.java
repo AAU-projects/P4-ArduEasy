@@ -5,6 +5,8 @@ import visitor.Visitor;
 import java.io.PrintWriter;
 import java.util.*;
 
+import static java.lang.Math.round;
+
 public class BuildCode implements Visitor
 {
     private PrintWriter writer;
@@ -12,6 +14,7 @@ public class BuildCode implements Visitor
     private HashMap<String, List<String>> arrayList = new HashMap<String, List<String>>();
     private String room;
     private boolean MethodInlineCall = false;
+    private boolean Inline = false;
     private int indent = 0; //Used to indent statements
     private StringBuilder strB = new StringBuilder();
 
@@ -32,18 +35,26 @@ public class BuildCode implements Visitor
 
     private void Addtext(String input)
     {
-        for (int i = 0; i < indent; i++)
-            strB.append(" ");
+        if(!Inline)
+        {
+            for (int i = 0; i < indent; i++)
+                strB.append(" ");
+        }
 
         strB.append(input);
     }
 
     private void Addtextln(String input)
     {
-        for (int i = 0; i < indent; i++)
-            strB.append(" ");
+        if(!Inline)
+        {
+            for (int i = 0; i < indent; i++)
+                strB.append(" ");
 
-        strB.append(input).append(System.getProperty("line.separator"));
+            strB.append(input).append(System.getProperty("line.separator"));
+        }
+        else
+            strB.append(input);
     }
 
     private String ReadPin(String pin)
@@ -51,15 +62,9 @@ public class BuildCode implements Visitor
         return (pin.contains("A") ? "analogRead" : "digitalRead") + "(" + pin + ")";
     }
 
+    @SuppressWarnings("SuspiciousMethodCalls")
     private String ReadPin(Object node)
     {
-        if(node instanceof PinNode)
-        {
-            if (node instanceof AnalogPinNode)
-                return ReadPin("A" + ((AnalogPinNode) node).Value);
-            return ReadPin(((DigitalPinNode) node).Value);
-        }//FIXME This does not work yet returns null in methodcall parameters.
-
         if(!(node instanceof ExpressionNode)) return null;
 
         if(node instanceof MethodCallNode)
@@ -73,7 +78,7 @@ public class BuildCode implements Visitor
         if(!(node instanceof ValueNode))
             identifier = (String)((ExpressionNode)node).Accept(this);
         else
-            identifier = node.toString();
+            identifier = (String)((ValueNode) node).Accept(this);
 
         if(node instanceof IdentifierNode)
             return pinMap.containsKey(identifier) ? ReadPin(pinMap.get(identifier)) : identifier;
@@ -91,7 +96,24 @@ public class BuildCode implements Visitor
     @Override
     public Object Visit(AdditiveNode node)
     {
-        return ReadPin(node.LeftChild) + " + " + ReadPin(node.RightChild);
+        if(node.LeftChild instanceof TimeNode && node.RightChild instanceof TimeNode)
+        {
+            int leftHour, rightHour, leftMin, rightMin, hourResult, minResult;
+            String[] leftsplit = node.LeftChild.toString().replace("\"", "").trim().split(":");
+            String[] rightsplit = node.RightChild.toString().replace("\"", "").trim().split(":");
+
+            leftHour = Integer.parseInt(leftsplit[0]);
+            leftMin = Integer.parseInt(leftsplit[1]);
+            rightHour = Integer.parseInt(rightsplit[0]);
+            rightMin =  Integer.parseInt(rightsplit[1]);
+
+            hourResult = (leftHour + rightHour) % 24;
+            minResult = (leftMin + rightMin) % 60;
+
+            return "\"" + hourResult + ":" + minResult + "\"";
+        }
+        else
+            return ReadPin(node.LeftChild) + " + " + ReadPin(node.RightChild);
     }
 
     @Override
@@ -158,7 +180,7 @@ public class BuildCode implements Visitor
         }
 
         else
-            Addtextln(identifier + " = " + value + ";");
+            Addtextln(identifier + " = " + value + (Inline ? "" : ";"));
         return null;
     }
 
@@ -182,7 +204,7 @@ public class BuildCode implements Visitor
     @Override
     public Object Visit(DayNode node)
     {
-        return node.Value;
+        return "\"" + node.Value + "\"";
     }
 
     @Override
@@ -194,19 +216,16 @@ public class BuildCode implements Visitor
 
         if(node.Type.equals("string") || node.Type.equals("time") || node.Type.equals("day") || node.Type.equals("month"))
             type = "String";
+        else if(node.Type.equals("percent"))
+            type = "int";
         else
             type = node.Type;
 
-        if(node.Value instanceof TimeNode || node.Value instanceof DayNode || node.Value instanceof StringNode || node.Value instanceof MonthNode)
-            value = "\""+ node.Value.toString() + "\"";
-        else
-        {
-            if(node.Value instanceof MethodCallNode)
-                MethodInlineCall = true;
-            value = pinMap.containsKey(identifier) ? ReadPin(pinMap.get(identifier)) : (String) node.Value.Accept(this);
-        }
+        if(node.Value instanceof MethodCallNode)
+            MethodInlineCall = true;
+        value = pinMap.containsKey(identifier) ? ReadPin(pinMap.get(identifier)) : (String) node.Value.Accept(this);
 
-        Addtextln(type + " " + identifier + " = " + value + ";");
+        Addtextln(type + " " + identifier + " = " + value + (Inline ? "" : ";"));
         return null;
     }
 
@@ -268,13 +287,21 @@ public class BuildCode implements Visitor
     @Override
     public Object Visit(FloatNode node)
     {
-        return node.Value;
+        return node.toString();
     }
 
     @Override
     public Object Visit(ForNode node)
     {
-        Addtextln("for (" + node.Var.Accept(this) + "; " + node.Predicate.Accept(this) + "; " + node.Increment.Accept(this) + ")");
+
+        Addtext("for (");
+        Inline = true;
+        node.Var.Accept(this);
+        Addtext(";" + node.Predicate.Accept(this).toString().trim() + ";");
+        node.Increment.Accept(this);
+        Addtextln(")");
+        Inline = false;
+        Addtextln("");
         Addtextln("{");
         IncreaseIndent();
 
@@ -407,7 +434,7 @@ public class BuildCode implements Visitor
     @Override
     public Object Visit(MonthNode node)
     {
-        return node.Value;
+        return "\"" + node.Value + "\"";
     }
 
     @Override
@@ -437,7 +464,8 @@ public class BuildCode implements Visitor
     @Override
     public Object Visit(PercentNode node)
     {
-        return String.valueOf(node.Value/100 * 255);
+        int result = round(node.Value/100f * 255f);
+        return String.valueOf(result);
     }
 
     @Override
@@ -532,6 +560,8 @@ public class BuildCode implements Visitor
 
         System.out.println(strB);
 
+        writer.print(strB.toString());
+
         return null;
     }
 
@@ -539,7 +569,7 @@ public class BuildCode implements Visitor
     public Object Visit(SetupNode node)
     {
 
-        //We then add all the pin declerations
+        //First we add all pins to our pinMap
         for (DefinitionNode child : node.Childs)
         {
             if(child instanceof PinDeclarationNode)
@@ -568,7 +598,7 @@ public class BuildCode implements Visitor
             }
         }
 
-        //First we add the global variables,
+        //Then we add the global variables,
         for (DefinitionNode child : node.Childs)
         {
             if(child instanceof DeclarationNode)
@@ -609,7 +639,7 @@ public class BuildCode implements Visitor
     @Override
     public Object Visit(StringNode node)
     {
-        return node.Value;
+        return "\"" + node.Value + "\"";
     }
 
     @Override
@@ -661,7 +691,7 @@ public class BuildCode implements Visitor
     @Override
     public Object Visit(TimeNode node)
     {
-        return node.Value;
+        return "\"" + node.Value + "\"";
     }
 
     @Override
@@ -746,7 +776,10 @@ public class BuildCode implements Visitor
 
             for (ExpressionNode expression : node.expressions)
             {
-                result += ReadPin(expression.Accept(this));
+                if(expression instanceof HouseNode)
+                    result += ReadPin(pinMap.get(expression.Accept(this)));
+                else
+                    result += expression.Accept(this);
 
                 if (i++ != node.expressions.size())
                     result += (", ");

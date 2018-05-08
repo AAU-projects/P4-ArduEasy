@@ -20,7 +20,7 @@ public class Program
 {
     public static void main(String args[]) throws IOException
     {
-        String filePath = "CodeExamples/guideExample.txt";
+        String filePath = "CodeExamples/ButtonAndLamp.arz";
         String outputFile = "Outputs/arduinogeneration.ino";
         CharStream inputStream = CharStreams.fromFileName(filePath);
         ArduEasyLexer lexer = new ArduEasyLexer(inputStream);
@@ -57,25 +57,9 @@ public class Program
             System.out.println();
             BuildCode CodeGenerator = new BuildCode(writer);
             CodeGenerator.Visit(root);
+            writer.close();
+            System.out.println("Code Generation Complete...");
 
-            /*SwitchNode testSwitch = new SwitchNode()
-            {{
-               expression = new IdentifierNode(){{Value = "hej";}};
-               Body.add(new CaseNode(){{Value = "hejhej";}});
-               Body.add(new CaseNode(){{Value = "hejhejhej";}});
-            }};
-            /*DeclarationNode testDec = new DeclarationNode()
-            {{
-                Type = "string";
-                Value = new IdentifierNode(){{}};
-            }};
-            /*DivisionNode testDiv = new DivisionNode()
-            {{
-                LeftChild = new IdentifierNode() {{Value = "hej";}};
-                RightChild = new IdentifierNode() {{Value = "hejhej";}};
-            }};
-            System.out.println("Type Checker TEST:");
-            typeChecker.Visit(testDiv);*/
 
             ErrorHandler.PrintErrors();
 
