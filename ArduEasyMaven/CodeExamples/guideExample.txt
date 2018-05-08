@@ -5,6 +5,11 @@ house
     float bob2 = 5 + 8.50
     int hej = 10+5
     int hejhej = 2
+    bob2 = 2
+    bob2 = 2.5
+    bob2 = "test"
+    int hey = "you"
+    int fff = 5.2
 
     time SavedTime = 00:00
     time NextTime = 12:00
@@ -51,7 +56,8 @@ when (house.Kitchen.Button is true)
 when (SavedTime is 07:00)
 {
     house.Bedroom.Blinds = true //This will open the blinds at 7.
-    house.Kitchen.Lamps = 55 //Turns on the Lamps in the Kitchen
+    house.Bedroom.Blinds = house.Kitchen.Lamps //This will open the blinds at 7.
+    house.Kitchen.Lamps = false //Turns on the Lamps in the Kitchen
 }
 
 when (SavedTime is 18:00)

@@ -17,6 +17,7 @@ public class SymbolTable
 {
     public Map<String, Variable> Variables = new HashMap<String, Variable>();
     public SymbolTable CurrentOpenScope = this;
+    public int lastScopeLine;
     public SymbolTable ParrentScope = this;
     public static HashMap<String, FunctionVariable> FunctionList = new HashMap<String, FunctionVariable>();
 
@@ -114,6 +115,39 @@ public class SymbolTable
 
         return result;
     }
+
+    public SymbolTable GetCurrentScope(String scopeName)
+    {
+        Variable variable =  CurrentOpenScope.Variables.get(scopeName);
+        SymbolTable result = null;
+
+        if (variable != null)
+        {
+            result = (SymbolTable) variable.Value();
+        }
+
+
+        if (result == null)
+        {
+            for (String scope : Variables.keySet())
+            {
+                if (Variables.get(scope) instanceof ScopeVariable)
+                {
+                    result = (SymbolTable) Variables.get(scope).Value();
+                    result = result.GetScope(scopeName);
+
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                }
+            }
+        }
+
+        CurrentOpenScope = result;
+        return result;
+    }
+
 
     public void CreateScope(final Node node)
     {

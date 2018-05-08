@@ -14,7 +14,6 @@ import java.util.*;
 public class TypeChecker implements Visitor
 {
     private SymbolTable symbolTable;
-    private int lastScopeLine;
     private String isRoom = null;
 
     public TypeChecker(SymbolTable table)
@@ -123,8 +122,6 @@ public class TypeChecker implements Visitor
                 ErrorHandler.AddError(new SemanticError(node, "Tried to add " + valueType + " to an " + arrayType + " array"));
             }
         }
-        arrayType = GetPinType(arrayType); // when all objects in the array have been checked the array type is set to the correct type, e.g if int.output the array is set to int. this makes comparison easier.
-
         return arrayType;
     }
 
@@ -135,15 +132,32 @@ public class TypeChecker implements Visitor
         String identifierType = GetTypeNode(node.Identifier); // tries to get pin type if expression is a pintype
         String valueType =  GetTypeNode(node.Value);
 
-        if(identifierType.equals(floatType))
-        {
-            if(!valueType.equals(intType) && !valueType.equals(floatType))
-                ErrorHandler.AddError(new SemanticError(node, "Tried to assign " + valueType + " to float instance"));
-        }
-        else if (!identifierType.equals(valueType))
-            ErrorHandler.AddError(new SemanticError(node, "Tried to assign " + valueType + " to " + identifierType + " instance"));
+        if(isValidOperatorRule(identifierType, valueType))
+            ErrorHandler.AddError(new SemanticError(node, "Tried to assign " + valueType + " to " + identifierType  + " instance"));
 
         return node;
+    }
+
+    private boolean isValidOperatorRule(String identifierType, String value)
+    {
+        if (CheckIfPinType(identifierType) || CheckIfPinType(value))
+        {
+            identifierType = GetPinType(identifierType);
+            value = GetPinType(value);
+        }
+        // a int and float is the only exception that may be compared with different types, else the type have to be equal on both sides.
+        return !(identifierType.equals(intType) && value.equals(floatType) // float and int comparison
+                || (identifierType.equals(floatType) && value.equals(intType))
+                || identifierType.equals(value));
+    }
+
+    private boolean CheckLoop(String value, String... strings)
+    {
+        for (String equalValue : strings) {
+            if (value.equals(equalValue))
+                return true;
+        }
+        return false;
     }
 
     private String GetPinType(String type) {
@@ -160,7 +174,7 @@ public class TypeChecker implements Visitor
     @Override
     public String Visit(CaseNode node)
     {
-        lastScopeLine = node.LineNumber;
+        symbolTable.OpenScope(String.valueOf(node.LineNumber));
         String caseType ;
 
         if (node.Value != null)
@@ -175,8 +189,9 @@ public class TypeChecker implements Visitor
         for (StatementsNode statementsNode : node.Body)
         {
             statementsNode.Accept(this);
-            lastScopeLine = node.LineNumber;
         }
+
+        symbolTable.CloseScope();
         return caseType;
     }
 
@@ -192,7 +207,7 @@ public class TypeChecker implements Visitor
         String identifierType = GetTypeNode(node.Identifier);
         String expressionType = GetTypeNode(node.Value);
 
-        if (!expressionType.equals(identifierType))
+        if (isValidOperatorRule(identifierType, expressionType))
         {
             ErrorHandler.AddError(new SemanticError(node, "Tried to declare object of type: " + node.Type + " with type: " + expressionType));
         }
@@ -231,7 +246,7 @@ public class TypeChecker implements Visitor
     @Override
     public Object Visit(ElseIfNode node)
     {
-        lastScopeLine = node.LineNumber;
+        symbolTable.OpenScope(String.valueOf(node.LineNumber));
         String predicateType = GetTypeNode(node.Predicate);
         if (!predicateType.equals(boolType))
         {
@@ -240,13 +255,13 @@ public class TypeChecker implements Visitor
         for (StatementsNode statementsNode : node.Body)
         {
             statementsNode.Accept(this);
-            lastScopeLine = node.LineNumber;
-
         }
+
+        symbolTable.CloseScope();
+
         if (node.Alternative != null)
         {
             node.Alternative.Accept(this);
-            lastScopeLine = node.LineNumber;
         }
         return null;
     }
@@ -254,12 +269,12 @@ public class TypeChecker implements Visitor
     @Override
     public Object Visit(ElseNode node)
     {
-        lastScopeLine = node.LineNumber;
+        symbolTable.OpenScope(String.valueOf(node.LineNumber));
         for (StatementsNode statementsNode : node.Body)
         {
             statementsNode.Accept(this);
-            lastScopeLine = node.LineNumber;
         }
+        symbolTable.CloseScope();
         return null;
     }
 
@@ -335,7 +350,7 @@ public class TypeChecker implements Visitor
     @Override
     public Object Visit(ForNode node)
     {
-        lastScopeLine = node.LineNumber;
+        symbolTable.OpenScope(String.valueOf(node.LineNumber));
         String predicateType = GetTypeNode(node.Predicate);
         if (!predicateType.equals(boolType))
         {
@@ -348,15 +363,16 @@ public class TypeChecker implements Visitor
         for (StatementsNode statementsNode : node.body)
         {
             statementsNode.Accept(this);
-            lastScopeLine = node.LineNumber;
         }
+
+        symbolTable.CloseScope();
         return null;
     }
 
     @Override
     public Object Visit(FunctionNode node)
     {
-        lastScopeLine = node.LineNumber;
+        symbolTable.OpenScope(String.valueOf(node.LineNumber));
 
         if (!node.ReturnType.equals(voidType))
         {
@@ -376,8 +392,9 @@ public class TypeChecker implements Visitor
         for (StatementsNode statementsNode : node.Body)
         {
             statementsNode.Accept(this);
-            lastScopeLine = node.LineNumber;
         }
+
+        symbolTable.CloseScope();
         return null;
     }
 
@@ -422,25 +439,17 @@ public class TypeChecker implements Visitor
         {
             return symbolTable.GetScope(roomSplit[1]).GetTypeofVariable(node, roomSplit[2]);
         }
-        if (lastScopeLine == 0)
-        {
-            return symbolTable.GetTypeofVariable(node, node.Value);
-        }
-        else if (isRoom != null)
-        {
-            return symbolTable.GetScope(isRoom).GetTypeofVariable(node, node.Value);
-        }
         else
         {
-            return symbolTable.GetScope((String.valueOf(lastScopeLine))).GetTypeofVariable(node, node.Value);
+            return symbolTable.CurrentOpenScope.GetTypeofVariable(node, node.Value);
         }
-
     }
+
 
     @Override
     public Object Visit(IfNode node)
     {
-        lastScopeLine = node.LineNumber;
+        symbolTable.GetCurrentScope(String.valueOf(node.LineNumber));
         String predicateType = GetTypeNode(node.Predicate);
 
         if (!predicateType.equals(boolType))
@@ -450,13 +459,14 @@ public class TypeChecker implements Visitor
         for (StatementsNode statementsNode : node.Body)
         {
             statementsNode.Accept(this);
-            lastScopeLine = node.LineNumber;
         }
+
+        symbolTable.CloseScope();
+
         if (node.Alternative != null)
         {
             node.Alternative.Accept(this);
         }
-        lastScopeLine = node.LineNumber;
         return null;
     }
 
@@ -588,7 +598,7 @@ public class TypeChecker implements Visitor
     @Override
     public String Visit(NotEqualsNode node)
     {
-        String[] NotEqualsTypes = {intType, floatType, percentageType, timeType, dayType, monthType, digital_inputType, digital_outputType, analog_inputType, analog_outputType, pullup_inputType};
+        String[] NotEqualsTypes = {intType, floatType, percentageType, timeType, dayType, monthType, boolType, stringType, digital_inputType, digital_outputType, analog_inputType, analog_outputType, pullup_inputType};
 
         String leftType = GetTypeNode(node.Left);
         String rightType = GetTypeNode(node.Right);
@@ -616,7 +626,7 @@ public class TypeChecker implements Visitor
     @Override
     public Object Visit(PerformTimes node)
     {
-        lastScopeLine = node.LineNumber;
+        symbolTable.OpenScope((String.valueOf(node.LineNumber)));
         String iteratorType = GetTypeNode(node.value);
 
         if (iteratorType != null) // if no type is found the variable is not in the scope
@@ -628,8 +638,9 @@ public class TypeChecker implements Visitor
             for (StatementsNode statementsNode : node.Body)
             {
                 statementsNode.Accept(this);
-                lastScopeLine = node.LineNumber;
             }
+
+            symbolTable.CloseScope();
         }
         return null;
     }
@@ -637,7 +648,7 @@ public class TypeChecker implements Visitor
     @Override
     public Object Visit(PerformUntil node)
     {
-        lastScopeLine = node.LineNumber;
+        symbolTable.OpenScope(String.valueOf(node.LineNumber));
         IterationChecker(node);
         return null;
     }
@@ -648,7 +659,7 @@ public class TypeChecker implements Visitor
         String pinType = (String) node.Pin.Accept(this);
         String IOType = (String) node.IoStatus.Accept(this);
 
-        if (pinType == "analog")
+        if (pinType.equals("analog"))
             if (IOType.equals("inputpullup"))
             {
                 ErrorHandler.AddError(new SemanticError(node, "Tried to create an Analog inputpullup, inputpull can only be digital"));
@@ -666,16 +677,15 @@ public class TypeChecker implements Visitor
     @Override
     public String Visit(RoomDeclaration node)
     {
-        lastScopeLine = node.LineNumber;
-        isRoom = node.Identifier.Value;
+        symbolTable.OpenScope(String.valueOf(node.Identifier.Value));
 
         for (RoomBlockNode roomBlockNode : node.body)
         {
             roomBlockNode.Accept(this);
-            lastScopeLine = node.LineNumber;
         }
 
-        isRoom = null;
+        symbolTable.CloseScope();
+
         return roomType;
     }
 
@@ -768,7 +778,7 @@ public class TypeChecker implements Visitor
     @Override
     public Object Visit(WhenNode node)
     {
-        lastScopeLine = node.LineNumber;
+        symbolTable.OpenScope(String.valueOf(node.LineNumber));
         String predicateType = GetTypeNode(node.Predicate);
         if (!predicateType.equals(boolType))
         {
@@ -777,15 +787,16 @@ public class TypeChecker implements Visitor
         for (StatementsNode statementsNode : node.Body)
         {
             statementsNode.Accept(this);
-            lastScopeLine = node.LineNumber;
         }
+
+        symbolTable.CloseScope();
+
         return null;
     }
 
     @Override
     public Object Visit(WhileNode node)
     {
-        lastScopeLine = node.LineNumber;
         IterationChecker(node);
         return null;
     }
@@ -800,8 +811,8 @@ public class TypeChecker implements Visitor
         for (StatementsNode statementsNode : node.Body)
         {
             statementsNode.Accept(this);
-            lastScopeLine = node.LineNumber;
         }
+        symbolTable.CloseScope();
     }
 
     @Override

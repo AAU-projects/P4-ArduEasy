@@ -1,15 +1,21 @@
-// Hej med dig
-
 house
 {
-    room Kitchen
-    {
-        bob = {bob,bob,bob}
-    }
-} // comments are working now
+}
 
 function void bob1(string hey)
 {
-    bob = house.bob.bob.bob.bob.bob.bob.bob
+        //6
+        // month
+        if (true)
+        {
+            month syntax_test_left = DECEMBER
+            month syntax_test_right = JUNE
+            if (syntax_test_left == syntax_test_right) { }
+            if (syntax_test_left != syntax_test_right) { }
+            if (syntax_test_left < syntax_test_right) { }
+            if (syntax_test_left > syntax_test_right) { }
+            if (syntax_test_left <= syntax_test_right) { }
+            if (syntax_test_left >= syntax_test_right) { }
+        }
 
 }
