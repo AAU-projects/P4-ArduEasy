@@ -25,7 +25,9 @@ public class SymbolTable
     {
         if (LookUp(key))
         {
-            ErrorHandler.FireInstantError(new SemanticError(node,"Compile Error: Tried to add existing key: " + key));
+            ErrorHandler.AddError(new SemanticError(node,"Scope Error: Tried to declare an existing variable: " + key +
+                    "\nIt is not possible to declare a variable more then one time, either reassign the variable a new value" +
+                    " or define a new variable."));
             return;
         }
 
@@ -68,7 +70,7 @@ public class SymbolTable
             }
         }else if(!LookUp(key))
         {
-            ErrorHandler.FireInstantError(new SemanticError(node,"Compile Error: Tried to edit value of non-existing variable: " + key + " in scope"));
+            ErrorHandler.AddError(new SemanticError(node,"Scope Error: Tried to edit the value of a non-existing variable: " + key));
             return;
         }
 
@@ -80,7 +82,7 @@ public class SymbolTable
     {
         if(!LookUp(key))
         {
-            ErrorHandler.FireInstantError(new SemanticError(node,"Compile Error: Tried to get type of non-existing variable: " + key + " in scope"));
+            ErrorHandler.FireInstantError(new SemanticError(node,"Compile Error: Tried to get type of non-existing variable: " + key));
             return null;
         }
 
