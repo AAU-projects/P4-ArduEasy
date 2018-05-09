@@ -18,7 +18,7 @@ public class Program
 {
     public static void main(String args[]) throws IOException
     {
-        String filePath = "CodeExamples/syntaxValidOperators.txt";
+        String filePath = "CodeExamples/AssigmentDeclaration.txt";
         CharStream inputStream = CharStreams.fromFileName(filePath);
         ArduEasyLexer lexer = new ArduEasyLexer(inputStream);
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
@@ -72,6 +72,7 @@ public class Program
         } catch (Exception e)
         {
             System.out.println(e.toString());
+            e.printStackTrace();
             ErrorHandler.PrintErrors();
         }
 

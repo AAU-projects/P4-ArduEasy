@@ -115,7 +115,7 @@ public class TypeChecker implements Visitor
             if (arrayDType.equals(arrayType) && CheckIfPinType(valueType)) // if arraytype is still array, and valuetype is one of the 5 array types, then arraytype is defined as the valuetype.
             {
                 arrayType = valueType;
-                symbolTable.GetScope(isRoom).Update(node, node.Values.get(0).Value, arrayType);
+                symbolTable.CurrentOpenScope.GetTypeofVariable(node, node.Values.get(0).Value).SetValue(arrayType);
             }
             if (!arrayType.equals(valueType))
             {
@@ -678,6 +678,7 @@ public class TypeChecker implements Visitor
     public String Visit(RoomDeclaration node)
     {
         symbolTable.OpenScope(String.valueOf(node.Identifier.Value));
+        roomType = node.Identifier.Value;
 
         for (RoomBlockNode roomBlockNode : node.body)
         {

@@ -1,0 +1,48 @@
+house
+{
+    room Kitchen
+    {
+        Digitial_input = PIN 1 as input
+        Digitial_output = PIN 2 as output
+        bool_inputpullup = PIN 6 as inputpullup
+        Analog_input = PIN A 6 as input
+        Analog_output = PIN A 7 as output
+    }
+}
+
+when (house.Kitchen.Digitial_input is true)
+{
+    //Dec test
+    int intTest = 2
+    float floatTest = 5.2
+    string stringTest = "hey"
+    bool boolTest = false
+    int percentTest = 5% + 5%
+    int percentTest2 = 5% + 25
+
+    int intTest2 = house.Kitchen.Digitial_input // should give error
+    int intTest3 = house.Kitchen.Digitial_output // should give error
+    int intTest4 = house.Kitchen.Analog_input
+    int intTest5 = house.Kitchen.Analog_output
+
+    bool boolTest2 = house.Kitchen.Digitial_input
+    bool boolTest3 = house.Kitchen.Digitial_output
+    bool boolTest4 = house.Kitchen.Analog_input // should give error
+    bool boolTest5 = house.Kitchen.Analog_output // should give error
+
+    //Assignment digital
+    intTest = house.Kitchen.Digitial_input // should give error
+    intTest = house.Kitchen.Digitial_output // should give error
+    floatTest = house.Kitchen.Digitial_input // should give error
+    floatTest = house.Kitchen.Digitial_output // should give error
+    boolTest = house.Kitchen.Digitial_input
+    boolTest = house.Kitchen.Digitial_output
+
+    //Assignment analog
+    intTest = house.Kitchen.Analog_input
+    intTest = house.Kitchen.Analog_output
+    floatTest = house.Kitchen.Analog_input
+    floatTest = house.Kitchen.Analog_output
+    boolTest = house.Kitchen.Analog_input // should give error
+    boolTest = house.Kitchen.Analog_output // should give error
+}
