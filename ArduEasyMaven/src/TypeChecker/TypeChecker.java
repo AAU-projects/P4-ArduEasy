@@ -4,7 +4,6 @@ import AST.Nodes.*;
 import ErrorHandler.ErrorHandler;
 import ErrorHandler.Errors.SemanticError;
 import SymbolTable.SymbolTable;
-import SymbolTable.Variables.ArrayVariable;
 import SymbolTable.Variables.PinVariable;
 import SymbolTable.Variables.Variable;
 import visitor.Visitor;
@@ -55,21 +54,12 @@ public class TypeChecker implements Visitor
         String leftType = GetTypeNode(node.LeftChild);
         String rightType = GetTypeNode(node.RightChild);
 
-        boolean matchFound = Arrays.asList(AdditiveTypes).contains(leftType);
-
-        if(!matchFound)
-            ErrorHandler.AddError(new SemanticError(node, "Tried to add invalid type " + leftType));
-
-        matchFound = Arrays.asList(AdditiveTypes).contains(rightType);
-
-        if(!matchFound)
-            ErrorHandler.AddError(new SemanticError(node, "Tried to add invalid type " + rightType));
-
-        if(leftType.equals(intType) && rightType.equals(floatType) ||leftType.equals(floatType) && rightType.equals(intType))
+        if(leftType.equals(intType) && rightType.equals(floatType) || leftType.equals(floatType) && rightType.equals(intType))
         {
             return floatType;
         }
-        if(!leftType.equals(rightType))
+
+        if(IsValidComparison(AdditiveTypes, leftType, rightType, node))
         {
             ErrorHandler.AddError(new SemanticError(node, "Tried to add " + leftType + " with a  " + rightType));
         }
@@ -132,23 +122,99 @@ public class TypeChecker implements Visitor
         String identifierType = GetTypeNode(node.Identifier); // tries to get pin type if expression is a pintype
         String valueType =  GetTypeNode(node.Value);
 
-        if(isValidOperatorRule(identifierType, valueType))
+        if(isValidArithmetic(identifierType, valueType))
             ErrorHandler.AddError(new SemanticError(node, "Tried to assign " + valueType + " to " + identifierType  + " instance"));
 
         return node;
     }
 
-    private boolean isValidOperatorRule(String identifierType, String value)
+    private boolean isValidArithmetic(String identifierType, String value)
     {
+        if (identifierType.equals(value)) return false; // if identifier is the same type as value
+
         if (CheckIfPinType(identifierType) || CheckIfPinType(value))
         {
             identifierType = GetPinType(identifierType);
             value = GetPinType(value);
         }
-        // a int and float is the only exception that may be compared with different types, else the type have to be equal on both sides.
-        return !(identifierType.equals(intType) && value.equals(floatType) // float and int comparison
-                || (identifierType.equals(floatType) && value.equals(intType))
-                || identifierType.equals(value));
+
+        if (identifierType.equals(intType)
+                && value.equals(floatType)
+                || value.equals(percentageType) ) return false; // if identifier int then value can be float, percent
+
+        if (identifierType.equals(floatType)
+                && value.equals(intType) ) return false; // if identifier float then value can be int
+
+        return true; // is not a valid operator rule
+    }
+
+    private boolean IsValidComparison(String[] comparisonTypes, String leftType, String rightType, Node node)
+    {
+        if (leftType == null || rightType == null) return false;
+
+        boolean matchFound = Arrays.asList(comparisonTypes).contains(leftType);
+
+        if(!matchFound)
+        {
+            ErrorHandler.AddError(new SemanticError(node, "Tried to compare invalid type " + leftType));
+            return false;
+        }
+
+        matchFound = Arrays.asList(comparisonTypes).contains(rightType);
+
+        if(!matchFound)
+        {
+            ErrorHandler.AddError(new SemanticError(node, "Tried to compare invalid type " + rightType));
+            return false;
+        }
+
+        if (leftType.equals(rightType)) return false; // if leftType is the same type as rightType
+
+        // check for array declaration values, int.input int.output bool.input etc...
+        if (CheckIfPinType(leftType) || CheckIfPinType(rightType))
+        {
+            boolean notValid = isValidPinOperatorRule(leftType, rightType); // checks all valid pin operator rules
+            if (!notValid) return false;
+            leftType = GetPinType(leftType);
+            rightType = GetPinType(rightType);
+        }
+
+        if (leftType.equals(intType)
+                && rightType.equals(floatType)
+                || rightType.equals(percentageType) ) return false; // if leftType int then rightType can be float, percent
+
+        if (leftType.equals(floatType)
+                && rightType.equals(intType) ) return false; // if leftType float then rightType can be int
+
+        if (leftType.equals(percentageType)
+                && rightType.equals(intType) ) return false; // if percentageType float then rightType can be int)
+
+
+        return true; // is not a valid operator rule
+    }
+
+    private boolean isValidPinOperatorRule(String identifierType, String value) {
+        if (identifierType.equals(digital_inputType)
+                && value.equals(digital_outputType)
+                || value.equals(boolType) ) return false; // if identifier digital_inputType then value can be digital_outputType, boolType
+
+        if (identifierType.equals(digital_outputType)
+                && value.equals(digital_inputType)
+                || value.equals(boolType) ) return false;
+
+        if (identifierType.equals(analog_inputType)
+                && value.equals(analog_outputType)
+                || value.equals(intType) ) return false;
+
+        if (identifierType.equals(analog_outputType)
+                && value.equals(analog_inputType)
+                || value.equals(intType) ) return false;
+
+        if (identifierType.equals(pullup_inputType)
+                && value.equals(intType) ) return false;
+
+        return true;
+
     }
 
     private boolean CheckLoop(String value, String... strings)
@@ -207,7 +273,7 @@ public class TypeChecker implements Visitor
         String identifierType = GetTypeNode(node.Identifier);
         String expressionType = GetTypeNode(node.Value);
 
-        if (isValidOperatorRule(identifierType, expressionType))
+        if (isValidArithmetic(identifierType, expressionType))
         {
             ErrorHandler.AddError(new SemanticError(node, "Tried to declare object of type: " + node.Type + " with type: " + expressionType));
         }
@@ -286,7 +352,7 @@ public class TypeChecker implements Visitor
         String leftType = GetTypeNode(node.Left);
         String rightType = GetTypeNode(node.Right);
 
-        if(CheckComparisonOperators(EqualsTypes, leftType, rightType, node))
+        if(IsValidComparison(EqualsTypes, leftType, rightType, node))
         {
             ErrorHandler.AddError(new SemanticError(node, "Invalid equals comparison " + leftType + " and " + rightType));
         }
@@ -294,45 +360,7 @@ public class TypeChecker implements Visitor
         return boolType;
     }
 
-    private boolean CheckComparisonOperators(String[] comparisonTypes, String leftType, String rightType, Node node)
-    {
-        if (leftType == null || rightType == null) return false;
 
-        boolean matchFound = Arrays.asList(comparisonTypes).contains(leftType);
-
-        if(!matchFound)
-        {
-            ErrorHandler.AddError(new SemanticError(node, "Tried to compare invalid type " + leftType));
-            return false;
-        }
-
-        matchFound = Arrays.asList(comparisonTypes).contains(rightType);
-
-        if(!matchFound)
-        {
-            ErrorHandler.AddError(new SemanticError(node, "Tried to compare invalid type " + rightType));
-            return false;
-        }
-
-        // check for array declaration values, int.input int.output bool.input etc...
-        if (CheckIfPinType(leftType) || CheckIfPinType(rightType))
-        {
-            if (leftType.equals(rightType) || rightType.equals(leftType))
-            {
-                return true; // returns true if its a array declaration with the same type. e.g int.output == int.output
-            }
-            else
-            {
-                // if its not the same type, the type is assigned to leftype e.g int.ouput is a int type.
-                leftType = GetPinType(leftType);
-                rightType = GetPinType(rightType);
-            }
-        }
-        // a int and float is the only exception that may be compared with different types, else the type have to be equal on both sides.
-        return !(leftType.equals(intType) && rightType.equals(floatType) // float and int comparison
-                || (leftType.equals(floatType) && rightType.equals(intType))
-                || leftType.equals(rightType));
-    }
 
     private boolean CheckIfPinType(String valueType)
     {
@@ -406,7 +434,7 @@ public class TypeChecker implements Visitor
         String leftType = GetTypeNode(node.Left);
         String rightType = GetTypeNode(node.Right);
 
-        if(CheckComparisonOperators(GreaterOrEqualTypes, leftType, rightType, node))
+        if(IsValidComparison(GreaterOrEqualTypes, leftType, rightType, node))
         {
             ErrorHandler.AddError(new SemanticError(node, "Invalid greater or equals comparison "+ leftType + " and " + rightType));
         }
@@ -422,7 +450,7 @@ public class TypeChecker implements Visitor
         String leftType = GetTypeNode(node.Left);
         String rightType = GetTypeNode(node.Right);
 
-        if(CheckComparisonOperators(GreaterThanTypes, leftType, rightType, node))
+        if(IsValidComparison(GreaterThanTypes, leftType, rightType, node))
         {
             ErrorHandler.AddError(new SemanticError(node, "Invalid greater than comparison "+ leftType + " and " + rightType));
         }
@@ -494,7 +522,7 @@ public class TypeChecker implements Visitor
         String leftType = GetTypeNode(node.Left);
         String rightType = GetTypeNode(node.Right);
 
-        if(CheckComparisonOperators(LessOrEqualTypes, leftType, rightType, node))
+        if(IsValidComparison(LessOrEqualTypes, leftType, rightType, node))
         {
             ErrorHandler.AddError(new SemanticError(node, "Invalid less or equal comparison "+ leftType + " and " + rightType));
         }
@@ -510,7 +538,7 @@ public class TypeChecker implements Visitor
         String leftType = GetTypeNode(node.Left);
         String rightType = GetTypeNode(node.Right);
 
-        if(CheckComparisonOperators(LessThanTypes, leftType, rightType, node))
+        if(IsValidComparison(LessThanTypes, leftType, rightType, node))
         {
             ErrorHandler.AddError(new SemanticError(node, "Invalid less than comparison " + leftType + " and " + rightType));
         }
@@ -603,7 +631,7 @@ public class TypeChecker implements Visitor
         String leftType = GetTypeNode(node.Left);
         String rightType = GetTypeNode(node.Right);
 
-        if(CheckComparisonOperators(NotEqualsTypes, leftType, rightType, node))
+        if(IsValidComparison(NotEqualsTypes, leftType, rightType, node))
         {
             ErrorHandler.AddError(new SemanticError(node, "Invalid not equals comparison "+ leftType + " and " + rightType));
         }
@@ -725,28 +753,19 @@ public class TypeChecker implements Visitor
     {
         String[] SubtractiveTypes = {intType, floatType, percentageType, timeType};
 
-        String LeftType = GetTypeNode(node.LeftChild);
-        String rightVar = GetTypeNode(node.RightChild);
+        String leftType = GetTypeNode(node.LeftChild);
+        String rightType = GetTypeNode(node.RightChild);
 
-        boolean matchFound = Arrays.asList(SubtractiveTypes).contains(LeftType);
-
-        if(!matchFound)
-            ErrorHandler.AddError(new SemanticError(node, "Tried to subtract invalid type " + LeftType));
-
-        matchFound = Arrays.asList(SubtractiveTypes).contains(rightVar);
-
-        if(!matchFound)
-            ErrorHandler.AddError(new SemanticError(node, "Tried to subtract invalid type " + rightVar));
-
-        if(LeftType.equals(intType) && rightVar.equals(floatType) || LeftType.equals(floatType) && rightVar.equals(intType))
+        if(leftType.equals(intType) && rightType.equals(floatType) || leftType.equals(floatType) && rightType.equals(intType))
         {
             return floatType;
         }
-        if(!LeftType.equals(rightVar))
+        if(IsValidComparison(SubtractiveTypes, leftType, rightType, node))
         {
-            ErrorHandler.AddError(new SemanticError(node, "Tried to subtract " + LeftType + " with a  " + rightVar));
+            ErrorHandler.AddError(new SemanticError(node, "Tried to subtract " + leftType + " with a  " + rightType));
         }
-        return LeftType;
+
+        return leftType;
     }
 
     @Override
