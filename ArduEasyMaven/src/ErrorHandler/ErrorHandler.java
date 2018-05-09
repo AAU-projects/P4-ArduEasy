@@ -19,6 +19,7 @@ public class ErrorHandler
     {
         AddError(e);
         printErorr(e);
+        System.exit(-1);
     }
 
     private static void printErorr(ErrorEvent e)
