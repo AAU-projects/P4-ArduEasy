@@ -202,8 +202,8 @@ SEMICOLON				: ';' ;
 COMMA 					: ',' ;
 
 INT 					: [0]|[1-9]+[0-9]* ;
-FLOAT 					: ([0-9]*[.])?[0-9]+ ;
-PERCENTAGE 				: [1-9]+[0-9]*[%] ;
+FLOAT 					: ([0]|[1-9]+)([.][0-9]+)? ;
+PERCENTAGE 				: ([1-9][0-9]?'%')|('100%') ;
 STRING 					: '"'.*?'"' ;
 TIME 					: ([0-1][0-9]|[2][0-3])[:][0-5][0-9] ;
 DAY						: 'MONDAY' | 'TUESDAY' | 'WEDNESDAY' | 'THURSDAY' | 'FRIDAY' | 'SATURDAY' | 'SUNDAY' ;
