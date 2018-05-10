@@ -204,11 +204,6 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
             {
                 Value = visitLogicalExpressions(ctx.logicalExpressions());
             }
-            else if (ctx.methodCall() != null)
-            {
-                Value = visitMethodCall(ctx.methodCall());
-            }
-
         }};
 
     }
@@ -713,6 +708,10 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         else if (ctx.parenExpression() != null)
         {
             return visitParenExpression(ctx.parenExpression());
+        }
+        else if (ctx.methodCall() != null)
+        {
+            return visitMethodCall(ctx.methodCall());
         }
 
         System.out.println("visitExpression | " + ctx.getText() + " " + ctx.start);

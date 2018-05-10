@@ -1,0 +1,26 @@
+house
+{
+    int value = 0;
+
+    room LukasRoom
+    {
+        Button1 = PIN 2 as input
+        Button2 = PIN 3 as input
+        Lamp = PIN A 1 as output
+    }
+}
+
+when(house.LukasRoom.Button1 is true)
+{
+    String time1 = "02:10"
+    String time2 = "01:20"
+    String time3 = time1 + time2
+    value = value + 10%
+    house.LukasRoom.Lamp = value
+}
+
+when(house.LukasRoom.Button2 is true)
+{
+    value = value - 10%
+    house.LukasRoom.Lamp = value
+}
