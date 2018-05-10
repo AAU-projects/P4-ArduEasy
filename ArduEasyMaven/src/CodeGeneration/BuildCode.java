@@ -622,10 +622,10 @@ public class BuildCode implements Visitor
         Addtextln("{");
         IncreaseIndent();
 
-        //We then add all the pin declerations
+        //We then add all the pin declarations
         for (DefinitionNode child : node.Childs)
         {
-            if(!(child instanceof DeclarationNode))
+            if(child instanceof PinDeclarationNode | child instanceof RoomDeclaration)
                 child.Accept(this);
         }
 
