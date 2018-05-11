@@ -66,6 +66,7 @@ when (SavedTime is 18:00)
     {
         case 1:
         {
+            DetVirkerIkke(bob)
             bob = 88
         }
         case 2:
@@ -119,4 +120,9 @@ function float CelciusToFahrenheit(int temp)
     }
 
     return result
+}
+
+void DetVirkerIkke(int lol)
+{
+    int ajens = lol
 }
