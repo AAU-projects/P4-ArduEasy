@@ -1,0 +1,10 @@
+house
+ {
+     Thermometer = PIN A 12 as input
+     Button = PIN 11 as input
+ }
+
+ when (house.Button == true)
+ {
+     int Temperature = house.Thermometer
+ }
