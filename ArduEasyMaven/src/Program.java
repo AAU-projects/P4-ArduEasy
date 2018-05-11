@@ -38,17 +38,19 @@ public class Program
 
             if (Arrays.asList(args).contains("-P"))
             {
-                PrettyPrint printer = new PrettyPrint();
-                printer.Visit(root);
+
             }
 
+            PrettyPrint printer = new PrettyPrint();
+            printer.Visit(root);
+
             BuildSymbolTable SymbolTable = new BuildSymbolTable();
-            SymbolTable.Visit(root);
+            //SymbolTable.Visit(root);
 
             TypeChecker typeChecker = new TypeChecker(SymbolTable.symbolTable);
 
             System.out.println("Type Checker:");
-            typeChecker.Visit(root);
+            //typeChecker.Visit(root);
             System.out.println("Complete...");
 
             PrintWriter writer = new PrintWriter(outputFile, "UTF-8");
@@ -56,7 +58,7 @@ public class Program
             System.out.println("Code Generation:");
             System.out.println();
             BuildCode CodeGenerator = new BuildCode(writer);
-            CodeGenerator.Visit(root);
+            //CodeGenerator.Visit(root);
             writer.close();
             System.out.println("Code Generation Complete...");
 

@@ -9,7 +9,6 @@ import visitor.Visitor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class BuildSymbolTable implements Visitor
 {
@@ -452,7 +451,7 @@ public class BuildSymbolTable implements Visitor
     }
 
     @Override
-    public Object Visit(PerformTimes node)
+    public Object Visit(PerformTimesNode node)
     {
         symbolTable.CreateScope(node);
         System.out.println("Opened a perform (" + node.LineNumber + ")");
@@ -476,7 +475,7 @@ public class BuildSymbolTable implements Visitor
     }
 
     @Override
-    public Object Visit(PerformUntil node)
+    public Object Visit(PerformUntilNode node)
     {
         symbolTable.CreateScope(node);
         System.out.println("Opened a perform (" + node.LineNumber + ")");

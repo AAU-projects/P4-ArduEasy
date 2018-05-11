@@ -15,7 +15,7 @@ when(house.LukasRoom.Button1 is true)
     time time1 = 02:10
     time time2 = 01:20
     time time3 = time1 + time2
-    value = 10% + value
+    value = value + 10%
     house.LukasRoom.Lamp = value
 }
 

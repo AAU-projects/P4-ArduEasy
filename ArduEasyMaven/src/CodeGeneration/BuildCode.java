@@ -469,7 +469,7 @@ public class BuildCode implements Visitor
     }
 
     @Override
-    public Object Visit(PerformTimes node)
+    public Object Visit(PerformTimesNode node)
     {
         String identifier = "i" + UUID.randomUUID().toString().replaceAll("-", "");
         Addtextln("for (int " + identifier + " = 0; " + identifier + " < " + node.value.Accept(this) + "; " + identifier + "++)");
@@ -488,7 +488,7 @@ public class BuildCode implements Visitor
     }
 
     @Override
-    public Object Visit(PerformUntil node)
+    public Object Visit(PerformUntilNode node)
     {
         Addtextln("while (" + node.Predicate.Accept(this) + ")");
         Addtextln("{");

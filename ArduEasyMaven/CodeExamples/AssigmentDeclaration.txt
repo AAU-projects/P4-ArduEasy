@@ -13,7 +13,7 @@ house
 when (house.Kitchen.Digitial_input is true)
 {
     //Dec test
-    int intTest = 2
+    int intTest = 0.7
     float floatTest = 5.2
     string stringTest = "hey"
     bool boolTest = false

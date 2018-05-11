@@ -32,8 +32,7 @@ function void AssTest1()
 
 
     bob = 485 + 56 - 485 * 256 + 45 * -bob2
-    jens = 50.25 * 32 * -1.4 / 26.48
-
+    float jens = 50.2 * 32 * -1.4
 }
 
 

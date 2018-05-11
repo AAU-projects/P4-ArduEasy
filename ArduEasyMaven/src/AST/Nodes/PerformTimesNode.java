@@ -4,7 +4,7 @@ import visitor.Visitor;
 
 import java.util.ArrayList;
 
-public class PerformTimes extends PerformNode
+public class PerformTimesNode extends PerformNode
 {
     public ExpressionNode value;
     public ArrayList<StatementsNode> Body = new ArrayList<StatementsNode>();

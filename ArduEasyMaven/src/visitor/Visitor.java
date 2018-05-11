@@ -38,8 +38,8 @@ public interface Visitor
     Object Visit(NotEqualsNode node);
     Object Visit(ParameterNode node);
     Object Visit(PercentNode node);
-    Object Visit(PerformTimes node);
-    Object Visit(PerformUntil node);
+    Object Visit(PerformTimesNode node);
+    Object Visit(PerformUntilNode node);
     Object Visit(PinDeclarationNode node);
     Object Visit(ReturnNode node);
     Object Visit(RoomDeclaration node);
