@@ -223,7 +223,8 @@ public class BuildCode implements Visitor
 
         if(node.Value instanceof MethodCallNode)
             MethodInlineCall = true;
-        value = pinMap.containsKey(identifier) ? ReadPin(pinMap.get(identifier)) : (String) node.Value.Accept(this);
+        String valueIdentifier = (String)node.Value.Accept(this);
+        value = pinMap.containsKey(valueIdentifier) ? ReadPin(pinMap.get(valueIdentifier)) : (String) node.Value.Accept(this);
 
         Addtextln(type + " " + identifier + " = " + value + (Inline ? "" : ";"));
         return null;
