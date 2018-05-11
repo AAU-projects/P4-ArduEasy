@@ -48,7 +48,7 @@ public class Program
             TypeChecker typeChecker = new TypeChecker(SymbolTable.symbolTable);
 
             System.out.println("Type Checker:");
-            typeChecker.Visit(root);
+            //typeChecker.Visit(root);
             System.out.println("Complete...");
 
             if (ErrorHandler.ErrorsPressent() && !Arrays.asList(args).contains("-FG")){ErrorHandler.PrintErrors();System.exit(-1);}

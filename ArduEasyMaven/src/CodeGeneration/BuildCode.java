@@ -751,7 +751,7 @@ public class BuildCode implements Visitor
             Addtext(node.identifier.Accept(this) + "(");
 
             int i = 1;
-
+            Inline = true;
             for (ExpressionNode expression : node.expressions)
             {
                 Addtext((String) expression.Accept(this));
@@ -761,9 +761,8 @@ public class BuildCode implements Visitor
             }
 
             Addtextln(");");
-
-            MethodInlineCall = false;
-
+            Inline = false;
+            Addtextln("");
             return null;
         }
         else
@@ -786,6 +785,8 @@ public class BuildCode implements Visitor
             }
 
             result += (")");
+
+            MethodInlineCall = false;
 
             return result;
         }

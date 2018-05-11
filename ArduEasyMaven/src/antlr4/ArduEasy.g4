@@ -57,6 +57,7 @@ statement           : declaration
                   	| while_r
   					| for_r
   					| perform_r
+  					| methodCall
   					;
 
 perform_r           : PERFORM expression TIMES LBRACK statement* RBRACK
@@ -202,7 +203,7 @@ SEMICOLON				: ';' ;
 COMMA 					: ',' ;
 
 INT 					: [0]|[1-9]+[0-9]* ;
-FLOAT 					: ([0]|[1-9]+)([.][0-9]+)? ;
+FLOAT 					: ([0]|[1-9]+[0-9]?)([.][0-9]+)? ;
 PERCENTAGE 				: (('0')|([1-9][0-9]?)|('100'))('%') ;
 STRING 					: '"'.*?'"' ;
 TIME 					: ([0-1][0-9]|[2][0-3])[:][0-5][0-9] ;

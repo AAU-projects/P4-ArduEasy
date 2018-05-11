@@ -375,6 +375,10 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         {
             return visitAssignment(ctx.assignment());
         }
+        else if (ctx.methodCall() != null)
+        {
+            return visitMethodCall(ctx.methodCall());
+        }
         System.out.println("visitStatement");
         return null;
     }

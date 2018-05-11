@@ -62,11 +62,14 @@ when (SavedTime is 18:00)
     house.Bedroom.Blinds = false //This will close the blinds at 18.
     int bob = 0
     int val = 5
+    float bobjens = 50.25 * 32 * -1.4
+    DetVirkerIkke(val)
+    DetVirkerIkke(bob)
+    float bobbobbob = CelciusToFahrenheit(bob)
     switch (val)
     {
         case 1:
         {
-            DetVirkerIkke(bob)
             bob = 88
         }
         case 2:
@@ -122,7 +125,7 @@ function float CelciusToFahrenheit(int temp)
     return result
 }
 
-void DetVirkerIkke(int lol)
+function void DetVirkerIkke(int lol)
 {
     int ajens = lol
 }
