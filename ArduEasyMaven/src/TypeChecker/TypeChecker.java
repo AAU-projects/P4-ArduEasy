@@ -870,4 +870,24 @@ public class TypeChecker implements Visitor
         }
         return SymbolTable.FunctionList.get(node.identifier.Value).Type;
     }
+
+    @Override
+    public Object Visit(ModuloNode node)
+    {
+
+        String leftType = GetTypeNode(node.LeftChild);
+        String rightType = GetTypeNode(node.RightChild);
+
+        boolean matchFound = intType.equals(leftType);
+
+        if(!matchFound)
+            ErrorHandler.AddError(new SemanticError(node, "Tried to modulo invalid type " + leftType));
+
+        matchFound = intType.equals(rightType);
+
+        if(!matchFound)
+            ErrorHandler.AddError(new SemanticError(node, "Tried to modulo invalid type " + rightType));
+
+        return intType;
+    }
 }

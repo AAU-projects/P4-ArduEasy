@@ -2,16 +2,15 @@ package AST.Nodes;
 
 import visitor.Visitor;
 
-import java.util.ArrayList;
-
-public class MethodCallNode extends ExpressionNode {
-    public IdentifierNode identifier;
-    public ArrayList<ExpressionNode> expressions;
+public class ModuloNode extends  ArithmeticExprNode
+{
+    public ExpressionNode LeftChild;
+    public ExpressionNode RightChild;
 
     @Override
     public String toString()
     {
-        return "MethodCall";
+        return "modulo";
     }
 
     @Override
@@ -19,3 +18,4 @@ public class MethodCallNode extends ExpressionNode {
         return visitor.Visit(this);
     }
 }
+

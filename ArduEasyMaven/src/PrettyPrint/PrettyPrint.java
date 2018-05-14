@@ -643,6 +643,15 @@ public class PrettyPrint implements Visitor
         return null;
     }
 
+    @Override
+    public Object Visit(ModuloNode node)
+    {
+        node.LeftChild.Accept(this);
+        System.out.print(" % ");
+        node.RightChild.Accept(this);
+        return null;
+    }
+
     private void Indent(int tabs)
     {
         for (int i = 0; i < tabs; i++){

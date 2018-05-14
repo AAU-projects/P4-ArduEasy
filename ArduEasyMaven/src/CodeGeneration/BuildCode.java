@@ -223,7 +223,8 @@ public class BuildCode implements Visitor
 
         if(node.Value instanceof MethodCallNode)
             MethodInlineCall = true;
-        value = pinMap.containsKey(identifier) ? ReadPin(pinMap.get(identifier)) : (String) node.Value.Accept(this);
+        String valueIdentifier = (String)node.Value.Accept(this);
+        value = pinMap.containsKey(valueIdentifier) ? ReadPin(pinMap.get(valueIdentifier)) : (String) node.Value.Accept(this);
 
         Addtextln(type + " " + identifier + " = " + value + (Inline ? "" : ";"));
         return null;
@@ -622,10 +623,10 @@ public class BuildCode implements Visitor
         Addtextln("{");
         IncreaseIndent();
 
-        //We then add all the pin declerations
+        //We then add all the pin declarations
         for (DefinitionNode child : node.Childs)
         {
-            if(!(child instanceof DeclarationNode))
+            if(child instanceof PinDeclarationNode | child instanceof RoomDeclaration)
                 child.Accept(this);
         }
 
@@ -751,7 +752,7 @@ public class BuildCode implements Visitor
             Addtext(node.identifier.Accept(this) + "(");
 
             int i = 1;
-
+            Inline = true;
             for (ExpressionNode expression : node.expressions)
             {
                 Addtext((String) expression.Accept(this));
@@ -761,9 +762,8 @@ public class BuildCode implements Visitor
             }
 
             Addtextln(");");
-
-            MethodInlineCall = false;
-
+            Inline = false;
+            Addtextln("");
             return null;
         }
         else
@@ -787,7 +787,15 @@ public class BuildCode implements Visitor
 
             result += (")");
 
+            MethodInlineCall = false;
+
             return result;
         }
+    }
+
+    @Override
+    public Object Visit(ModuloNode node)
+    {
+        return ReadPin(node.LeftChild) + " % " + ReadPin(node.RightChild);
     }
 }

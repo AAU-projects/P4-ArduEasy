@@ -53,4 +53,5 @@ public interface Visitor
     Object Visit(WhileNode node);
     Object Visit(HouseNode node);
     Object Visit(MethodCallNode node);
+    Object Visit(ModuloNode node);
 }

@@ -718,10 +718,28 @@ public class BuildSymbolTable implements Visitor
             else
                 expression.Accept(this);
 
-            if (id != null && !symbolTable.LookUp(id))
-                ErrorHandler.FireInstantError(new SemanticError(expression,"Compile Error: Tried to send non-existing identifier: " + ((IdentifierNode)expression).Value + " as param"));
+
+            if (id != null)
+            {
+                String[] split = id.split("\\.");
+
+                if (split.length > 2 && !symbolTable.GetScope(split[1]).LookUp(split[2]))
+                    ErrorHandler.AddError(new SemanticError(expression, "Tired to send non-existing identifier " + id + " as parameter"));
+                else if (split.length < 2 && !symbolTable.LookUp(id))
+                    ErrorHandler.AddError(new SemanticError(expression, "Tired to send non-existing identifier " + id + " as parameter"));
+
+            }
         }
 
         return null;
+    }
+
+    @Override
+    public Object Visit(ModuloNode node)
+    {
+        String left = (String)node.LeftChild.Accept(this);
+        String right = (String)node.RightChild.Accept(this);
+
+        return left + " % " + right;
     }
 }

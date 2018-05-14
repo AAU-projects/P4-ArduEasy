@@ -23,7 +23,7 @@ public class Program
 
     private static void Compile(String args[]) throws IOException
     {
-        String filePath = "CodeExamples/AssigmentDeclaration.txt"; // test 1
+        String filePath = "CodeExamples/guideExample.txt"; // test 1
         String outputFile = "Outputs/arduinogeneration.ino";
         CharStream inputStream = CharStreams.fromFileName(filePath);
         ArduEasyLexer lexer = new ArduEasyLexer(inputStream);
@@ -54,7 +54,7 @@ public class Program
             typeChecker.Visit(root);
             System.out.println("Complete...");
 
-            if (ErrorHandler.ErrorsPressent() && !Arrays.asList(args).contains("-FG")){ErrorHandler.PrintErrors();System.exit(-1);}
+            if (ErrorHandler.ErrorsPresent() && !Arrays.asList(args).contains("-FG")){ErrorHandler.PrintErrors();System.exit(-1);}
 
             PrintWriter writer = new PrintWriter(outputFile, "UTF-8");
             System.out.println();
