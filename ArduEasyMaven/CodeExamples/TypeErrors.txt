@@ -1,16 +1,15 @@
 house
-{
-    float floatvar = "Test"
-    string testString = 7
-    bool b = 1
-    int addvalue = teststring + value
+ {
+     float floatvar = "Test"
+     string test = 7
+     bool b = 1
+     string test2 = "hello"
+ }
 
-}
-
-when(Value == 0)
-{
-    if (Value)
-    {
-        // Do something
-    }
-}
+ when(test2 == true)
+ {
+     if (b)
+     {
+         // Do something
+     }
+ }
