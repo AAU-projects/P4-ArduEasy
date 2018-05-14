@@ -3,7 +3,6 @@ import ErrorHandler.ErrorHandler;
 import PrettyPrint.PrettyPrint;
 import SymbolTable.BuildSymbolTable;
 import TypeChecker.TypeChecker;
-import org.antlr.v4.runtime.ANTLRErrorStrategy;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -14,13 +13,12 @@ import java.util.Arrays;
 import AST.*;
 import antlr4.*;
 import AST.Nodes.*;
-import visitor.Visitor;
 
 public class Program
 {
     public static void main(String args[]) throws IOException
     {
-        String filePath = "CodeExamples/readPinExample.arz";
+        String filePath = "CodeExamples/test.arz";
         String outputFile = "Outputs/arduinogeneration.ino";
         CharStream inputStream = CharStreams.fromFileName(filePath);
         ArduEasyLexer lexer = new ArduEasyLexer(inputStream);
@@ -51,7 +49,7 @@ public class Program
             typeChecker.Visit(root);
             System.out.println("Complete...");
 
-            if (ErrorHandler.ErrorsPressent() && !Arrays.asList(args).contains("-FG")){ErrorHandler.PrintErrors();System.exit(-1);}
+            if (ErrorHandler.ErrorsPresent() && !Arrays.asList(args).contains("-FG")){ErrorHandler.PrintErrors();System.exit(-1);}
 
             PrintWriter writer = new PrintWriter(outputFile, "UTF-8");
             System.out.println();

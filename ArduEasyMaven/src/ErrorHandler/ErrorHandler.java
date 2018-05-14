@@ -10,7 +10,7 @@ public class ErrorHandler
 {
     private static List<ErrorEvent> errors = new ArrayList<ErrorEvent>();
 
-    public static boolean ErrorsPressent(){return errors.size()>0;}
+    public static boolean ErrorsPresent(){return errors.size()>0;}
 
     public static void AddError(ErrorEvent e)
     {
@@ -24,7 +24,7 @@ public class ErrorHandler
         System.exit(-1);
     }
 
-    private static void printErorr(ErrorEvent e)
+    private static void printError(ErrorEvent e)
     {
         Node s = (Node) e.getSource();
         System.out.println("\u001B[31mError at line " + s.LineNumber + " @ " + e.getSource() + "\n" + e.Message );
@@ -34,7 +34,7 @@ public class ErrorHandler
     {
         for (ErrorEvent error : errors)
         {
-            printErorr(error);
+            printError(error);
         }
     }
 }
