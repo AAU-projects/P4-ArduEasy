@@ -61,7 +61,7 @@ public class Program
             System.out.println("Code Generation:");
             System.out.println();
             BuildCode CodeGenerator = new BuildCode(writer);
-            //CodeGenerator.Visit(root);
+            CodeGenerator.Visit(root);
             writer.close();
             System.out.println("Code Generation Complete...");
 
