@@ -9,6 +9,12 @@ public class MethodCallNode extends ExpressionNode {
     public ArrayList<ExpressionNode> expressions;
 
     @Override
+    public String toString()
+    {
+        return "MethodCall";
+    }
+
+    @Override
     public Object Accept(Visitor visitor) {
         return visitor.Visit(this);
     }

@@ -2,6 +2,8 @@ house
 {
     int Value = 0
 
+    btn = PIN A 8 as input
+
     room kitchen
     {
         btn = PIN 2 as input
@@ -14,7 +16,7 @@ when (house.kitchen.btn is true)
 {
     int localValue = Value
 
-    if (InputToTemp(house.kitchen.thermometer) is below 20)
+    if (InputToTemp(house.btn) is below 20)
     {
         bool status = false
 
