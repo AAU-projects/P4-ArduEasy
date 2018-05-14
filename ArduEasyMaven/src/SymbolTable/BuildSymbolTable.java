@@ -725,4 +725,13 @@ public class BuildSymbolTable implements Visitor
 
         return null;
     }
+
+    @Override
+    public Object Visit(ModuloNode node)
+    {
+        String left = (String)node.LeftChild.Accept(this);
+        String right = (String)node.RightChild.Accept(this);
+
+        return left + " % " + right;
+    }
 }

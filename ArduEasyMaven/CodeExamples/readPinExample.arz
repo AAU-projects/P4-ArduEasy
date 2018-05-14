@@ -7,4 +7,5 @@ house
  when (house.Button == true)
  {
      int Temperature = house.Thermometer
+     int modulo = Temperature % 5
  }
