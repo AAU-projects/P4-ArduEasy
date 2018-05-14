@@ -1,16 +1,11 @@
 package SymbolTable;
 
-import java.lang.ref.SoftReference;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import AST.Nodes.DefinitionNode;
 import AST.Nodes.Node;
 import ErrorHandler.*;
 import ErrorHandler.Errors.SemanticError;
-import ErrorHandler.Errors.SyntaxError;
 import SymbolTable.Variables.*;
 
 public class SymbolTable
@@ -26,7 +21,7 @@ public class SymbolTable
     {
         if (LookUp(key))
         {
-            ErrorHandler.AddError(new SemanticError(node,"Scope Error: Tried to declare an existing variable: " + key +
+            CustomErrorHandler.AddError(new SemanticError(node,"Scope Error: Tried to declare an existing variable: " + key +
                     "\nIt is not possible to declare a variable more then one time, either reassign the variable a new value" +
                     " or define a new variable."));
             return;
@@ -41,13 +36,13 @@ public class SymbolTable
         {
             if(CurrentOpenScope.Variables.remove(key) == null)
             {
-                ErrorHandler.FireInstantError(new SemanticError(node,"Compile Error: Tried to remove invalid key: " + key));
+                CustomErrorHandler.FireInstantError(new SemanticError(node,"Compile Error: Tried to remove invalid key: " + key));
             }
         }
 
         if(Variables.remove(key) == null)
         {
-            ErrorHandler.FireInstantError(new SemanticError(node,"Compile Error: Tried to remove invalid key: " + key));
+            CustomErrorHandler.FireInstantError(new SemanticError(node,"Compile Error: Tried to remove invalid key: " + key));
         }
     }
 
@@ -71,7 +66,7 @@ public class SymbolTable
             }
         }else if(!LookUp(key))
         {
-            ErrorHandler.AddError(new SemanticError(node,"Scope Error: Tried to edit the value of a non-existing variable: " + key));
+            CustomErrorHandler.AddError(new SemanticError(node,"Scope Error: Tried to edit the value of a non-existing variable: " + key));
             return;
         }
 
@@ -83,7 +78,7 @@ public class SymbolTable
     {
         if(!LookUp(key))
         {
-            ErrorHandler.FireInstantError(new SemanticError(node,"Compile Error: Tried to get type of non-existing variable: " + key));
+            CustomErrorHandler.FireInstantError(new SemanticError(node,"Compile Error: Tried to get type of non-existing variable: " + key));
             return null;
         }
 
@@ -169,7 +164,7 @@ public class SymbolTable
 
         if (LookUp(var.Identifier))
         {
-            ErrorHandler.FireInstantError(new SemanticError(node,"Compile Error: Tried to add existing scope: " + var.Identifier));
+            CustomErrorHandler.FireInstantError(new SemanticError(node,"Compile Error: Tried to add existing scope: " + var.Identifier));
             return;
         }
 

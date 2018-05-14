@@ -1,5 +1,5 @@
 import CodeGeneration.BuildCode;
-import ErrorHandler.ErrorHandler;
+import ErrorHandler.CustomErrorHandler;
 import PrettyPrint.PrettyPrint;
 import SymbolTable.BuildSymbolTable;
 import TypeChecker.TypeChecker;
@@ -27,8 +27,12 @@ public class Program
         String outputFile = "Outputs/arduinogeneration.ino";
         CharStream inputStream = CharStreams.fromFileName(filePath);
         ArduEasyLexer lexer = new ArduEasyLexer(inputStream);
+        lexer.removeErrorListeners();
+        lexer.addErrorListener(ErrorHandler.ArduEasyErrorListener.Instance);
         CommonTokenStream tokenStream = new CommonTokenStream(lexer);
         ArduEasyParser parser = new ArduEasyParser(tokenStream);
+        parser.removeErrorListeners();
+        parser.addErrorListener(ErrorHandler.ArduEasyErrorListener.Instance);
         System.out.println();
 
         RootNode root;
@@ -36,6 +40,12 @@ public class Program
         try
         {
             ArduEasyParser.RContext programContext = parser.r();
+
+            if (ErrorHandler.ArduEasyErrorListener.ErrorsPresent())
+            {
+                ErrorHandler.ArduEasyErrorListener.PrintErrors();
+                System.exit(-1);
+            }
 
             root = (RootNode) new BuildAst().visitR(programContext);
 
@@ -54,7 +64,8 @@ public class Program
             typeChecker.Visit(root);
             System.out.println("Complete...");
 
-            if (ErrorHandler.ErrorsPresent() && !Arrays.asList(args).contains("-FG")){ErrorHandler.PrintErrors();System.exit(-1);}
+            if (CustomErrorHandler.ErrorsPresent() && !Arrays.asList(args).contains("-FG")){
+                CustomErrorHandler.PrintErrors();System.exit(-1);}
 
             PrintWriter writer = new PrintWriter(outputFile, "UTF-8");
             System.out.println();
@@ -66,13 +77,13 @@ public class Program
             System.out.println("Code Generation Complete...");
 
 
-            ErrorHandler.PrintErrors();
+            CustomErrorHandler.PrintErrors();
 
         } catch (Exception e)
         {
             System.out.println(e.toString());
             e.printStackTrace();
-            ErrorHandler.PrintErrors();
+            CustomErrorHandler.PrintErrors();
         }
     }
 }
