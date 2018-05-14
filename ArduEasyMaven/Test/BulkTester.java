@@ -19,15 +19,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class TypeCheckerTest
+public class BulkTester
 {
-    public TypeCheckerTest() throws IOException
-    {
-    }
-
     public boolean Start() throws  IOException
     {
-        String filePath = "src/Test/TestFiles/AssigmentDeclaration.txt"; // test 1
+        String filePath = "Test/TestFiles/AssigmentDeclaration.txt"; // test 1
 
         CharStream inputStream = CharStreams.fromFileName(filePath);
         ArduEasyLexer lexer = new ArduEasyLexer(inputStream);
@@ -66,14 +62,14 @@ public class TypeCheckerTest
         for (Integer errorTypeChecker : errorsTypeChecker) {
             if (!expectedErrors.contains(errorTypeChecker))
             {
-                System.out.println("Test of type checker error at " + errorTypeChecker + " is NOT expected");
+                System.out.println("An error at line " + errorTypeChecker + " is NOT expected but one is found");
             }
         }
 
         for (Integer expectedError : expectedErrors) {
             if (!errorsTypeChecker.contains(expectedError))
             {
-                System.out.println("Test of type checker error at " + expectedError + " is expected");
+                System.out.println("An error at line " + expectedError + " is expected but error not found");
             }
         }
 

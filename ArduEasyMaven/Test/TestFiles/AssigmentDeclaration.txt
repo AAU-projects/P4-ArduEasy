@@ -22,7 +22,7 @@ when (house.Kitchen.Digitial_input is true)
     int percentTest4 = 5% - 25
 
 
-    int intTest2 = house.Kitchen.Digitial_input // error
+    int intTest2 = house.Kitchen.Digitial_input
     int intTest3 = house.Kitchen.Digitial_output // error
     int intTest4 = house.Kitchen.Analog_input
     int intTest5 = house.Kitchen.Analog_output

@@ -2,9 +2,7 @@ import CodeGeneration.BuildCode;
 import ErrorHandler.ErrorHandler;
 import PrettyPrint.PrettyPrint;
 import SymbolTable.BuildSymbolTable;
-import Test.TypeCheckerTest;
 import TypeChecker.TypeChecker;
-import org.antlr.v4.runtime.ANTLRErrorStrategy;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -15,24 +13,17 @@ import java.util.Arrays;
 import AST.*;
 import antlr4.*;
 import AST.Nodes.*;
-import visitor.Visitor;
 
 public class Program
 {
     public static void main(String args[]) throws IOException
     {
-        TestTypeChecker();
-        //Compile(args);
+        Compile(args);
+    }
 
-    }
-    private static void TestTypeChecker() throws IOException {
-        TypeCheckerTest test = new TypeCheckerTest();
-        test.Start();
-    }
     private static void Compile(String args[]) throws IOException
     {
         String filePath = "CodeExamples/AssigmentDeclaration.txt"; // test 1
-        // String filePath = "CodeExamples/syntaxValidOperators.txt"; // test 2
         String outputFile = "Outputs/arduinogeneration.ino";
         CharStream inputStream = CharStreams.fromFileName(filePath);
         ArduEasyLexer lexer = new ArduEasyLexer(inputStream);
@@ -50,11 +41,9 @@ public class Program
 
             if (Arrays.asList(args).contains("-P"))
             {
-
+                PrettyPrint printer = new PrettyPrint();
+                printer.Visit(root);
             }
-
-            PrettyPrint printer = new PrettyPrint();
-            //printer.Visit(root);
 
             BuildSymbolTable SymbolTable = new BuildSymbolTable();
             SymbolTable.Visit(root);
