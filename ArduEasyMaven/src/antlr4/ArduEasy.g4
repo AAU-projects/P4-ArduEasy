@@ -98,7 +98,7 @@ logicalExpressions  : logicalExpressions logicalOperator logicalExpressions
 parenExpression     : LPAREN logicalExpressions RPAREN
                     ;
 
-logicalExpression   : addSubExpression comparisonOperator addSubExpression
+logicalExpression   : addSubExpression (comparisonOperator addSubExpression)?
                     | addSubExpression
                  	;
 

@@ -19,6 +19,9 @@ when (house.Kitchen.Digitial_input is true)
     bool boolTest = false
     int percentTest = 5% + 5%
     int percentTest2 = 5% + 25
+    int percentTest3 = 5% - 5%
+    int percentTest4 = 5% - 25
+
 
     int intTest2 = house.Kitchen.Digitial_input // should give error
     int intTest3 = house.Kitchen.Digitial_output // should give error

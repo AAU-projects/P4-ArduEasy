@@ -20,7 +20,8 @@ public class Program
 {
     public static void main(String args[]) throws IOException
     {
-        String filePath = "CodeExamples/guideExample.txt";
+        String filePath = "CodeExamples/AssigmentDeclaration.txt"; // test 1
+        // String filePath = "CodeExamples/syntaxValidOperators.txt"; // test 2
         String outputFile = "Outputs/arduinogeneration.ino";
         CharStream inputStream = CharStreams.fromFileName(filePath);
         ArduEasyLexer lexer = new ArduEasyLexer(inputStream);
@@ -42,15 +43,15 @@ public class Program
             }
 
             PrettyPrint printer = new PrettyPrint();
-            printer.Visit(root);
+            //printer.Visit(root);
 
             BuildSymbolTable SymbolTable = new BuildSymbolTable();
-            //SymbolTable.Visit(root);
+            SymbolTable.Visit(root);
 
             TypeChecker typeChecker = new TypeChecker(SymbolTable.symbolTable);
 
             System.out.println("Type Checker:");
-            //typeChecker.Visit(root);
+            typeChecker.Visit(root);
             System.out.println("Complete...");
 
             PrintWriter writer = new PrintWriter(outputFile, "UTF-8");
