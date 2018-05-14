@@ -472,7 +472,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
     {
         return new PerformUntil()
         {{
-            Predicate = visitLogicalExpressions(ctx.logicalExpressions()); //TODO skal ikke være logical
+            Predicate = visitLogicalExpressions(ctx.logicalExpressions());
             Body = visitStatementList(ctx.statement());
             LineNumber = getLineNumber(ctx);
         }};
@@ -827,6 +827,15 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         else if (ctx.DIVISIONALOPERATOR() != null)
         {
             return new DivisionNode()
+            {{
+                LineNumber = getLineNumber(ctx);
+                LeftChild = visitExpression(ctx.expression());
+                RightChild = visitMultiDivExpression(ctx.multiDivExpression());
+            }};
+        }
+        else if (ctx.MODULOOPERATOR() != null)
+        {
+            return new ModuloNode()
             {{
                 LineNumber = getLineNumber(ctx);
                 LeftChild = visitExpression(ctx.expression());

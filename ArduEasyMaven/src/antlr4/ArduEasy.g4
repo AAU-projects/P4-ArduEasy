@@ -23,7 +23,7 @@ houseaccess         : DOT_NOTATION
 declaration         : typeSpecifier identifier ASSIGNMENTOPERATOR logicalExpressions
 					;
 
-methodCall          : identifier LPAREN (expression(','expression)*)? RPAREN
+methodCall          : identifier LPAREN (expression(COMMA expression)*)? RPAREN
                     ;
 
 roomdeclaration     : ROOMDEC identifier LBRACK roomblock RBRACK
@@ -39,8 +39,7 @@ arraydeclaration    : identifier ASSIGNMENTOPERATOR LBRACK identifier(COMMA iden
 pindeclaration      : identifier ASSIGNMENTOPERATOR pin AS ioStatus
                     ;
 
-parameters          : parameter COMMA parameters
-                 	| parameter
+parameters          : parameter (COMMA parameters)?
                  	|
                  	;
 
@@ -82,8 +81,7 @@ else_r              : ELSE LBRACK statement* RBRACK
 ifElse              : ELSE IF LPAREN logicalExpressions RPAREN LBRACK statement* RBRACK (ifElse | else_r)?
                  	;
 
-cases               : case_r* default_case
-					| case_r*
+cases               : case_r* default_case?
 					;
 
 default_case        : DEFAULT COLON LBRACK statement* RBRACK
@@ -99,8 +97,7 @@ logicalExpressions  : logicalExpressions logicalOperator logicalExpressions
 parenExpression     : LPAREN logicalExpressions RPAREN
                     ;
 
-logicalExpression   : addSubExpression comparisonOperator addSubExpression
-                    | addSubExpression
+logicalExpression   : addSubExpression (comparisonOperator addSubExpression)?
                  	;
 
 expression          : identifier
@@ -113,13 +110,10 @@ expression          : identifier
  					;
 
 addSubExpression    : multiDivExpression
-                 	| addSubExpression ADDITIVEOPERATOR multiDivExpression
-                 	| addSubExpression SUBTRACTIVEOPERATOR multiDivExpression
+                 	| addSubExpression (ADDITIVEOPERATOR | SUBTRACTIVEOPERATOR) multiDivExpression
                  	;
 
-multiDivExpression  : expression MULTIPLICATIVEOPERATOR multiDivExpression
-                    | expression DIVISIONALOPERATOR multiDivExpression
-                    | expression
+multiDivExpression  : expression ((MULTIPLICATIVEOPERATOR | DIVISIONALOPERATOR | MODULOOPERATOR) multiDivExpression)?
                  	;
 
 assignment          : (identifier | houseaccess) ASSIGNMENTOPERATOR logicalExpressions

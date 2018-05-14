@@ -792,4 +792,10 @@ public class BuildCode implements Visitor
             return result;
         }
     }
+
+    @Override
+    public Object Visit(ModuloNode node)
+    {
+        return ReadPin(node.LeftChild) + " % " + ReadPin(node.RightChild);
+    }
 }
