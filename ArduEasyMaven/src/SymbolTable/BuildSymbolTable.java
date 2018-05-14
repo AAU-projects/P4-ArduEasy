@@ -451,7 +451,7 @@ public class BuildSymbolTable implements Visitor
     }
 
     @Override
-    public Object Visit(PerformTimes node)
+    public Object Visit(PerformTimesNode node)
     {
         symbolTable.CreateScope(node);
         System.out.println("Opened a perform (" + node.LineNumber + ")");
@@ -475,7 +475,7 @@ public class BuildSymbolTable implements Visitor
     }
 
     @Override
-    public Object Visit(PerformUntil node)
+    public Object Visit(PerformUntilNode node)
     {
         symbolTable.CreateScope(node);
         System.out.println("Opened a perform (" + node.LineNumber + ")");

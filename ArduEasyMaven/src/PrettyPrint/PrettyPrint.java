@@ -95,14 +95,14 @@ public class PrettyPrint implements Visitor
 
     @Override
     public Object Visit(CaseNode node) {
-        if (!node.Value.equals("default")) //TODO get default token from grammar?
+        if (node.Value != null) //
         {
             printIndent("case ");
             System.out.print(node.Value);
         }
         else
         {
-            printIndent(node.Value);
+            printIndent("default");
         }
         System.out.println(":");
         printIndentln("{");
@@ -427,7 +427,7 @@ public class PrettyPrint implements Visitor
     }
 
     @Override
-    public Object Visit(PerformTimes node) {
+    public Object Visit(PerformTimesNode node) {
         printIndent("perform ");
         node.value.Accept(this);
         System.out.println(" times");
@@ -445,7 +445,7 @@ public class PrettyPrint implements Visitor
     }
 
     @Override
-    public Object Visit(PerformUntil node) {
+    public Object Visit(PerformUntilNode node) {
         printIndent("perform until (");
         node.Predicate.Accept(this);
         System.out.println(")");

@@ -460,7 +460,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
 
     private PerformNode visitPerformTimes(final ArduEasyParser.Perform_rContext ctx)
     {
-        return new PerformTimes()
+        return new PerformTimesNode()
         {{
             value = visitExpression(ctx.expression());
             Body = visitStatementList(ctx.statement());
@@ -470,7 +470,7 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
 
     private PerformNode visitPerformUntil(final ArduEasyParser.Perform_rContext ctx)
     {
-        return new PerformUntil()
+        return new PerformUntilNode()
         {{
             Predicate = visitLogicalExpressions(ctx.logicalExpressions());
             Body = visitStatementList(ctx.statement());

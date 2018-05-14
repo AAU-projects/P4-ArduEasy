@@ -1,6 +1,6 @@
 house
 {
-    int fff = 5.2
+    int fff = 5
     Temp = PIN A 12 as input
     CurrentTime = PIN A 13 as input
     float bob2 = 5 + 8.50

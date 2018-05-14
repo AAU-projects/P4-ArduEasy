@@ -1,6 +1,6 @@
 house
 {
-	Int curtainsCounter 0
+	int curtainsCounter 0
 	Light8 = PIN12 as INPUT
 
 	room Hallway
