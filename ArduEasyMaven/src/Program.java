@@ -54,6 +54,8 @@ public class Program
             typeChecker.Visit(root);
             System.out.println("Complete...");
 
+            if (ErrorHandler.ErrorsPressent() && !Arrays.asList(args).contains("-FG")){ErrorHandler.PrintErrors();System.exit(-1);}
+
             PrintWriter writer = new PrintWriter(outputFile, "UTF-8");
             System.out.println();
             System.out.println("Code Generation:");

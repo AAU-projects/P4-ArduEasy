@@ -10,6 +10,8 @@ public class ErrorHandler
 {
     private static List<ErrorEvent> errors = new ArrayList<ErrorEvent>();
 
+    public static boolean ErrorsPressent(){return errors.size()>0;}
+
     public static void AddError(ErrorEvent e)
     {
         errors.add(e);
@@ -18,13 +20,14 @@ public class ErrorHandler
     public static void FireInstantError(ErrorEvent e)
     {
         AddError(e);
-        printErorr(e);
+        PrintErrors();
+        System.exit(-1);
     }
 
     private static void printErorr(ErrorEvent e)
     {
         Node s = (Node) e.getSource();
-        System.out.println("Error at line " + s.LineNumber + "\n" + e.Message + " @ " + e.getSource());
+        System.out.println("\u001B[31mError at line " + s.LineNumber + " @ " + e.getSource() + "\n" + e.Message );
     }
 
     public static void PrintErrors()
