@@ -1,7 +1,7 @@
 package TypeChecker;
 
 import AST.Nodes.*;
-import ErrorHandler.ErrorHandler;
+import ErrorHandler.CustomErrorHandler;
 import ErrorHandler.Errors.SemanticError;
 import SymbolTable.SymbolTable;
 import SymbolTable.Variables.PinVariable;
@@ -61,7 +61,7 @@ public class TypeChecker implements Visitor
 
         if(IsValidComparison(AdditiveTypes, leftType, rightType, node))
         {
-            ErrorHandler.AddError(new SemanticError(node, "Tried to add " + leftType + " with a  " + rightType));
+            CustomErrorHandler.AddError(new SemanticError(node, "Tried to add " + leftType + " with a  " + rightType));
         }
         return leftType;
     }
@@ -109,7 +109,7 @@ public class TypeChecker implements Visitor
             }
             if (!arrayType.equals(valueType))
             {
-                ErrorHandler.AddError(new SemanticError(node, "Tried to add " + valueType + " to an " + arrayType + " array"));
+                CustomErrorHandler.AddError(new SemanticError(node, "Tried to add " + valueType + " to an " + arrayType + " array"));
             }
         }
         return arrayType;
@@ -123,7 +123,7 @@ public class TypeChecker implements Visitor
         String valueType =  GetTypeNode(node.Value);
 
         if(isValidArithmetic(identifierType, valueType))
-            ErrorHandler.AddError(new SemanticError(node, "Tried to assign " + valueType + " to " + identifierType  + " instance"));
+            CustomErrorHandler.AddError(new SemanticError(node, "Tried to assign " + valueType + " to " + identifierType  + " instance"));
 
         return node;
     }
@@ -156,7 +156,7 @@ public class TypeChecker implements Visitor
 
         if(!matchFound)
         {
-            ErrorHandler.AddError(new SemanticError(node, "Tried to compare invalid type " + leftType));
+            CustomErrorHandler.AddError(new SemanticError(node, "Tried to compare invalid type " + leftType));
             return false;
         }
 
@@ -164,7 +164,7 @@ public class TypeChecker implements Visitor
 
         if(!matchFound)
         {
-            ErrorHandler.AddError(new SemanticError(node, "Tried to compare invalid type " + rightType));
+            CustomErrorHandler.AddError(new SemanticError(node, "Tried to compare invalid type " + rightType));
             return false;
         }
 
@@ -275,7 +275,7 @@ public class TypeChecker implements Visitor
 
         if (isValidArithmetic(identifierType, expressionType))
         {
-            ErrorHandler.AddError(new SemanticError(node, "Tried to declare object of type: " + node.Type + " with type: " + expressionType));
+            CustomErrorHandler.AddError(new SemanticError(node, "Tried to declare object of type: " + node.Type + " with type: " + expressionType));
         }
 
         return null;
@@ -298,12 +298,12 @@ public class TypeChecker implements Visitor
         boolean matchFound = Arrays.asList(DivisionTypes).contains(leftType);
 
         if(!matchFound)
-            ErrorHandler.AddError(new SemanticError(node, "Tried to divide invalid type " + leftType));
+            CustomErrorHandler.AddError(new SemanticError(node, "Tried to divide invalid type " + leftType));
 
         matchFound = Arrays.asList(DivisionTypes).contains(rightType);
 
         if(!matchFound)
-            ErrorHandler.AddError(new SemanticError(node, "Tried to divide invalid type " + rightType));
+            CustomErrorHandler.AddError(new SemanticError(node, "Tried to divide invalid type " + rightType));
 
 
         return floatType;
@@ -316,7 +316,7 @@ public class TypeChecker implements Visitor
         String predicateType = GetTypeNode(node.Predicate);
         if (!predicateType.equals(boolType))
         {
-            ErrorHandler.AddError(new SemanticError(node, "Predicate not of type boolean "));
+            CustomErrorHandler.AddError(new SemanticError(node, "Predicate not of type boolean "));
         }
         for (StatementsNode statementsNode : node.Body)
         {
@@ -354,7 +354,7 @@ public class TypeChecker implements Visitor
 
         if(IsValidComparison(EqualsTypes, leftType, rightType, node))
         {
-            ErrorHandler.AddError(new SemanticError(node, "Invalid equals comparison " + leftType + " and " + rightType));
+            CustomErrorHandler.AddError(new SemanticError(node, "Invalid equals comparison " + leftType + " and " + rightType));
         }
 
         return boolType;
@@ -382,7 +382,7 @@ public class TypeChecker implements Visitor
         String predicateType = GetTypeNode(node.Predicate);
         if (!predicateType.equals(boolType))
         {
-            ErrorHandler.AddError(new SemanticError(node, "Predicate not of type boolean"));
+            CustomErrorHandler.AddError(new SemanticError(node, "Predicate not of type boolean"));
         }
 
         node.Increment.Accept(this);
@@ -408,7 +408,7 @@ public class TypeChecker implements Visitor
 
             if (!typeOfReturn.equals(node.ReturnType))
             {
-                ErrorHandler.AddError(new SemanticError(node, "Tried to return a " + typeOfReturn + " in a " + node.ReturnType + " method"));
+                CustomErrorHandler.AddError(new SemanticError(node, "Tried to return a " + typeOfReturn + " in a " + node.ReturnType + " method"));
             }
         }
 
@@ -436,7 +436,7 @@ public class TypeChecker implements Visitor
 
         if(IsValidComparison(GreaterOrEqualTypes, leftType, rightType, node))
         {
-            ErrorHandler.AddError(new SemanticError(node, "Invalid greater or equals comparison "+ leftType + " and " + rightType));
+            CustomErrorHandler.AddError(new SemanticError(node, "Invalid greater or equals comparison "+ leftType + " and " + rightType));
         }
 
         return boolType;
@@ -452,7 +452,7 @@ public class TypeChecker implements Visitor
 
         if(IsValidComparison(GreaterThanTypes, leftType, rightType, node))
         {
-            ErrorHandler.AddError(new SemanticError(node, "Invalid greater than comparison "+ leftType + " and " + rightType));
+            CustomErrorHandler.AddError(new SemanticError(node, "Invalid greater than comparison "+ leftType + " and " + rightType));
         }
 
         return boolType;
@@ -482,7 +482,7 @@ public class TypeChecker implements Visitor
 
         if (!predicateType.equals(boolType))
         {
-            ErrorHandler.AddError(new SemanticError(node, "Predicate not of type boolean"));
+            CustomErrorHandler.AddError(new SemanticError(node, "Predicate not of type boolean"));
         }
         for (StatementsNode statementsNode : node.Body)
         {
@@ -524,7 +524,7 @@ public class TypeChecker implements Visitor
 
         if(IsValidComparison(LessOrEqualTypes, leftType, rightType, node))
         {
-            ErrorHandler.AddError(new SemanticError(node, "Invalid less or equal comparison "+ leftType + " and " + rightType));
+            CustomErrorHandler.AddError(new SemanticError(node, "Invalid less or equal comparison "+ leftType + " and " + rightType));
         }
 
         return boolType;
@@ -540,7 +540,7 @@ public class TypeChecker implements Visitor
 
         if(IsValidComparison(LessThanTypes, leftType, rightType, node))
         {
-            ErrorHandler.AddError(new SemanticError(node, "Invalid less than comparison " + leftType + " and " + rightType));
+            CustomErrorHandler.AddError(new SemanticError(node, "Invalid less than comparison " + leftType + " and " + rightType));
         }
 
         return boolType;
@@ -554,11 +554,11 @@ public class TypeChecker implements Visitor
 
         if (!leftType.equals(boolType))
         {
-            ErrorHandler.AddError(new SemanticError(node, "Logical-and statement not of type boolean. Is of type: " + leftType));
+            CustomErrorHandler.AddError(new SemanticError(node, "Logical-and statement not of type boolean. Is of type: " + leftType));
         }
         else if (!rightType.equals(boolType))
         {
-            ErrorHandler.AddError(new SemanticError(node, "Logical-and statement not of type boolean. Is of type: " + rightType));
+            CustomErrorHandler.AddError(new SemanticError(node, "Logical-and statement not of type boolean. Is of type: " + rightType));
         }
 
         return boolType;
@@ -572,11 +572,11 @@ public class TypeChecker implements Visitor
 
         if (!leftType.equals(boolType))
         {
-            ErrorHandler.AddError(new SemanticError(node, "Logical-or statement not of type boolean. Is of type: " + leftType));
+            CustomErrorHandler.AddError(new SemanticError(node, "Logical-or statement not of type boolean. Is of type: " + leftType));
         }
         else if (!rightType.equals(boolType))
         {
-            ErrorHandler.AddError(new SemanticError(node, "Logical-or statement not of type boolean. Is of type: " + rightType));
+            CustomErrorHandler.AddError(new SemanticError(node, "Logical-or statement not of type boolean. Is of type: " + rightType));
         }
 
         return boolType;
@@ -599,12 +599,12 @@ public class TypeChecker implements Visitor
         boolean matchFound = Arrays.asList(MultiplicationTypes).contains(leftType);
 
         if(!matchFound)
-            ErrorHandler.AddError(new SemanticError(node, "Tried to multiply invalid type " + leftType));
+            CustomErrorHandler.AddError(new SemanticError(node, "Tried to multiply invalid type " + leftType));
 
         matchFound = Arrays.asList(MultiplicationTypes).contains(rightType);
 
         if(!matchFound)
-            ErrorHandler.AddError(new SemanticError(node, "Tried to multiply invalid type " + rightType));
+            CustomErrorHandler.AddError(new SemanticError(node, "Tried to multiply invalid type " + rightType));
 
         if(leftType.equals(intType) && rightType.equals(floatType) || leftType.equals(floatType) && rightType.equals(intType))
         {
@@ -633,7 +633,7 @@ public class TypeChecker implements Visitor
 
         if(IsValidComparison(NotEqualsTypes, leftType, rightType, node))
         {
-            ErrorHandler.AddError(new SemanticError(node, "Invalid not equals comparison "+ leftType + " and " + rightType));
+            CustomErrorHandler.AddError(new SemanticError(node, "Invalid not equals comparison "+ leftType + " and " + rightType));
         }
 
         return boolType;
@@ -661,7 +661,7 @@ public class TypeChecker implements Visitor
         {
             if (!iteratorType.equals(intType))
             {
-                ErrorHandler.AddError(new SemanticError(node, "Iterator has to be of type int, is of type: " + iteratorType));
+                CustomErrorHandler.AddError(new SemanticError(node, "Iterator has to be of type int, is of type: " + iteratorType));
             }
             for (StatementsNode statementsNode : node.Body)
             {
@@ -690,7 +690,7 @@ public class TypeChecker implements Visitor
         if (pinType.equals("analog"))
             if (IOType.equals("inputpullup"))
             {
-                ErrorHandler.AddError(new SemanticError(node, "Tried to create an Analog inputpullup, inputpull can only be digital"));
+                CustomErrorHandler.AddError(new SemanticError(node, "Tried to create an Analog inputpullup, inputpull can only be digital"));
             }
 
         return null;
@@ -762,7 +762,7 @@ public class TypeChecker implements Visitor
         }
         if(IsValidComparison(SubtractiveTypes, leftType, rightType, node))
         {
-            ErrorHandler.AddError(new SemanticError(node, "Tried to subtract " + leftType + " with a  " + rightType));
+            CustomErrorHandler.AddError(new SemanticError(node, "Tried to subtract " + leftType + " with a  " + rightType));
         }
 
         return leftType;
@@ -779,7 +779,7 @@ public class TypeChecker implements Visitor
 
             if (!caseType.equals(switchType))
             {
-                ErrorHandler.AddError(new SemanticError(node, "Case type is: " + caseType + " expecting: " + switchType));
+                CustomErrorHandler.AddError(new SemanticError(node, "Case type is: " + caseType + " expecting: " + switchType));
             }
         }
         if (node.defaultCase != null)
@@ -802,7 +802,7 @@ public class TypeChecker implements Visitor
         String predicateType = GetTypeNode(node.Predicate);
         if (!predicateType.equals(boolType))
         {
-            ErrorHandler.AddError(new SemanticError(node, "Predicate has to be of type boolean, is of type: " + predicateType));
+            CustomErrorHandler.AddError(new SemanticError(node, "Predicate has to be of type boolean, is of type: " + predicateType));
         }
         for (StatementsNode statementsNode : node.Body)
         {
@@ -826,7 +826,7 @@ public class TypeChecker implements Visitor
         String predicateType = GetTypeNode(node.Predicate);
         if (!predicateType.equals(boolType))
         {
-            ErrorHandler.AddError(new SemanticError(node, "Predicate has to be of type boolean, is of type: " + predicateType));
+            CustomErrorHandler.AddError(new SemanticError(node, "Predicate has to be of type boolean, is of type: " + predicateType));
         }
         for (StatementsNode statementsNode : node.Body)
         {
@@ -853,7 +853,7 @@ public class TypeChecker implements Visitor
             parameterType = GetPinType(parameterType);
             if (!parameters.get(i++)[1].equals(parameterType))
             {
-                ErrorHandler.AddError(new SemanticError(node, "Tried to use a " + parameterType + " when expecting a " + parameters.get(i - 1)[1] + " type in the method call parameters"));
+                CustomErrorHandler.AddError(new SemanticError(node, "Tried to use a " + parameterType + " when expecting a " + parameters.get(i - 1)[1] + " type in the method call parameters"));
             }
         }
         return SymbolTable.FunctionList.get(node.identifier.Value).Type;
@@ -869,12 +869,12 @@ public class TypeChecker implements Visitor
         boolean matchFound = intType.equals(leftType);
 
         if(!matchFound)
-            ErrorHandler.AddError(new SemanticError(node, "Tried to modulo invalid type " + leftType));
+            CustomErrorHandler.AddError(new SemanticError(node, "Tried to modulo invalid type " + leftType));
 
         matchFound = intType.equals(rightType);
 
         if(!matchFound)
-            ErrorHandler.AddError(new SemanticError(node, "Tried to modulo invalid type " + rightType));
+            CustomErrorHandler.AddError(new SemanticError(node, "Tried to modulo invalid type " + rightType));
 
         return intType;
     }

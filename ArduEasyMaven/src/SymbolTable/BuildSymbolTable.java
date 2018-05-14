@@ -1,7 +1,7 @@
 package SymbolTable;
 
 import AST.Nodes.*;
-import ErrorHandler.ErrorHandler;
+import ErrorHandler.CustomErrorHandler;
 import ErrorHandler.Errors.SemanticError;
 import SymbolTable.Variables.*;
 import visitor.Visitor;
@@ -9,7 +9,6 @@ import visitor.Visitor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class BuildSymbolTable implements Visitor
 {
@@ -269,7 +268,7 @@ public class BuildSymbolTable implements Visitor
 
         if (SymbolTable.FunctionList.get(node.Identifier.Value) != null)
         {
-            ErrorHandler.FireInstantError(new SemanticError(node, "Compile Error: Tried to create a method with a already existing identifier " + node.Identifier.Value));
+            CustomErrorHandler.FireInstantError(new SemanticError(node, "Compile Error: Tried to create a method with a already existing identifier " + node.Identifier.Value));
         }
         else
         {
@@ -725,9 +724,9 @@ public class BuildSymbolTable implements Visitor
                 String[] split = id.split("\\.");
 
                 if (split.length > 2 && !symbolTable.GetScope(split[1]).LookUp(split[2]))
-                    ErrorHandler.AddError(new SemanticError(expression, "Tired to send non-existing identifier " + id + " as parameter"));
+                    CustomErrorHandler.AddError(new SemanticError(expression, "Tired to send non-existing identifier " + id + " as parameter"));
                 else if (split.length < 2 && !symbolTable.LookUp(id))
-                    ErrorHandler.AddError(new SemanticError(expression, "Tired to send non-existing identifier " + id + " as parameter"));
+                    CustomErrorHandler.AddError(new SemanticError(expression, "Tired to send non-existing identifier " + id + " as parameter"));
 
             }
         }

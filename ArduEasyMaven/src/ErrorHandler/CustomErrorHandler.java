@@ -6,7 +6,7 @@ import ErrorHandler.Errors.ErrorEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ErrorHandler
+public class CustomErrorHandler
 {
     private static List<ErrorEvent> errors = new ArrayList<ErrorEvent>();
 
