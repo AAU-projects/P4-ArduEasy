@@ -682,18 +682,6 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
         {
             return new NegateNode(){{ child = visitIdentifier(ctx.identifier()); LineNumber = getLineNumber(ctx);}};
         }
-        else if (ctx.identifier() != null)
-        {
-            return visitIdentifier(ctx.identifier());
-        }
-        else if (ctx.houseaccess() != null)
-        {
-            return visitHouseaccess(ctx.houseaccess());
-        }
-        else if (ctx.value() != null)
-        {
-            return determinateValue(ctx.value());
-        }
         else if (ctx.NEGATEOPERATOR() != null)
         {
             return new NegateNode()
@@ -708,6 +696,18 @@ public class BuildAst extends ArduEasyBaseVisitor<Node>
                     child = visitIdentifier(ctx.identifier());
                 }
             }};
+        }
+        else if (ctx.identifier() != null)
+        {
+            return visitIdentifier(ctx.identifier());
+        }
+        else if (ctx.houseaccess() != null)
+        {
+            return visitHouseaccess(ctx.houseaccess());
+        }
+        else if (ctx.value() != null)
+        {
+            return determinateValue(ctx.value());
         }
         else if (ctx.parenExpression() != null)
         {

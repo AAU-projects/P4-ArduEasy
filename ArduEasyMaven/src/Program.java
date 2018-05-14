@@ -23,7 +23,7 @@ public class Program
 
     private static void Compile(String args[]) throws IOException
     {
-        String filePath = "CodeExamples/guideExample.txt"; // test 1
+        String filePath = "CodeExamples/WorkingBtnAndLamp.arz";
         String outputFile = "Outputs/arduinogeneration.ino";
         CharStream inputStream = CharStreams.fromFileName(filePath);
         ArduEasyLexer lexer = new ArduEasyLexer(inputStream);
@@ -72,7 +72,7 @@ public class Program
             System.out.println("Code Generation:");
             System.out.println();
             BuildCode CodeGenerator = new BuildCode(writer);
-            //CodeGenerator.Visit(root);
+            CodeGenerator.Visit(root);
             writer.close();
             System.out.println("Code Generation Complete...");
 

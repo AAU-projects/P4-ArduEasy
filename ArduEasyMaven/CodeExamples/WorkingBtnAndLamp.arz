@@ -1,0 +1,13 @@
+house
+{
+    room bedroom
+    {
+        btn = PIN 8 as input
+        lamp = PIN 13 as output
+    }
+}
+
+when (house.bedroom.btn == true)
+{
+    house.bedroom.lamp = !house.bedroom.lamp
+}

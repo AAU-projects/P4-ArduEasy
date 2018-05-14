@@ -3,7 +3,7 @@ package Test;
 import AST.BuildAst;
 import AST.Nodes.RootNode;
 import CodeGeneration.BuildCode;
-import ErrorHandler.ErrorHandler;
+import ErrorHandler.CustomErrorHandler;
 import ErrorHandler.Errors.ErrorEvent;
 import PrettyPrint.PrettyPrint;
 import SymbolTable.BuildSymbolTable;
@@ -57,7 +57,7 @@ public class BulkTester
     }
 
     private void CheckTest(ArrayList<Integer> expectedErrors) {
-        List<Integer> errorsTypeChecker = ErrorHandler.GetLinenumberErrors();
+        List<Integer> errorsTypeChecker = CustomErrorHandler.GetLinenumberErrors();
 
         for (Integer errorTypeChecker : errorsTypeChecker) {
             if (!expectedErrors.contains(errorTypeChecker))
