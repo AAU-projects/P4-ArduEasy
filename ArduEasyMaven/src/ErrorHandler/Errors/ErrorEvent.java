@@ -7,6 +7,7 @@ import java.util.EventObject;
 public abstract class ErrorEvent extends EventObject
 {
     public final String Message;
+    public int LineNumber;
 
     public ErrorEvent(Node source)
     {
@@ -18,5 +19,6 @@ public abstract class ErrorEvent extends EventObject
     {
         super(source);
         Message = message;
+        LineNumber = source.LineNumber;
     }
 }

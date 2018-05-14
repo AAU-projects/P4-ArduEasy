@@ -37,4 +37,15 @@ public class ErrorHandler
             printErorr(error);
         }
     }
+
+    public static List<Integer> GetLinenumberErrors()
+    {
+        ArrayList<Integer> errorsLine = new ArrayList<Integer>();
+
+        for (ErrorEvent error : errors) {
+            errorsLine.add(error.LineNumber);
+        }
+
+        return errorsLine;
+    }
 }

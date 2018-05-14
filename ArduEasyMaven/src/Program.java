@@ -2,6 +2,7 @@ import CodeGeneration.BuildCode;
 import ErrorHandler.ErrorHandler;
 import PrettyPrint.PrettyPrint;
 import SymbolTable.BuildSymbolTable;
+import Test.TypeCheckerTest;
 import TypeChecker.TypeChecker;
 import org.antlr.v4.runtime.ANTLRErrorStrategy;
 import org.antlr.v4.runtime.CharStream;
@@ -19,6 +20,16 @@ import visitor.Visitor;
 public class Program
 {
     public static void main(String args[]) throws IOException
+    {
+        TestTypeChecker();
+        //Compile(args);
+
+    }
+    private static void TestTypeChecker() throws IOException {
+        TypeCheckerTest test = new TypeCheckerTest();
+        test.Start();
+    }
+    private static void Compile(String args[]) throws IOException
     {
         String filePath = "CodeExamples/AssigmentDeclaration.txt"; // test 1
         // String filePath = "CodeExamples/syntaxValidOperators.txt"; // test 2
@@ -74,6 +85,5 @@ public class Program
             e.printStackTrace();
             ErrorHandler.PrintErrors();
         }
-
     }
 }
