@@ -1,6 +1,8 @@
 package CodeGeneration;
 
 import AST.Nodes.*;
+import ErrorHandler.CustomErrorHandler;
+import ErrorHandler.Errors.GenerationError;
 import visitor.Visitor;
 import java.io.PrintWriter;
 import java.util.*;
@@ -560,6 +562,11 @@ public class BuildCode implements Visitor
         }
 
         System.out.println(strB);
+
+        int fileSize = strB.toString().getBytes().length;
+        
+        if(fileSize > 35000)
+            CustomErrorHandler.FireInstantError(new GenerationError(node, "The output file size of " + String.valueOf(fileSize) + " bytes would exceed the limit of 35000 bytes!"));
 
         writer.print(strB.toString());
 
