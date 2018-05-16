@@ -110,6 +110,12 @@ public class TypeChecker implements Visitor
     public String Visit(ArrayDeclarationNode node)
     {
         String arrayType = GetTypeNode(node.Identifier);
+        String arrayValue = GetArrayTypeNode(node.Values.get(1));
+        if (!CheckIfPinType(arrayValue))
+        {
+            CustomErrorHandler.AddError(new SemanticError(node, "Tried to declare array of type " + arrayValue));
+            return arrayType;
+        }
 
         for (IdentifierNode value : node.Values)
         {
@@ -203,8 +209,7 @@ public class TypeChecker implements Visitor
         if (left.equals(right)) return true; // if leftType is the same type as rightType, since all types can be compared to themselves
 
         if (left.equals(intType)
-                && (right.equals(floatType)
-                || right.equals(percentageType) )) return true; // if leftType int then rightType can be float, percent
+                && (right.equals(floatType) )) return true; // if leftType int then rightType can be float, percent
 
         if (left.equals(floatType)
                 && (right.equals(intType) )) return true; // if leftType float then rightType can be int

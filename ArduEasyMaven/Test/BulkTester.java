@@ -1,5 +1,3 @@
-package Test;
-
 import AST.BuildAst;
 import AST.Nodes.RootNode;
 import CodeGeneration.BuildCode;
@@ -13,17 +11,36 @@ import antlr4.ArduEasyParser;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.xml.sax.ErrorHandler;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class BulkTester
 {
+
+    public boolean printErrors = false;
+    private HashMap<String, String> testMap = new HashMap<String, String>();
+
+    BulkTester()
+    {
+        File directory = new File("Test/Testfiles");
+        String [] directoryContents = directory.list();
+        
+        List<String> fileLocations = new ArrayList<String>();
+
+        for (String directoryContent : directoryContents)
+        {
+            testMap.put(directoryContent.replaceAll(".arz", ""), "Test/Testfiles/" + directoryContent);
+        }
+    }
+
     public boolean Start() throws  IOException
     {
-        String filePath = "Test/TestFiles/AssigmentDeclaration.txt"; // test 1
+        String filePath = "Test/TestFiles/TypeCheckerArrayDecTest.arz"; // test 1
 
         CharStream inputStream = CharStreams.fromFileName(filePath);
         ArduEasyLexer lexer = new ArduEasyLexer(inputStream);
@@ -43,8 +60,14 @@ public class BulkTester
             TypeChecker typeChecker = new TypeChecker(SymbolTable.symbolTable);
             typeChecker.Visit(root);
 
+            System.out.println("Started testing of code example.");
             ArrayList<Integer> expectedErrors = GetErrors(filePath);
             CheckTest(expectedErrors);
+
+            System.out.println("Successfully tested code example.");
+
+            if (printErrors)
+                CustomErrorHandler.PrintErrors();
 
             return true;
 
