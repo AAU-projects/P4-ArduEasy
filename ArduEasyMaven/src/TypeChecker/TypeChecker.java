@@ -31,7 +31,6 @@ public class TypeChecker implements Visitor
     private String dayType = "day";
     private String monthType = "month";
     private String arrayDType = "array";
-    private String roomType = "room";
     private String digital_inputType = "bool.input";
     private String digital_outputType = "bool.output";
     private String analog_inputType = "int.input";
@@ -191,25 +190,24 @@ public class TypeChecker implements Visitor
 
     private boolean IsValidComparison(String[] comparisonTypes, String left, String right, Node node)
     {
+        // Checks if right- or left type is null, or if they are present in the comparisonTypes array.
+        // Returns true when it's not valid, since isValidInput() will add an error to the ErrorHandler, and we don't want to add any more errors afterwards,
+        // so we continue from where IsValidComparison() was called.
         if (!isValidInput(comparisonTypes, left, right, node)) return true;
 
-        // check for array declaration values, int.input int.output bool.input etc...
-        if (CheckIfPinType(left) || CheckIfPinType(right))
-        {
-            boolean notValid = isValidPinOperatorRule(left, right); // checks all valid pin operator rules
-            if (!notValid) return true;
-            left = GetPinType(left);
-            right = GetPinType(right);
-        }
+        // If left or right is a pin, the type will be shortened.
+        // Example: bool.output becomes bool, if the type is not a pin, nothing happens.
+        left = GetPinType(left);
+        right = GetPinType(right);
 
-        if (left.equals(right)) return true; // if leftType is the same type as rightType
+        if (left.equals(right)) return true; // if leftType is the same type as rightType, since all types can be compared to themselves
 
         if (left.equals(intType)
-                && right.equals(floatType)
-                || right.equals(percentageType) ) return true; // if leftType int then rightType can be float, percent
+                && (right.equals(floatType)
+                || right.equals(percentageType) )) return true; // if leftType int then rightType can be float, percent
 
         if (left.equals(floatType)
-                && right.equals(intType) ) return true; // if leftType float then rightType can be int
+                && (right.equals(intType) )) return true; // if leftType float then rightType can be int
 
         return false; // is not a valid operator rule
     }
@@ -731,7 +729,6 @@ public class TypeChecker implements Visitor
     public String Visit(RoomDeclaration node)
     {
         symbolTable.OpenScope(String.valueOf(node.Identifier.Value));
-        roomType = node.Identifier.Value;
 
         for (RoomBlockNode roomBlockNode : node.body)
         {
@@ -740,7 +737,7 @@ public class TypeChecker implements Visitor
 
         symbolTable.CloseScope();
 
-        return roomType;
+        return node.Identifier.Value;
     }
 
     @Override
