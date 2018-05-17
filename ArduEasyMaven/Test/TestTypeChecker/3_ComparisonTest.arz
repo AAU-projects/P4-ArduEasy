@@ -10,97 +10,1036 @@ house
     }
 }
 
+
 function void testOperations()
 {
-    int intType = 55
-    float floatType = 2.5
-    percent percentType = 5%
-    string stringType ="test"
-    bool boolType = true
-    time timeType = 13:37
-    day dayType = MONDAY
-    month monthType = DECEMBER
+    //A.3 Syntax valid operations
 
-    while(intType) {} // error
-    while(floatType) {} // error
-    while(percentType) {} // error
-    while(stringType) {} // error
-    while(boolType) {}
-    while(timeType) {} // error
-    while(dayType) {} // error
-    while(monthType) {} // error
-    while(house.test.Digital_input) {}
-    while(house.test.Digital_output) {}
-    while(house.test.Digital_inputpullup) {}
-    while(house.test.Analog_input) {} // error
-    while(house.test.Analog_output) {} // error
+    //1
+    // int check
+    if (true)
+    {
+        int intType = 55
+        float floatType = 2.5
+        percent percentType = 5%
+        string stringType ="test"
+        bool boolType = true
+        time timeType = 13:37
+        day dayType = MONDAY
+        month monthType = DECEMBER
 
-    for (intType = intType; intType; intType = intType) {} // error
-    for (intType = intType; floatType; intType = intType) {} // error
-    for (intType = intType; percentType; intType = intType) {} // error
-    for (intType = intType; stringType; intType = intType) {} // error
-    for (intType = intType; boolType; intType = intType) {}
-    for (intType = intType; timeType; intType = intType) {} // error
-    for (intType = intType; dayType; intType = intType) {} // error
-    for (intType = intType; monthType; intType = intType) {} // error
-    for (intType = intType; house.test.Digital_input; intType = intType) {}
-    for (intType = intType; house.test.Digital_output; intType = intType) {}
-    for (intType = intType; house.test.Digital_inputpullup; intType = intType) {}
-    for (intType = intType; house.test.Analog_input; intType = intType) {} // error
-    for (intType = intType; house.test.Analog_output; intType = intType) {} // error
+        // INT INT TEST
+        if (intType == intType) { }
+        if (intType != intType) { }
+        if (intType < intType) { }
 
-    perform intType times {}
-    perform floatType times {} // error
-    perform percentType times {} // error
-    perform stringType times {} // error
-    perform boolType times {} // error
-    perform timeType times {} // error
-    perform dayType times {} // error
-    perform monthType times {} // error
-    perform house.test.Digital_input times {} // error
-    perform house.test.Digital_output times {} // error
-    perform house.test.Digital_inputpullup times {} // error
-    perform house.test.Analog_input times {}
-    perform house.test.Analog_output times {}
+        // INT FLOAT TEST
+        if (intType == floatType) { }
+        if (intType != floatType) { }
+        if (intType < floatType) { }
 
-    perform until (intType) {} // error
-    perform until (floatType) {} // error
-    perform until (percentType) {} // error
-    perform until (stringType) {} // error
-    perform until (boolType) {}
-    perform until (timeType) {} // error
-    perform until (dayType) {} // error
-    perform until (monthType) {} // error
-    perform until (house.test.Digital_input) {}
-    perform until (house.test.Digital_output) {}
-    perform until (house.test.Digital_inputpullup) {}
-    perform until (house.test.Analog_input) {} // error
-    perform until (house.test.Analog_output) {} // error
+        // INT PERCENT TEST
+        if (intType == percentType) { } // error
+        if (intType != percentType) { } // error
+        if (intType < percentType) { } // error
 
-    if (intType) {}  // error
-    else if (intType) {} // error
-    if (floatType) {}  // error
-    else if (floatType) {} // error
-    if (percentType) {}  // error
-    else if (percentType) {} // error
-    if (stringType) {}  // error
-    else if (stringType) {} // error
-    if (boolType) {}
-    else if (boolType) {}
-    if (timeType) {}  // error
-    else if (timeType) {} // error
-    if (dayType) {}  // error
-    else if (dayType) {} // error
-    if (monthType) {}  // error
-    else if (monthType) {} // error
-    if (house.test.Digital_input) {}
-    else if (house.test.Digital_input) {}
-    if (house.test.Digital_output) {}
-    else if (house.test.Digital_output) {}
-    if (house.test.Digital_inputpullup) {}
-    else if (house.test.Digital_inputpullup) {}
-    if (house.test.Analog_input) {}  // error
-    else if (house.test.Analog_input) {} // error
-    if (house.test.Analog_output) {}  // error
-    else if (house.test.Analog_output) {} // error
+        // INT STRING TEST
+        if (intType == stringType) { } // error
+        if (intType != stringType) { } // error
+        if (intType < stringType) { } // error
+
+        // INT BOOL TEST
+        if (intType == boolType) { } // error
+        if (intType != boolType) { } // error
+        if (intType < boolType) { } // error
+
+        // INT TIME TEST
+        if (intType == timeType) { } // error
+        if (intType != timeType) { } // error
+        if (intType < timeType) { } // error
+
+        // INT DAY TEST
+        if (intType == dayType) { } // error
+        if (intType != dayType) { } // error
+        if (intType < dayType) { } // error
+
+        // INT MONTH TEST
+        if (intType == monthType) { } // error
+        if (intType != monthType) { } // error
+        if (intType < monthType) { } // error
+
+        // INT DIGITAL_INPUT TEST
+        if (intType == house.test.Digital_input ) { } // error
+        if (intType != house.test.Digital_input ) { } // error
+        if (intType < house.test.Digital_input ) { } // error
+
+        // INT DIGITAL_OUTPUT TEST
+        if (intType == house.test.Digital_output ) { } // error
+        if (intType != house.test.Digital_output ) { } // error
+        if (intType < house.test.Digital_output ) { } // error
+
+        // INT DIGITAL_INPUTPULLUP TEST
+        if (intType == house.test.Digital_inputpullup ) { } // error
+        if (intType != house.test.Digital_inputpullup ) { } // error
+        if (intType < house.test.Digital_inputpullup ) { } // error
+
+        // INT ANALOG_INPUT TEST
+        if (intType == house.test.Analog_input) { }
+        if (intType != house.test.Analog_input) { }
+        if (intType < house.test.Analog_input) { }
+
+        // INT ANALOG_OUTPUT TEST
+        if (intType == house.test.Analog_output) { }
+        if (intType != house.test.Analog_output) { }
+        if (intType < house.test.Analog_output) { }
+    }
+
+    //2
+    // float check
+    if (true)
+    {
+        int intType = 55
+        float floatType = 2.5
+        percent percentType = 5%
+        string stringType ="test"
+        bool boolType = true
+        time timeType = 13:37
+        day dayType = MONDAY
+        month monthType = DECEMBER
+
+        // FLOAT INT TEST
+        if (floatType == intType) { }
+        if (floatType != intType) { }
+        if (floatType < intType) { }
+
+        // FLOAT FLOAT TEST
+        if (floatType == floatType) { }
+        if (floatType != floatType) { }
+        if (floatType < floatType) { }
+
+        // FLOAT PERCENT TEST
+        if (floatType == percentType) { } // error
+        if (floatType != percentType) { } // error
+        if (floatType < percentType) { } // error
+
+        // FLOAT STRING TEST
+        if (floatType == stringType) { } // error
+        if (floatType != stringType) { } // error
+        if (floatType < stringType) { } // error
+
+        // FLOAT BOOL TEST
+        if (floatType == boolType) { } // error
+        if (floatType != boolType) { } // error
+        if (floatType < boolType) { } // error
+
+        // FLOAT TIME TEST
+        if (floatType == timeType) { } // error
+        if (floatType != timeType) { } // error
+        if (floatType < timeType) { } // error
+
+        // FLOAT DAY TEST
+        if (floatType == dayType) { } // error
+        if (floatType != dayType) { } // error
+        if (floatType < dayType) { } // error
+
+        // FLOAT MONTH TEST
+        if (floatType == monthType) { } // error
+        if (floatType != monthType) { } // error
+        if (floatType < monthType) { } // error
+
+        // FLOAT DIGITAL_INPUT TEST
+        if (floatType == house.test.Digital_input ) { } // error
+        if (floatType != house.test.Digital_input ) { } // error
+        if (floatType < house.test.Digital_input ) { } // error
+
+        // FLOAT DIGITAL_OUTPUT TEST
+        if (floatType == house.test.Digital_output ) { } // error
+        if (floatType != house.test.Digital_output ) { } // error
+        if (floatType < house.test.Digital_output ) { } // error
+
+        // FLOAT DIGITAL_INPUTPULLUP TEST
+        if (floatType == house.test.Digital_inputpullup ) { } // error
+        if (floatType != house.test.Digital_inputpullup ) { } // error
+        if (floatType < house.test.Digital_inputpullup ) { } // error
+
+        // FLOAT ANALOG_INPUT TEST
+        if (floatType == house.test.Analog_input) { }
+        if (floatType != house.test.Analog_input) { }
+        if (floatType < house.test.Analog_input) { }
+
+        // FLOAT ANALOG_OUTPUT TEST
+        if (floatType == house.test.Analog_output) { }
+        if (floatType != house.test.Analog_output) { }
+        if (floatType < house.test.Analog_output) { }
+    }
+
+    //3
+    // percent check
+    if (true)
+    {
+        int intType = 55
+        float floatType = 2.5
+        percent percentType = 5%
+        string stringType ="test"
+        bool boolType = true
+        time timeType = 13:37
+        day dayType = MONDAY
+        month monthType = DECEMBER
+
+        // PERCENT INT TEST
+        if (percentType == intType) { } // error
+        if (percentType != intType) { } // error
+        if (percentType < intType) { } // error
+
+        // PERCENT FLOAT TEST
+        if (percentType == floatType) { } // error
+        if (percentType != floatType) { } // error
+        if (percentType < floatType) { } // error
+
+        // PERCENT PERCENT TEST
+        if (percentType == percentType) { }
+        if (percentType != percentType) { }
+        if (percentType < percentType) { }
+
+        // PERCENT STRING TEST
+        if (percentType == stringType) { } // error
+        if (percentType != stringType) { } // error
+        if (percentType < stringType) { } // error
+
+        // PERCENT BOOL TEST
+        if (percentType == boolType) { } // error
+        if (percentType != boolType) { } // error
+        if (percentType < boolType) { } // error
+
+        // PERCENT TIME TEST
+        if (percentType == timeType) { } // error
+        if (percentType != timeType) { } // error
+        if (percentType < timeType) { } // error
+
+        // PERCENT DAY TEST
+        if (percentType == dayType) { } // error
+        if (percentType != dayType) { } // error
+        if (percentType < dayType) { } // error
+
+        // PERCENT MONTH TEST
+        if (percentType == monthType) { } // error
+        if (percentType != monthType) { } // error
+        if (percentType < monthType) { } // error
+
+        // PERCENT DIGITAL_INPUT TEST
+        if (percentType == house.test.Digital_input ) { } // error
+        if (percentType != house.test.Digital_input ) { } // error
+        if (percentType < house.test.Digital_input ) { } // error
+
+        // PERCENT DIGITAL_OUTPUT TEST
+        if (percentType == house.test.Digital_output ) { } // error
+        if (percentType != house.test.Digital_output ) { } // error
+        if (percentType < house.test.Digital_output ) { } // error
+
+        // PERCENT DIGITAL_INPUTPULLUP TEST
+        if (percentType == house.test.Digital_inputpullup ) { } // error
+        if (percentType != house.test.Digital_inputpullup ) { } // error
+        if (percentType < house.test.Digital_inputpullup ) { } // error
+
+        // PERCENT ANALOG_INPUT TEST
+        if (percentType == house.test.Analog_input) { } // error
+        if (percentType != house.test.Analog_input) { } // error
+        if (percentType < house.test.Analog_input) { } // error
+
+        // PERCENT ANALOG_OUTPUT TEST
+        if (percentType == house.test.Analog_output) { } // error
+        if (percentType != house.test.Analog_output) { } // error
+        if (percentType < house.test.Analog_output) { } // error
+    }
+
+    //4
+    // string check
+    if (true)
+    {
+        int intType = 55
+        float floatType = 2.5
+        percent percentType = 5%
+        string stringType ="test"
+        bool boolType = true
+        time timeType = 13:37
+        day dayType = MONDAY
+        month monthType = DECEMBER
+
+        // STRING INT TEST
+        if (stringType == intType) { } // error
+        if (stringType != intType) { } // error
+        if (stringType < intType) { } // error
+
+        // STRING FLOAT TEST
+        if (stringType == floatType) { } // error
+        if (stringType != floatType) { } // error
+        if (stringType < floatType) { } // error
+
+        // STRING PERCENT TEST
+        if (stringType == percentType) { } // error
+        if (stringType != percentType) { } // error
+        if (stringType < percentType) { } // error
+
+        // STRING STRING TEST
+        if (stringType == stringType) { }
+        if (stringType != stringType) { }
+        if (stringType < stringType) { } // error
+
+        // STRING BOOL TEST
+        if (stringType == boolType) { } // error
+        if (stringType != boolType) { } // error
+        if (stringType < boolType) { } // error
+
+        // STRING TIME TEST
+        if (stringType == timeType) { } // error
+        if (stringType != timeType) { } // error
+        if (stringType < timeType) { } // error
+
+        // STRING DAY TEST
+        if (stringType == dayType) { } // error
+        if (stringType != dayType) { } // error
+        if (stringType < dayType) { } // error
+
+        // STRING MONTH TEST
+        if (stringType == monthType) { } // error
+        if (stringType != monthType) { } // error
+        if (stringType < monthType) { } // error
+
+        // STRING DIGITAL_INPUT TEST
+        if (stringType == house.test.Digital_input ) { } // error
+        if (stringType != house.test.Digital_input ) { } // error
+        if (stringType < house.test.Digital_input ) { } // error
+
+        // STRING DIGITAL_OUTPUT TEST
+        if (stringType == house.test.Digital_output ) { } // error
+        if (stringType != house.test.Digital_output ) { } // error
+        if (stringType < house.test.Digital_output ) { } // error
+
+        // STRING DIGITAL_INPUTPULLUP TEST
+        if (stringType == house.test.Digital_inputpullup ) { } // error
+        if (stringType != house.test.Digital_inputpullup ) { } // error
+        if (stringType < house.test.Digital_inputpullup ) { } // error
+
+        // STRING ANALOG_INPUT TEST
+        if (stringType == house.test.Analog_input) { } // error
+        if (stringType != house.test.Analog_input) { } // error
+        if (stringType < house.test.Analog_input) { } // error
+
+        // STRING ANALOG_OUTPUT TEST
+        if (stringType == house.test.Analog_output) { } // error
+        if (stringType != house.test.Analog_output) { } // error
+        if (stringType < house.test.Analog_output) { } // error
+    }
+
+    //5
+    // BOOL check
+    if (true)
+    {
+        int intType = 55
+        float floatType = 2.5
+        percent percentType = 5%
+        string stringType = "test"
+        bool boolType = true
+        time timeType = 13:37
+        day dayType = MONDAY
+        month monthType = DECEMBER
+
+    		// BOOL INT TEST
+        if (boolType == intType) { } // error
+        if (boolType != intType) { } // error
+        if (boolType < intType) { } // error
+
+        // BOOL FLOAT TEST
+        if (boolType == floatType) { } // error
+        if (boolType != floatType) { } // error
+        if (boolType < floatType) { } // error
+
+        // BOOL PERCENT TEST
+        if (boolType == percentType) { } // error
+        if (boolType != percentType) { } // error
+        if (boolType < percentType) { } // error
+
+        // BOOL STRING TEST
+        if (boolType == stringType) { } // error
+        if (boolType != stringType) { } // error
+        if (boolType < stringType) { } // error
+
+        // BOOL BOOL TEST
+        if (boolType == boolType) { }
+        if (boolType != boolType) { }
+        if (boolType < boolType) { } // error
+
+        // BOOL TIME TEST
+        if (boolType == timeType) { } // error
+        if (boolType != timeType) { } // error
+        if (boolType < timeType) { } // error
+
+        // BOOL DAY TEST
+        if (boolType == dayType) { } // error
+        if (boolType != dayType) { } // error
+        if (boolType < dayType) { } // error
+
+        // BOOL MONTH TEST
+        if (boolType == monthType) { } // error
+        if (boolType != monthType) { } // error
+        if (boolType < monthType) { } // error
+
+        // BOOL DIGITAL_INPUT TEST
+        if (boolType == house.test.Digital_input ) { }
+        if (boolType != house.test.Digital_input ) { }
+        if (boolType < house.test.Digital_input ) { } // error
+
+        // BOOL DIGITAL_OUTPUT TEST
+        if (boolType == house.test.Digital_output ) { }
+        if (boolType != house.test.Digital_output ) { }
+        if (boolType < house.test.Digital_output ) { } // error
+
+        // BOOL DIGITAL_INPUTPULLUP TEST
+        if (boolType == house.test.Digital_inputpullup ) { }
+        if (boolType != house.test.Digital_inputpullup ) { }
+        if (boolType < house.test.Digital_inputpullup ) { } // error
+
+        // BOOL ANALOG_INPUT TEST
+        if (boolType == house.test.Analog_input) { } // error
+        if (boolType != house.test.Analog_input) { } // error
+        if (boolType < house.test.Analog_input) { } // error
+
+        // BOOL ANALOG_OUTPUT TEST
+        if (boolType == house.test.Analog_output) { } // error
+        if (boolType != house.test.Analog_output) { } // error
+        if (boolType < house.test.Analog_output) { } // error
+    }
+
+    //6
+    // TIME check
+    if (true)
+    {
+        int intType = 55
+        float floatType = 2.5
+        percent percentType = 5%
+        string stringType ="test"
+        bool boolType = true
+        time timeType = 13:37
+        day dayType = MONDAY
+        month monthType = DECEMBER
+
+        // TIME INT TEST
+        if (timeType == intType) { } // error
+        if (timeType != intType) { } // error
+        if (timeType < intType) { } // error
+
+        // TIME FLOAT TEST
+        if (timeType == floatType) { } // error
+        if (timeType != floatType) { } // error
+        if (timeType < floatType) { } // error
+
+        // TIME PERCENT TEST
+        if (timeType == percentType) { } // error
+        if (timeType != percentType) { } // error
+        if (timeType < percentType) { } // error
+
+        // TIME STRING TEST
+        if (timeType == stringType) { } // error
+        if (timeType != stringType) { } // error
+        if (timeType < stringType) { } // error
+
+        // TIME BOOL TEST
+        if (timeType == boolType) { } // error
+        if (timeType != boolType) { } // error
+        if (timeType < boolType) { } // error
+
+        // TIME TIME TEST
+        if (timeType == timeType) { }
+        if (timeType != timeType) { }
+        if (timeType < timeType) { }
+
+        // TIME DAY TEST
+        if (timeType == dayType) { } // error
+        if (timeType != dayType) { } // error
+        if (timeType < dayType) { } // error
+
+        // TIME MONTH TEST
+        if (timeType == monthType) { } // error
+        if (timeType != monthType) { } // error
+        if (timeType < monthType) { } // error
+
+        // TIME DIGITAL_INPUT TEST
+        if (timeType == house.test.Digital_input ) { } // error
+        if (timeType != house.test.Digital_input ) { } // error
+        if (timeType < house.test.Digital_input ) { } // error
+
+        // TIME DIGITAL_OUTPUT TEST
+        if (timeType == house.test.Digital_output ) { } // error
+        if (timeType != house.test.Digital_output ) { } // error
+        if (timeType < house.test.Digital_output ) { } // error
+
+        // TIME DIGITAL_INPUTPULLUP TEST
+        if (timeType == house.test.Digital_inputpullup ) { } // error
+        if (timeType != house.test.Digital_inputpullup ) { } // error
+        if (timeType < house.test.Digital_inputpullup ) { } // error
+
+        // TIME ANALOG_INPUT TEST
+        if (timeType == house.test.Analog_input) { } // error
+        if (timeType != house.test.Analog_input) { } // error
+        if (timeType < house.test.Analog_input) { } // error
+
+        // TIME ANALOG_OUTPUT TEST
+        if (timeType == house.test.Analog_output) { } // error
+        if (timeType != house.test.Analog_output) { } // error
+        if (timeType < house.test.Analog_output) { } // error
+    }
+
+    //7
+    // DAY check
+    if (true)
+    {
+        int intType = 55
+        float floatType = 2.5
+        percent percentType = 5%
+        string stringType ="test"
+        bool boolType = true
+        time timeType = 13:37
+        day dayType = MONDAY
+        month monthType = DECEMBER
+
+        // DAY INT TEST
+        if (dayType == intType) { } // error
+        if (dayType != intType) { } // error
+        if (dayType < intType) { } // error
+
+        // DAY FLOAT TEST
+        if (dayType == floatType) { } // error
+        if (dayType != floatType) { } // error
+        if (dayType < floatType) { } // error
+
+        // DAY PERCENT TEST
+        if (dayType == percentType) { } // error
+        if (dayType != percentType) { } // error
+        if (dayType < percentType) { } // error
+
+        // DAY STRING TEST
+        if (dayType == stringType) { } // error
+        if (dayType != stringType) { } // error
+        if (dayType < stringType) { } // error
+
+        // DAY BOOL TEST
+        if (dayType == boolType) { } // error
+        if (dayType != boolType) { } // error
+        if (dayType < boolType) { } // error
+
+        // DAY TIME TEST
+        if (dayType == timeType) { } // error
+        if (dayType != timeType) { } // error
+        if (dayType < timeType) { } // error
+
+        // DAY DAY TEST
+        if (dayType == dayType) { }
+        if (dayType != dayType) { }
+        if (dayType < dayType) { }
+
+        // DAY MONTH TEST
+        if (dayType == monthType) { } // error
+        if (dayType != monthType) { } // error
+        if (dayType < monthType) { } // error
+
+        // DAY DIGITAL_INPUT TEST
+        if (dayType == house.test.Digital_input ) { } // error
+        if (dayType != house.test.Digital_input ) { } // error
+        if (dayType < house.test.Digital_input ) { } // error
+
+        // DAY DIGITAL_OUTPUT TEST
+        if (dayType == house.test.Digital_output ) { } // error
+        if (dayType != house.test.Digital_output ) { } // error
+        if (dayType < house.test.Digital_output ) { } // error
+
+        // DAY DIGITAL_INPUTPULLUP TEST
+        if (dayType == house.test.Digital_inputpullup ) { } // error
+        if (dayType != house.test.Digital_inputpullup ) { } // error
+        if (dayType < house.test.Digital_inputpullup ) { } // error
+
+        // DAY ANALOG_INPUT TEST
+        if (dayType == house.test.Analog_input) { } // error
+        if (dayType != house.test.Analog_input) { } // error
+        if (dayType < house.test.Analog_input) { } // error
+
+        // DAY ANALOG_OUTPUT TEST
+        if (dayType == house.test.Analog_output) { } // error
+        if (dayType != house.test.Analog_output) { } // error
+        if (dayType < house.test.Analog_output) { } // error
+    }
+
+    //8
+    // MONTH check
+    if (true)
+    {
+        int intType = 55
+        float floatType = 2.5
+        percent percentType = 5%
+        string stringType ="test"
+        bool boolType = true
+        time timeType = 13:37
+        day dayType = MONDAY
+        month monthType = DECEMBER
+
+        // MONTH INT TEST
+        if (monthType == intType) { } // error
+        if (monthType != intType) { } // error
+        if (monthType < intType) { } // error
+
+        // MONTH FLOAT TEST
+        if (monthType == floatType) { } // error
+        if (monthType != floatType) { } // error
+        if (monthType < floatType) { } // error
+
+        // MONTH PERCENT TEST
+        if (monthType == percentType) { } // error
+        if (monthType != percentType) { } // error
+        if (monthType < percentType) { } // error
+
+        // MONTH STRING TEST
+        if (monthType == stringType) { } // error
+        if (monthType != stringType) { } // error
+        if (monthType < stringType) { } // error
+
+        // MONTH BOOL TEST
+        if (monthType == boolType) { } // error
+        if (monthType != boolType) { } // error
+        if (monthType < boolType) { } // error
+
+        // MONTH TIME TEST
+        if (monthType == timeType) { } // error
+        if (monthType != timeType) { } // error
+        if (monthType < timeType) { } // error
+
+        // MONTH DAY TEST
+        if (monthType == dayType) { } // error
+        if (monthType != dayType) { } // error
+        if (monthType < dayType) { } // error
+
+        // MONTH MONTH TEST
+        if (monthType == monthType) { }
+        if (monthType != monthType) { }
+        if (monthType < monthType) { }
+
+        // MONTH DIGITAL_INPUT TEST
+        if (monthType == house.test.Digital_input ) { } // error
+        if (monthType != house.test.Digital_input ) { } // error
+        if (monthType < house.test.Digital_input ) { } // error
+
+        // MONTH DIGITAL_OUTPUT TEST
+        if (monthType == house.test.Digital_output ) { } // error
+        if (monthType != house.test.Digital_output ) { } // error
+        if (monthType < house.test.Digital_output ) { } // error
+
+        // MONTH DIGITAL_INPUTPULLUP TEST
+        if (monthType == house.test.Digital_inputpullup ) { } // error
+        if (monthType != house.test.Digital_inputpullup ) { } // error
+        if (monthType < house.test.Digital_inputpullup ) { } // error
+
+        // MONTH ANALOG_INPUT TEST
+        if (monthType == house.test.Analog_input) { } // error
+        if (monthType != house.test.Analog_input) { } // error
+        if (monthType < house.test.Analog_input) { } // error
+
+        // MONTH ANALOG_OUTPUT TEST
+        if (monthType == house.test.Analog_output) { } // error
+        if (monthType != house.test.Analog_output) { } // error
+        if (monthType < house.test.Analog_output) { } // error
+    }
+
+    //9
+    // DIGITAL_INPUT check
+    if (true)
+    {
+        int intType = 55
+        float floatType = 2.5
+        percent percentType = 5%
+        string stringType ="test"
+        bool boolType = true
+        time timeType = 13:37
+        day dayType = MONDAY
+        month monthType = DECEMBER
+
+        // DIGITAL_INPUT INT TEST
+        if (house.test.Digital_input == intType) { } // error
+        if (house.test.Digital_input != intType) { } // error
+        if (house.test.Digital_input < intType) { } // error
+
+        // DIGITAL_INPUT FLOAT TEST
+        if (house.test.Digital_input == floatType) { } // error
+        if (house.test.Digital_input != floatType) { } // error
+        if (house.test.Digital_input < floatType) { } // error
+
+        // DIGITAL_INPUT PERCENT TEST
+        if (house.test.Digital_input == percentType) { } // error
+        if (house.test.Digital_input != percentType) { } // error
+        if (house.test.Digital_input < percentType) { } // error
+
+        // DIGITAL_INPUT STRING TEST
+        if (house.test.Digital_input == stringType) { } // error
+        if (house.test.Digital_input != stringType) { } // error
+        if (house.test.Digital_input < stringType) { } // error
+
+        // DIGITAL_INPUT BOOL TEST
+        if (house.test.Digital_input == boolType) { }
+        if (house.test.Digital_input != boolType) { }
+        if (house.test.Digital_input < boolType) { } // error
+
+        // DIGITAL_INPUT TIME TEST
+        if (house.test.Digital_input == timeType) { } // error
+        if (house.test.Digital_input != timeType) { } // error
+        if (house.test.Digital_input < timeType) { } // error
+
+        // DIGITAL_INPUT DAY TEST
+        if (house.test.Digital_input == dayType) { } // error
+        if (house.test.Digital_input != dayType) { } // error
+        if (house.test.Digital_input < dayType) { } // error
+
+        // DIGITAL_INPUT MONTH TEST
+        if (house.test.Digital_input == monthType) { } // error
+        if (house.test.Digital_input != monthType) { } // error
+        if (house.test.Digital_input < monthType) { } // error
+
+        // DIGITAL_INPUT DIGITAL_INPUT TEST
+        if (house.test.Digital_input == house.test.Digital_input ) { }
+        if (house.test.Digital_input != house.test.Digital_input ) { }
+        if (house.test.Digital_input < house.test.Digital_input ) { } // error
+
+        // DIGITAL_INPUT DIGITAL_OUTPUT TEST
+        if (house.test.Digital_input == house.test.Digital_output ) { }
+        if (house.test.Digital_input != house.test.Digital_output ) { }
+        if (house.test.Digital_input < house.test.Digital_output ) { } // error
+
+        // DIGITAL_INPUT DIGITAL_INPUTPULLUP TEST
+        if (house.test.Digital_input == house.test.Digital_inputpullup ) { }
+        if (house.test.Digital_input != house.test.Digital_inputpullup ) { }
+        if (house.test.Digital_input < house.test.Digital_inputpullup ) { } // error
+
+        // DIGITAL_INPUT ANALOG_INPUT TEST
+        if (house.test.Digital_input == house.test.Analog_input) { } // error
+        if (house.test.Digital_input != house.test.Analog_input) { } // error
+        if (house.test.Digital_input < house.test.Analog_input) { } // error
+
+        // DIGITAL_INPUT ANALOG_OUTPUT TEST
+        if (house.test.Digital_input == house.test.Analog_output) { } // error
+        if (house.test.Digital_input != house.test.Analog_output) { } // error
+        if (house.test.Digital_input < house.test.Analog_output) { } // error
+    }
+
+    //10
+    // DIGITAL_OUTPUT check
+    if (true)
+    {
+        int intType = 55
+        float floatType = 2.5
+        percent percentType = 5%
+        string stringType ="test"
+        bool boolType = true
+        time timeType = 13:37
+        day dayType = MONDAY
+        month monthType = DECEMBER
+
+        // DIGITAL_OUTPUT INT TEST
+        if (house.test.Digital_output == intType) { } // error
+        if (house.test.Digital_output != intType) { } // error
+        if (house.test.Digital_output < intType) { } // error
+
+        // DIGITAL_OUTPUT FLOAT TEST
+        if (house.test.Digital_output == floatType) { } // error
+        if (house.test.Digital_output != floatType) { } // error
+        if (house.test.Digital_output < floatType) { } // error
+
+        // DIGITAL_OUTPUT PERCENT TEST
+        if (house.test.Digital_output == percentType) { } // error
+        if (house.test.Digital_output != percentType) { } // error
+        if (house.test.Digital_output < percentType) { } // error
+
+        // DIGITAL_OUTPUT STRING TEST
+        if (house.test.Digital_output == stringType) { } // error
+        if (house.test.Digital_output != stringType) { } // error
+        if (house.test.Digital_output < stringType) { } // error
+
+        // DIGITAL_OUTPUT BOOL TEST
+        if (house.test.Digital_output == boolType) { }
+        if (house.test.Digital_output != boolType) { }
+        if (house.test.Digital_output < boolType) { } // error
+
+        // DIGITAL_OUTPUT TIME TEST
+        if (house.test.Digital_output == timeType) { } // error
+        if (house.test.Digital_output != timeType) { } // error
+        if (house.test.Digital_output < timeType) { } // error
+
+        // DIGITAL_OUTPUT DAY TEST
+        if (house.test.Digital_output == dayType) { } // error
+        if (house.test.Digital_output != dayType) { } // error
+        if (house.test.Digital_output < dayType) { } // error
+
+        // DIGITAL_OUTPUT MONTH TEST
+        if (house.test.Digital_output == monthType) { } // error
+        if (house.test.Digital_output != monthType) { } // error
+        if (house.test.Digital_output < monthType) { } // error
+
+        // DIGITAL_OUTPUT DIGITAL_INPUT TEST
+        if (house.test.Digital_output == house.test.Digital_input ) { }
+        if (house.test.Digital_output != house.test.Digital_input ) { }
+        if (house.test.Digital_output < house.test.Digital_input ) { } // error
+
+        // DIGITAL_OUTPUT DIGITAL_OUTPUT TEST
+        if (house.test.Digital_output == house.test.Digital_output ) { }
+        if (house.test.Digital_output != house.test.Digital_output ) { }
+        if (house.test.Digital_output < house.test.Digital_output ) { } // error
+
+        // DIGITAL_OUTPUT DIGITAL_OUTPUTPULLUP TEST
+        if (house.test.Digital_output == house.test.Digital_inputpullup ) { }
+        if (house.test.Digital_output != house.test.Digital_inputpullup ) { }
+        if (house.test.Digital_output < house.test.Digital_inputpullup ) { } // error
+
+        // DIGITAL_OUTPUT ANALOG_INPUT TEST
+        if (house.test.Digital_output == house.test.Analog_input) { } // error
+        if (house.test.Digital_output != house.test.Analog_input) { } // error
+        if (house.test.Digital_output < house.test.Analog_input) { } // error
+
+        // DIGITAL_OUTPUT ANALOG_OUTPUT TEST
+        if (house.test.Digital_output == house.test.Analog_output) { } // error
+        if (house.test.Digital_output != house.test.Analog_output) { } // error
+        if (house.test.Digital_output < house.test.Analog_output) { } // error
+    }
+
+    //11
+    // ANALOG_INPUT check
+    if (true)
+    {
+        int intType = 55
+        float floatType = 2.5
+        percent percentType = 5%
+        string stringType ="test"
+        bool boolType = true
+        time timeType = 13:37
+        day dayType = MONDAY
+        month monthType = DECEMBER
+
+        // ANALOG_INPUT INT TEST
+        if (house.test.Analog_input == intType) { }
+        if (house.test.Analog_input != intType) { }
+        if (house.test.Analog_input < intType) { }
+
+        // ANALOG_INPUT FLOAT TEST
+        if (house.test.Analog_input == floatType) { }
+        if (house.test.Analog_input != floatType) { }
+        if (house.test.Analog_input < floatType) { }
+
+        // ANALOG_INPUT PERCENT TEST
+        if (house.test.Analog_input == percentType) { } // error
+        if (house.test.Analog_input != percentType) { } // error
+        if (house.test.Analog_input < percentType) { } // error
+
+        // ANALOG_INPUT STRING TEST
+        if (house.test.Analog_input == stringType) { } // error
+        if (house.test.Analog_input != stringType) { } // error
+        if (house.test.Analog_input < stringType) { } // error
+
+        // ANALOG_INPUT BOOL TEST
+        if (house.test.Analog_input == boolType) { } // error
+        if (house.test.Analog_input != boolType) { } // error
+        if (house.test.Analog_input < boolType) { } // error
+
+        // ANALOG_INPUT TIME TEST
+        if (house.test.Analog_input == timeType) { } // error
+        if (house.test.Analog_input != timeType) { } // error
+        if (house.test.Analog_input < timeType) { } // error
+
+        // ANALOG_INPUT DAY TEST
+        if (house.test.Analog_input == dayType) { } // error
+        if (house.test.Analog_input != dayType) { } // error
+        if (house.test.Analog_input < dayType) { } // error
+
+        // ANALOG_INPUT MONTH TEST
+        if (house.test.Analog_input == monthType) { } // error
+        if (house.test.Analog_input != monthType) { } // error
+        if (house.test.Analog_input < monthType) { } // error
+
+        // ANALOG_INPUT DIGITAL_OUTPUT TEST
+        if (house.test.Analog_input == house.test.Digital_input ) { } // error
+        if (house.test.Analog_input != house.test.Digital_input ) { } // error
+        if (house.test.Analog_input < house.test.Digital_input ) { } // error
+
+        // ANALOG_INPUT DIGITAL_OUTPUT TEST
+        if (house.test.Analog_input == house.test.Digital_output ) { } // error
+        if (house.test.Analog_input != house.test.Digital_output ) { } // error
+        if (house.test.Analog_input < house.test.Digital_output ) { } // error
+
+        // ANALOG_INPUT DIGITAL_OUTPUTPULLUP TEST
+        if (house.test.Analog_input == house.test.Digital_inputpullup ) { } // error
+        if (house.test.Analog_input != house.test.Digital_inputpullup ) { } // error
+        if (house.test.Analog_input < house.test.Digital_inputpullup ) { } // error
+
+        // ANALOG_INPUT ANALOG_INPUT TEST
+        if (house.test.Analog_input == house.test.Analog_input) { }
+        if (house.test.Analog_input != house.test.Analog_input) { }
+        if (house.test.Analog_input < house.test.Analog_input) { }
+
+        // ANALOG_INPUT ANALOG_OUTPUT TEST
+        if (house.test.Analog_input == house.test.Analog_output) { }
+        if (house.test.Analog_input != house.test.Analog_output) { }
+        if (house.test.Analog_input < house.test.Analog_output) { }
+    }
+
+    //12
+    // ANALOG_OUTPUT check
+    if (true)
+    {
+        int intType = 55
+        float floatType = 2.5
+        percent percentType = 5%
+        string stringType ="test"
+        bool boolType = true
+        time timeType = 13:37
+        day dayType = MONDAY
+        month monthType = DECEMBER
+
+        // ANALOG_OUTPUT INT TEST
+        if (house.test.Analog_output == intType) { }
+        if (house.test.Analog_output != intType) { }
+        if (house.test.Analog_output < intType) { }
+
+        // ANALOG_OUTPUT FLOAT TEST
+        if (house.test.Analog_output == floatType) { }
+        if (house.test.Analog_output != floatType) { }
+        if (house.test.Analog_output < floatType) { }
+
+        // ANALOG_OUTPUT PERCENT TEST
+        if (house.test.Analog_output == percentType) { } // error
+        if (house.test.Analog_output != percentType) { } // error
+        if (house.test.Analog_output < percentType) { } // error
+
+        // ANALOG_OUTPUT STRING TEST
+        if (house.test.Analog_output == stringType) { } // error
+        if (house.test.Analog_output != stringType) { } // error
+        if (house.test.Analog_output < stringType) { } // error
+
+        // ANALOG_OUTPUT BOOL TEST
+        if (house.test.Analog_output == boolType) { } // error
+        if (house.test.Analog_output != boolType) { } // error
+        if (house.test.Analog_output < boolType) { } // error
+
+        // ANALOG_OUTPUT TIME TEST
+        if (house.test.Analog_output == timeType) { } // error
+        if (house.test.Analog_output != timeType) { } // error
+        if (house.test.Analog_output < timeType) { } // error
+
+        // ANALOG_OUTPUT DAY TEST
+        if (house.test.Analog_output == dayType) { } // error
+        if (house.test.Analog_output != dayType) { } // error
+        if (house.test.Analog_output < dayType) { } // error
+
+        // ANALOG_OUTPUT MONTH TEST
+        if (house.test.Analog_output == monthType) { } // error
+        if (house.test.Analog_output != monthType) { } // error
+        if (house.test.Analog_output < monthType) { } // error
+
+        // ANALOG_OUTPUT DIGITAL_OUTPUT TEST
+        if (house.test.Analog_output == house.test.Digital_input ) { } // error
+        if (house.test.Analog_output != house.test.Digital_input ) { } // error
+        if (house.test.Analog_output < house.test.Digital_input ) { } // error
+
+        // ANALOG_OUTPUT DIGITAL_OUTPUT TEST
+        if (house.test.Analog_output == house.test.Digital_output ) { } // error
+        if (house.test.Analog_output != house.test.Digital_output ) { } // error
+        if (house.test.Analog_output < house.test.Digital_output ) { } // error
+
+        // ANALOG_OUTPUT DIGITAL_OUTPUTPULLUP TEST
+        if (house.test.Analog_output == house.test.Digital_inputpullup ) { } // error
+        if (house.test.Analog_output != house.test.Digital_inputpullup ) { } // error
+        if (house.test.Analog_output < house.test.Digital_inputpullup ) { } // error
+
+        // ANALOG_OUTPUT ANALOG_OUTPUT TEST
+        if (house.test.Analog_output == house.test.Analog_input) { }
+        if (house.test.Analog_output != house.test.Analog_input) { }
+        if (house.test.Analog_output < house.test.Analog_input) { }
+
+        // ANALOG_OUTPUT ANALOG_OUTPUT TEST
+        if (house.test.Analog_output == house.test.Analog_output) { }
+        if (house.test.Analog_output != house.test.Analog_output) { }
+        if (house.test.Analog_output < house.test.Analog_output) { }
+    }
+
+    //13
+    // DIGITAL_INPUTPULLUP check
+    if (true)
+    {
+        int intType = 55
+        float floatType = 2.5
+        percent percentType = 5%
+        string stringType ="test"
+        bool boolType = true
+        time timeType = 13:37
+        day dayType = MONDAY
+        month monthType = DECEMBER
+
+        // DIGITAL_INPUTPULLUP INT TEST
+        if (house.test.Digital_inputpullup == intType) { } // error
+        if (house.test.Digital_inputpullup != intType) { } // error
+        if (house.test.Digital_inputpullup < intType) { }  // error
+
+        // DIGITAL_INPUTPULLUP FLOAT TEST
+        if (house.test.Digital_inputpullup == floatType) { } // error
+        if (house.test.Digital_inputpullup != floatType) { } // error
+        if (house.test.Digital_inputpullup < floatType) { } // error
+
+        // DIGITAL_INPUTPULLUP PERCENT TEST
+        if (house.test.Digital_inputpullup == percentType) { } // error
+        if (house.test.Digital_inputpullup != percentType) { } // error
+        if (house.test.Digital_inputpullup < percentType) { } // error
+
+        // DIGITAL_INPUTPULLUP STRING TEST
+        if (house.test.Digital_inputpullup == stringType) { } // error
+        if (house.test.Digital_inputpullup != stringType) { } // error
+        if (house.test.Digital_inputpullup < stringType) { } // error
+
+        // DIGITAL_INPUTPULLUP BOOL TEST
+        if (house.test.Digital_inputpullup == boolType) { }
+        if (house.test.Digital_inputpullup != boolType) { }
+        if (house.test.Digital_inputpullup < boolType) { } // error
+
+        // DIGITAL_INPUTPULLUP TIME TEST
+        if (house.test.Digital_inputpullup == timeType) { } // error
+        if (house.test.Digital_inputpullup != timeType) { } // error
+        if (house.test.Digital_inputpullup < timeType) { } // error
+
+        // DIGITAL_INPUTPULLUP DAY TEST
+        if (house.test.Digital_inputpullup == dayType) { } // error
+        if (house.test.Digital_inputpullup != dayType) { } // error
+        if (house.test.Digital_inputpullup < dayType) { } // error
+
+        // DIGITAL_INPUTPULLUP MONTH TEST
+        if (house.test.Digital_inputpullup == monthType) { } // error
+        if (house.test.Digital_inputpullup != monthType) { } // error
+        if (house.test.Digital_inputpullup < monthType) { } // error
+
+        // DIGITAL_INPUTPULLUP DIGITAL_INPUT TEST
+        if (house.test.Digital_inputpullup == house.test.Digital_input ) { }
+        if (house.test.Digital_inputpullup != house.test.Digital_input ) { }
+        if (house.test.Digital_inputpullup < house.test.Digital_input ) { } // error
+
+        // DIGITAL_INPUTPULLUP DIGITAL_OUTPUT TEST
+        if (house.test.Digital_inputpullup == house.test.Digital_output ) { }
+        if (house.test.Digital_inputpullup != house.test.Digital_output ) { }
+        if (house.test.Digital_inputpullup < house.test.Digital_output ) { } // error
+
+        // DIGITAL_INPUTPULLUP DIGITAL_OUTPUTPULLUP TEST
+        if (house.test.Digital_inputpullup == house.test.Digital_inputpullup ) { }
+        if (house.test.Digital_inputpullup != house.test.Digital_inputpullup ) { }
+        if (house.test.Digital_inputpullup < house.test.Digital_inputpullup ) { } // error
+
+        // DIGITAL_INPUTPULLUP ANALOG_INPUT TEST
+        if (house.test.Digital_inputpullup == house.test.Analog_input) { } // error
+        if (house.test.Digital_inputpullup != house.test.Analog_input) { } // error
+        if (house.test.Digital_inputpullup < house.test.Analog_input) { } // error
+
+        // DIGITAL_INPUTPULLUP ANALOG_OUTPUT TEST
+        if (house.test.Digital_inputpullup == house.test.Analog_output) { } // error
+        if (house.test.Digital_inputpullup != house.test.Analog_output) { } // error
+        if (house.test.Digital_inputpullup < house.test.Analog_output) { } // error
+    }
+
 }

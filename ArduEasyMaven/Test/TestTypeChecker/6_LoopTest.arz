@@ -76,4 +76,31 @@ function void testOperations()
     perform until (house.test.Digital_inputpullup) {}
     perform until (house.test.Analog_input) {} // error
     perform until (house.test.Analog_output) {} // error
+
+    if (intType) {} // error
+    else if (intType) {} // error
+    if (floatType) {} // error
+    else if (floatType) {} // error
+    if (percentType) {} // error
+    else if (percentType) {} // error
+    if (stringType) {} // error
+    else if (stringType) {} // error
+    if (boolType) {}
+    else if (boolType) {}
+    if (timeType) {} // error
+    else if (timeType) {} // error
+    if (dayType) {} // error
+    else if (dayType) {} // error
+    if (monthType) {} // error
+    else if (monthType) {} // error
+    if (house.test.Digital_input) {}
+    else if (house.test.Digital_input) {}
+    if (house.test.Digital_output) {}
+    else if (house.test.Digital_output) {}
+    if (house.test.Digital_inputpullup) {}
+    else if (house.test.Digital_inputpullup) {}
+    if (house.test.Analog_input) {} // error
+    else if (house.test.Analog_input) {} // error
+    if (house.test.Analog_output) {} // error
+    else if (house.test.Analog_output) {} // error
 }

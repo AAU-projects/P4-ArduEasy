@@ -722,7 +722,6 @@ public class TypeChecker implements Visitor
     @Override
     public Object Visit(PerformUntilNode node)
     {
-        symbolTable.OpenScope(String.valueOf(node.LineNumber));
         IterationChecker(node);
         return null;
     }
@@ -859,6 +858,8 @@ public class TypeChecker implements Visitor
 
     private void IterationChecker(IterationNode node)
     {
+        symbolTable.OpenScope(String.valueOf(node.LineNumber));
+
         String predicateType = GetTypeNode(node.Predicate);
         if (!predicateType.equals(boolType))
         {
