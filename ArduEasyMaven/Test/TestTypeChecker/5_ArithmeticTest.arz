@@ -37,7 +37,7 @@ function void testOperations()
 
         intType = intType + percentType
         intType = intType - percentType
-        intType = intType * percentType
+        intType = intType * percentType // error
         intType = intType / percentType // error
 
         intType = intType + stringType // error
@@ -116,8 +116,8 @@ function void testOperations()
 
         floatType = floatType + percentType
         floatType = floatType - percentType
-        floatType = floatType * percentType
-        floatType = floatType / percentType
+        floatType = floatType * percentType // error
+        floatType = floatType / percentType // error
 
         floatType = floatType + stringType // error
         floatType = floatType - stringType // error
@@ -193,8 +193,8 @@ function void testOperations()
         percentType = percentType * floatType // error
         percentType = percentType / floatType // error
 
-        percentType = percentType + percentType // error
-        percentType = percentType - percentType // error
+        percentType = percentType + percentType
+        percentType = percentType - percentType
         percentType = percentType * percentType // error
         percentType = percentType / percentType // error
 
@@ -904,8 +904,8 @@ function void testOperations()
         house.test.Analog_input = house.test.Analog_input * floatType // error
         house.test.Analog_input = house.test.Analog_input / floatType // error
 
-        house.test.Analog_input = house.test.Analog_input + percentType // error
-        house.test.Analog_input = house.test.Analog_input - percentType // error
+        house.test.Analog_input = house.test.Analog_input + percentType
+        house.test.Analog_input = house.test.Analog_input - percentType
         house.test.Analog_input = house.test.Analog_input * percentType // error
         house.test.Analog_input = house.test.Analog_input / percentType // error
 
@@ -983,8 +983,8 @@ function void testOperations()
         house.test.Analog_output = house.test.Analog_output * floatType // error
         house.test.Analog_output = house.test.Analog_output / floatType // error
 
-        house.test.Analog_output = house.test.Analog_output + percentType // error
-        house.test.Analog_output = house.test.Analog_output - percentType // error
+        house.test.Analog_output = house.test.Analog_output + percentType
+        house.test.Analog_output = house.test.Analog_output - percentType
         house.test.Analog_output = house.test.Analog_output * percentType // error
         house.test.Analog_output = house.test.Analog_output / percentType // error
 

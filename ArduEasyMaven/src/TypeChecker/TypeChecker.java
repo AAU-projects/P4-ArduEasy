@@ -61,7 +61,7 @@ public class TypeChecker implements Visitor
         {
             return left;
         }
-        else if (!isValidOperands(left, right))
+        else if (!isValidArithmetic(left, right))
         {
             CustomErrorHandler.AddError(new SemanticError(node, "Invalid Aritmetic operands a " + left + " operand can not be used with a " + right + " operand"));
         }
@@ -141,13 +141,31 @@ public class TypeChecker implements Visitor
         String valueType =  GetTypeNode(node.Value);
 
 
-        if(!isValidOperands(identifierType, valueType))
+        if(!isValidAssignmentDeclaration(identifierType, valueType))
             CustomErrorHandler.AddError(new SemanticError(node, "Tried to assign " + valueType + " to " + identifierType  + " instance"));
 
         return node;
     }
 
-    private boolean isValidOperands(String left, String right)
+    private boolean isValidAssignmentDeclaration(String identifier, String value)
+    {
+        if (identifier == null || value == null) return true; // something went wrong with scope
+
+        if (identifier.equals(value)) return true; // if identifier is the same type as right
+
+        if (identifier.equals(intType)
+                && (value.equals(percentageType) )) return true; // if identifier int then right can be float, percent
+
+        if (identifier.equals(floatType)
+                && (value.equals(intType)
+                || value.equals(percentageType) )) return true; // if identifier float then right can be int
+
+        if (isValidPinOperatorRule(identifier, value)) return true;
+
+        return false;
+    }
+
+    private boolean isValidArithmetic(String left, String right)
     {
         if (left == null || right == null) return true; // something went wrong with scope
 
@@ -158,7 +176,8 @@ public class TypeChecker implements Visitor
                 || right.equals(percentageType) )) return true; // if identifier int then right can be float, percent
 
         if (left.equals(floatType)
-                && (right.equals(intType) )) return true; // if identifier float then right can be int
+                && (right.equals(intType)
+                || right.equals(percentageType) )) return true; // if identifier float then right can be int
 
         if (left.equals(percentageType)
                 && (right.equals(intType) )) return true; // if percentageType float then rightType can be int)
@@ -301,7 +320,7 @@ public class TypeChecker implements Visitor
         String identifierType = GetTypeNode(node.Identifier);
         String expressionType = GetTypeNode(node.Value);
 
-        if (!isValidOperands(identifierType, expressionType))
+        if (!isValidAssignmentDeclaration(identifierType, expressionType))
         {
             CustomErrorHandler.AddError(new SemanticError(node, "Tried to declare object of type: " + node.Type + " with type: " + expressionType));
         }
@@ -332,7 +351,6 @@ public class TypeChecker implements Visitor
 
         if(!matchFound)
             CustomErrorHandler.AddError(new SemanticError(node, "Tried to divide invalid type " + rightType));
-
 
         return floatType;
     }

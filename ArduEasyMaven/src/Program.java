@@ -25,7 +25,7 @@ public class Program
             if (Arrays.asList(args).contains("-PE"))
                 bulkTester.printErrors = true;
 
-            bulkTester.Start();
+            bulkTester.RunTestCases();
         }
         else
             Compile(args);

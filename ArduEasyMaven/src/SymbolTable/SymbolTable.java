@@ -12,10 +12,9 @@ public class SymbolTable
 {
     public Map<String, Variable> Variables = new HashMap<String, Variable>();
     public SymbolTable CurrentOpenScope = this;
-    public int lastScopeLine;
     public SymbolTable ParrentScope = this;
     public static HashMap<String, FunctionVariable> FunctionList = new HashMap<String, FunctionVariable>();
-
+    public int lastScopeLine;
 
     public void Insert(Node node, String key, Variable var)
     {
