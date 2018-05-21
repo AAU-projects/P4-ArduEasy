@@ -535,7 +535,7 @@ function void testOperations()
         // DAY DAY TEST
         if (dayType == dayType) { }
         if (dayType != dayType) { }
-        if (dayType < dayType) { }
+        if (dayType < dayType) { } // error
 
         // DAY MONTH TEST
         if (dayType == monthType) { } // error
@@ -619,7 +619,7 @@ function void testOperations()
         // MONTH MONTH TEST
         if (monthType == monthType) { }
         if (monthType != monthType) { }
-        if (monthType < monthType) { }
+        if (monthType < monthType) { } // error
 
         // MONTH DIGITAL_INPUT TEST
         if (monthType == house.test.Digital_input ) { } // error

@@ -475,7 +475,7 @@ public class TypeChecker implements Visitor
     @Override
     public String Visit(GreaterOrEqualNode node)
     {
-        String[] GreaterOrEqualTypes = {intType, floatType, percentageType, timeType, dayType, monthType, analog_inputType, analog_outputType};
+        String[] GreaterOrEqualTypes = {intType, floatType, percentageType, timeType, analog_inputType, analog_outputType};
 
         String leftType = GetTypeNode(node.Left);
         String rightType = GetTypeNode(node.Right);
@@ -491,7 +491,7 @@ public class TypeChecker implements Visitor
     @Override
     public String Visit(GreaterThanNode node)
     {
-        String[] GreaterThanTypes = {intType, floatType, percentageType, timeType, dayType, monthType, analog_inputType, analog_outputType};
+        String[] GreaterThanTypes = {intType, floatType, percentageType, timeType, analog_inputType, analog_outputType};
 
         String leftType = GetTypeNode(node.Left);
         String rightType = GetTypeNode(node.Right);
@@ -563,7 +563,7 @@ public class TypeChecker implements Visitor
     @Override
     public String Visit(LessOrEqualNode node)
     {
-        String[] LessOrEqualTypes = {intType, floatType, percentageType, timeType, dayType, monthType, analog_inputType, analog_outputType};
+        String[] LessOrEqualTypes = {intType, floatType, percentageType, timeType, analog_inputType, analog_outputType};
 
         String leftType = GetTypeNode(node.Left);
         String rightType = GetTypeNode(node.Right);
@@ -579,7 +579,7 @@ public class TypeChecker implements Visitor
     @Override
     public String Visit(LessThanNode node)
     {
-        String[] LessThanTypes = {intType, floatType, percentageType, timeType, dayType, monthType, analog_inputType, analog_outputType};
+        String[] LessThanTypes = {intType, floatType, percentageType, timeType, analog_inputType, analog_outputType};
 
         String leftType = GetTypeNode(node.Left);
         String rightType = GetTypeNode(node.Right);
