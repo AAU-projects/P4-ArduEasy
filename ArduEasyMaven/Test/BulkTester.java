@@ -112,7 +112,7 @@ public class BulkTester
         for (Integer expectedError : expectedErrors) {
             if (!errorsTypeChecker.contains(expectedError))
             {
-                System.out.println(ANSI_RED + "An error at line " + expectedError + " is expected but error not found" + ANSI_RESET);
+                System.out.println(ANSI_RED + "An error at line " + expectedError + " is expected but one is NOT found" + ANSI_RESET);
             }
         }
 
