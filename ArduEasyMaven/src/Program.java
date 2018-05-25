@@ -6,8 +6,11 @@ import TypeChecker.TypeChecker;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
+
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.InvalidPathException;
 import java.util.Arrays;
 
 import AST.*;
@@ -31,33 +34,53 @@ public class Program
             Compile(args);
     }
 
-    private static void Compile(String args[]) throws IOException
+    private static void Compile(String args[])
     {
-        String filePath = "CodeExamples/guideExample.txt";
-        String outputFile = "Outputs/arduinogeneration.ino";
-        CharStream inputStream = CharStreams.fromFileName(filePath);
-        ArduEasyLexer lexer = new ArduEasyLexer(inputStream);
-        lexer.removeErrorListeners();
-        lexer.addErrorListener(ErrorHandler.ArduEasyErrorListener.Instance);
-        CommonTokenStream tokenStream = new CommonTokenStream(lexer);
-        ArduEasyParser parser = new ArduEasyParser(tokenStream);
-        parser.removeErrorListeners();
-        parser.addErrorListener(ErrorHandler.ArduEasyErrorListener.Instance);
-        System.out.println();
-
-        RootNode root;
+        String filePath;
+        File outputFile;
 
         try
         {
-            ArduEasyParser.RContext programContext = parser.r();
+            filePath = args[0];
+            if (!filePath.toLowerCase().contains(".arz"))
+                throw new InvalidPathException(filePath,"Invalid file type");
+            String[] temp = filePath.split("/");
+            temp = temp[temp.length-1].split("\\.");
+            outputFile = new File("Outputs/" + temp[0] + "/" + temp[0] + ".ino");
+            //noinspection ResultOfMethodCallIgnored
+            outputFile.getParentFile().mkdirs();
 
+            // Initialize charstream from file
+            CharStream inputStream = CharStreams.fromFileName(filePath);
+            // Initialize lexer with charstream
+            ArduEasyLexer lexer = new ArduEasyLexer(inputStream);
+            // Remove standard error listeners and add custom ArduEasy listener
+            lexer.removeErrorListeners();
+            lexer.addErrorListener(ErrorHandler.ArduEasyErrorListener.Instance);
+            // Get tokens from lexer
+            CommonTokenStream tokenStream = new CommonTokenStream(lexer);
+            // Initialize parser with tokens
+            ArduEasyParser parser = new ArduEasyParser(tokenStream);
+            //Remove standard error listeners and add custom ArduEasy listener
+            parser.removeErrorListeners();
+            parser.addErrorListener(ErrorHandler.ArduEasyErrorListener.Instance);
+
+            RootNode root;
+
+            System.out.println("Parsing code");
+            ArduEasyParser.RContext programContext = parser.r();
+            System.out.println("Complete...");
+
+            // If any errors, print and exit
             if (ErrorHandler.ArduEasyErrorListener.ErrorsPresent())
             {
                 ErrorHandler.ArduEasyErrorListener.PrintErrors();
                 System.exit(-1);
             }
 
+            System.out.println("AST");
             root = (RootNode) new BuildAst().visitR(programContext);
+            System.out.println("Complete...");
 
             if (Arrays.asList(args).contains("-P"))
             {
@@ -65,8 +88,11 @@ public class Program
                 printer.Visit(root);
             }
 
+            System.out.println("Symbol Table & Scopes");
             BuildSymbolTable SymbolTable = new BuildSymbolTable();
             SymbolTable.Visit(root);
+            System.out.println("Complete...");
+
 
             TypeChecker typeChecker = new TypeChecker(SymbolTable.symbolTable);
 
@@ -74,21 +100,29 @@ public class Program
             typeChecker.Visit(root);
             System.out.println("Complete...");
 
+            // If any errors, print and exit if not forced gen
             if (CustomErrorHandler.ErrorsPresent() && !Arrays.asList(args).contains("-FG")){
                 CustomErrorHandler.PrintErrors();System.exit(-1);}
 
             PrintWriter writer = new PrintWriter(outputFile, "UTF-8");
-            System.out.println();
             System.out.println("Code Generation:");
-            System.out.println();
             BuildCode CodeGenerator = new BuildCode(writer);
             CodeGenerator.Visit(root);
             writer.close();
-            System.out.println("Code Generation Complete...");
+            System.out.println("Complete...");
+            System.out.println("Successfully compiled file into: " + outputFile.getPath());
 
 
             CustomErrorHandler.PrintErrors();
 
+
+        } catch (ArrayIndexOutOfBoundsException e)
+        {
+            System.out.println("No input file given");
+            System.exit(0);
+        } catch (InvalidPathException e)
+        {
+            System.out.println(e.getReason());
         } catch (Exception e)
         {
             System.out.println(e.toString());

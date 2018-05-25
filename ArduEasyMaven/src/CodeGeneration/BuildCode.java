@@ -561,7 +561,7 @@ public class BuildCode implements Visitor
                 function.Accept(this);
         }
 
-        System.out.println(strB);
+        //System.out.println(strB);
 
         int fileSize = strB.toString().getBytes().length;
         
