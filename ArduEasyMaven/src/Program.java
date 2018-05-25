@@ -18,12 +18,22 @@ public class Program
 {
     public static void main(String args[]) throws IOException
     {
-        Compile(args);
+        if (Arrays.asList(args).contains("-T"))
+        {
+            BulkTester bulkTester = new BulkTester();
+
+            if (Arrays.asList(args).contains("-PE"))
+                bulkTester.printErrors = true;
+
+            bulkTester.RunTestCases();
+        }
+        else
+            Compile(args);
     }
 
     private static void Compile(String args[]) throws IOException
     {
-        String filePath = "CodeExamples/WorkingBtnAndLamp.arz";
+        String filePath = "CodeExamples/guideExample.txt";
         String outputFile = "Outputs/arduinogeneration.ino";
         CharStream inputStream = CharStreams.fromFileName(filePath);
         ArduEasyLexer lexer = new ArduEasyLexer(inputStream);

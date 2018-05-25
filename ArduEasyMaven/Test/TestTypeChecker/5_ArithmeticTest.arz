@@ -1,0 +1,1041 @@
+house
+{
+    room test
+    {
+        Digital_input = PIN 1 as input
+        Digital_output = PIN 2 as output
+        Digital_inputpullup = PIN 6 as inputpullup
+        Analog_input = PIN A 6 as input
+        Analog_output = PIN A 7 as output
+    }
+}
+
+function void testOperations()
+{
+	//1
+    // int check
+    if (true)
+    {
+        int intType = 55
+        float floatType = 2.5
+        percent percentType = 5%
+        string stringType ="test"
+        bool boolType = true
+        time timeType = 13:37
+        day dayType = MONDAY
+        month monthType = DECEMBER
+
+        intType = intType + intType
+        intType = intType - intType
+        intType = intType * intType
+        intType = intType / intType // error
+
+        intType = intType + floatType // error
+        intType = intType - floatType // error
+        intType = intType * floatType // error
+        intType = intType / floatType // error
+
+        intType = intType + percentType
+        intType = intType - percentType
+        intType = intType * percentType // error
+        intType = intType / percentType // error
+
+        intType = intType + stringType // error
+        intType = intType - stringType // error
+        intType = intType * stringType // error
+        intType = intType / stringType // error
+
+        intType = intType + boolType // error
+        intType = intType - boolType // error
+        intType = intType * boolType // error
+        intType = intType / boolType // error
+
+        intType = intType + timeType // error
+        intType = intType - timeType // error
+        intType = intType * timeType // error
+        intType = intType / timeType // error
+
+        intType = intType + dayType // error
+        intType = intType - dayType // error
+        intType = intType * dayType // error
+        intType = intType / dayType // error
+
+        intType = intType + monthType // error
+        intType = intType - monthType // error
+        intType = intType * monthType // error
+        intType = intType / monthType // error
+
+        intType = intType + house.test.Digital_input // error
+        intType = intType - house.test.Digital_input // error
+        intType = intType * house.test.Digital_input // error
+        intType = intType / house.test.Digital_input // error
+
+        intType = intType + house.test.Digital_output // error
+        intType = intType - house.test.Digital_output // error
+        intType = intType * house.test.Digital_output // error
+        intType = intType / house.test.Digital_output // error
+
+        intType = intType + house.test.Digital_inputpullup // error
+        intType = intType - house.test.Digital_inputpullup // error
+        intType = intType * house.test.Digital_inputpullup // error
+        intType = intType / house.test.Digital_inputpullup // error
+
+        intType = intType + house.test.Analog_input
+        intType = intType - house.test.Analog_input
+        intType = intType * house.test.Analog_input
+        intType = intType / house.test.Analog_input // error
+
+        intType = intType + house.test.Analog_output
+        intType = intType - house.test.Analog_output
+        intType = intType * house.test.Analog_output
+        intType = intType / house.test.Analog_output // error
+    }
+
+    //2
+    // float check
+    if (true)
+    {
+        int intType = 55
+        float floatType = 2.5
+        percent percentType = 5%
+        string stringType ="test"
+        bool boolType = true
+        time timeType = 13:37
+        day dayType = MONDAY
+        month monthType = DECEMBER
+
+        floatType = floatType + intType
+        floatType = floatType - intType
+        floatType = floatType * intType
+        floatType = floatType / intType
+
+        floatType = floatType + floatType
+        floatType = floatType - floatType
+        floatType = floatType * floatType
+        floatType = floatType / floatType
+
+        floatType = floatType + percentType
+        floatType = floatType - percentType
+        floatType = floatType * percentType // error
+        floatType = floatType / percentType // error
+
+        floatType = floatType + stringType // error
+        floatType = floatType - stringType // error
+        floatType = floatType * stringType // error
+        floatType = floatType / stringType // error
+
+        floatType = floatType + boolType // error
+        floatType = floatType - boolType // error
+        floatType = floatType * boolType // error
+        floatType = floatType / boolType // error
+
+        floatType = floatType + timeType // error
+        floatType = floatType - timeType // error
+        floatType = floatType * timeType // error
+        floatType = floatType / timeType // error
+
+        floatType = floatType + dayType // error
+        floatType = floatType - dayType // error
+        floatType = floatType * dayType // error
+        floatType = floatType / dayType // error
+
+        floatType = floatType + monthType // error
+        floatType = floatType - monthType // error
+        floatType = floatType * monthType // error
+        floatType = floatType / monthType // error
+
+        floatType = floatType + house.test.Digital_input // error
+        floatType = floatType - house.test.Digital_input // error
+        floatType = floatType * house.test.Digital_input // error
+        floatType = floatType / house.test.Digital_input // error
+
+        floatType = floatType + house.test.Digital_output // error
+        floatType = floatType - house.test.Digital_output // error
+        floatType = floatType * house.test.Digital_output // error
+        floatType = floatType / house.test.Digital_output // error
+
+        floatType = floatType + house.test.Digital_inputpullup // error
+        floatType = floatType - house.test.Digital_inputpullup // error
+        floatType = floatType * house.test.Digital_inputpullup // error
+        floatType = floatType / house.test.Digital_inputpullup // error
+
+        floatType = floatType + house.test.Analog_input
+        floatType = floatType - house.test.Analog_input
+        floatType = floatType * house.test.Analog_input
+        floatType = floatType / house.test.Analog_input
+
+        floatType = floatType + house.test.Analog_output
+        floatType = floatType - house.test.Analog_output
+        floatType = floatType * house.test.Analog_output
+        floatType = floatType / house.test.Analog_output
+    }
+
+    //3
+    // percent check
+    if (true)
+    {
+        int intType = 55
+        float floatType = 2.5
+        percent percentType = 5%
+        string stringType ="test"
+        bool boolType = true
+        time timeType = 13:37
+        day dayType = MONDAY
+        month monthType = DECEMBER
+
+        percentType = percentType + intType // error
+        percentType = percentType - intType // error
+        percentType = percentType * intType // error
+        percentType = percentType / intType // error
+
+        percentType = percentType + floatType // error
+        percentType = percentType - floatType // error
+        percentType = percentType * floatType // error
+        percentType = percentType / floatType // error
+
+        percentType = percentType + percentType
+        percentType = percentType - percentType
+        percentType = percentType * percentType // error
+        percentType = percentType / percentType // error
+
+        percentType = percentType + stringType // error
+        percentType = percentType - stringType // error
+        percentType = percentType * stringType // error
+        percentType = percentType / stringType // error
+
+        percentType = percentType + boolType // error
+        percentType = percentType - boolType // error
+        percentType = percentType * boolType // error
+        percentType = percentType / boolType // error
+
+        percentType = percentType + timeType // error
+        percentType = percentType - timeType // error
+        percentType = percentType * timeType // error
+        percentType = percentType / timeType // error
+
+        percentType = percentType + dayType // error
+        percentType = percentType - dayType // error
+        percentType = percentType * dayType // error
+        percentType = percentType / dayType // error
+
+        percentType = percentType + monthType // error
+        percentType = percentType - monthType // error
+        percentType = percentType * monthType // error
+        percentType = percentType / monthType // error
+
+        percentType = percentType + house.test.Digital_input // error
+        percentType = percentType - house.test.Digital_input // error
+        percentType = percentType * house.test.Digital_input // error
+        percentType = percentType / house.test.Digital_input // error
+
+        percentType = percentType + house.test.Digital_output // error
+        percentType = percentType - house.test.Digital_output // error
+        percentType = percentType * house.test.Digital_output // error
+        percentType = percentType / house.test.Digital_output // error
+
+        percentType = percentType + house.test.Digital_inputpullup // error
+        percentType = percentType - house.test.Digital_inputpullup // error
+        percentType = percentType * house.test.Digital_inputpullup // error
+        percentType = percentType / house.test.Digital_inputpullup // error
+
+        percentType = percentType + house.test.Analog_input // error
+        percentType = percentType - house.test.Analog_input // error
+        percentType = percentType * house.test.Analog_input // error
+        percentType = percentType / house.test.Analog_input // error
+
+        percentType = percentType + house.test.Analog_output // error
+        percentType = percentType - house.test.Analog_output // error
+        percentType = percentType * house.test.Analog_output // error
+        percentType = percentType / house.test.Analog_output // error
+    }
+
+    //4
+    // string check
+    if (true)
+    {
+        int intType = 55
+        float floatType = 2.5
+        percent percentType = 5%
+        string stringType ="test"
+        bool boolType = true
+        time timeType = 13:37
+        day dayType = MONDAY
+        month monthType = DECEMBER
+
+        stringType = stringType + intType // error
+        stringType = stringType - intType // error
+        stringType = stringType * intType // error
+        stringType = stringType / intType // error
+
+        stringType = stringType + floatType // error
+        stringType = stringType - floatType // error
+        stringType = stringType * floatType // error
+        stringType = stringType / floatType // error
+
+        stringType = stringType + percentType // error
+        stringType = stringType - percentType // error
+        stringType = stringType * percentType // error
+        stringType = stringType / percentType // error
+
+        stringType = stringType + stringType // error
+        stringType = stringType - stringType // error
+        stringType = stringType * stringType // error
+        stringType = stringType / stringType // error
+
+        stringType = stringType + boolType // error
+        stringType = stringType - boolType // error
+        stringType = stringType * boolType // error
+        stringType = stringType / boolType // error
+
+        stringType = stringType + timeType // error
+        stringType = stringType - timeType // error
+        stringType = stringType * timeType // error
+        stringType = stringType / timeType // error
+
+        stringType = stringType + dayType // error
+        stringType = stringType - dayType // error
+        stringType = stringType * dayType // error
+        stringType = stringType / dayType // error
+
+        stringType = stringType + monthType // error
+        stringType = stringType - monthType // error
+        stringType = stringType * monthType // error
+        stringType = stringType / monthType // error
+
+        stringType = stringType + house.test.Digital_input // error
+        stringType = stringType - house.test.Digital_input // error
+        stringType = stringType * house.test.Digital_input // error
+        stringType = stringType / house.test.Digital_input // error
+
+        stringType = stringType + house.test.Digital_output // error
+        stringType = stringType - house.test.Digital_output // error
+        stringType = stringType * house.test.Digital_output // error
+        stringType = stringType / house.test.Digital_output // error
+
+        stringType = stringType + house.test.Digital_inputpullup // error
+        stringType = stringType - house.test.Digital_inputpullup // error
+        stringType = stringType * house.test.Digital_inputpullup // error
+        stringType = stringType / house.test.Digital_inputpullup // error
+
+        stringType = stringType + house.test.Analog_input // error
+        stringType = stringType - house.test.Analog_input // error
+        stringType = stringType * house.test.Analog_input // error
+        stringType = stringType / house.test.Analog_input // error
+
+        stringType = stringType + house.test.Analog_output // error
+        stringType = stringType - house.test.Analog_output // error
+        stringType = stringType * house.test.Analog_output // error
+        stringType = stringType / house.test.Analog_output // error
+    }
+
+    //5
+    // bool check
+    if (true)
+    {
+        int intType = 55
+        float floatType = 2.5
+        percent percentType = 5%
+        string stringType ="test"
+        bool boolType = true
+        time timeType = 13:37
+        day dayType = MONDAY
+        month monthType = DECEMBER
+
+        boolType = boolType + intType // error
+        boolType = boolType - intType // error
+        boolType = boolType * intType // error
+        boolType = boolType / intType // error
+
+        boolType = boolType + floatType // error
+        boolType = boolType - floatType // error
+        boolType = boolType * floatType // error
+        boolType = boolType / floatType // error
+
+        boolType = boolType + percentType // error
+        boolType = boolType - percentType // error
+        boolType = boolType * percentType // error
+        boolType = boolType / percentType // error
+
+        boolType = boolType + stringType // error
+        boolType = boolType - stringType // error
+        boolType = boolType * stringType // error
+        boolType = boolType / stringType // error
+
+        boolType = boolType + boolType // error
+        boolType = boolType - boolType // error
+        boolType = boolType * boolType // error
+        boolType = boolType / boolType // error
+
+        boolType = boolType + timeType // error
+        boolType = boolType - timeType // error
+        boolType = boolType * timeType // error
+        boolType = boolType / timeType // error
+
+        boolType = boolType + dayType // error
+        boolType = boolType - dayType // error
+        boolType = boolType * dayType // error
+        boolType = boolType / dayType // error
+
+        boolType = boolType + monthType // error
+        boolType = boolType - monthType // error
+        boolType = boolType * monthType // error
+        boolType = boolType / monthType // error
+
+        boolType = boolType + house.test.Digital_input // error
+        boolType = boolType - house.test.Digital_input // error
+        boolType = boolType * house.test.Digital_input // error
+        boolType = boolType / house.test.Digital_input // error
+
+        boolType = boolType + house.test.Digital_output // error
+        boolType = boolType - house.test.Digital_output // error
+        boolType = boolType * house.test.Digital_output // error
+        boolType = boolType / house.test.Digital_output // error
+
+        boolType = boolType + house.test.Digital_inputpullup // error
+        boolType = boolType - house.test.Digital_inputpullup // error
+        boolType = boolType * house.test.Digital_inputpullup // error
+        boolType = boolType / house.test.Digital_inputpullup // error
+
+        boolType = boolType + house.test.Analog_input // error
+        boolType = boolType - house.test.Analog_input // error
+        boolType = boolType * house.test.Analog_input // error
+        boolType = boolType / house.test.Analog_input // error
+
+        boolType = boolType + house.test.Analog_output // error
+        boolType = boolType - house.test.Analog_output // error
+        boolType = boolType * house.test.Analog_output // error
+        boolType = boolType / house.test.Analog_output // error
+    }
+
+    //6
+    // time check
+    if (true)
+    {
+        int intType = 55
+        float floatType = 2.5
+        percent percentType = 5%
+        string stringType ="test"
+        bool boolType = true
+        time timeType = 13:37
+        day dayType = MONDAY
+        month monthType = DECEMBER
+
+        timeType = timeType + intType // error
+        timeType = timeType - intType // error
+        timeType = timeType * intType // error
+        timeType = timeType / intType // error
+
+        timeType = timeType + floatType // error
+        timeType = timeType - floatType // error
+        timeType = timeType * floatType // error
+        timeType = timeType / floatType // error
+
+        timeType = timeType + percentType // error
+        timeType = timeType - percentType // error
+        timeType = timeType * percentType // error
+        timeType = timeType / percentType // error
+
+        timeType = timeType + stringType // error
+        timeType = timeType - stringType // error
+        timeType = timeType * stringType // error
+        timeType = timeType / stringType // error
+
+        timeType = timeType + boolType // error
+        timeType = timeType - boolType // error
+        timeType = timeType * boolType // error
+        timeType = timeType / boolType // error
+
+        timeType = timeType + timeType
+        timeType = timeType - timeType
+        timeType = timeType * timeType // error
+        timeType = timeType / timeType // error
+
+        timeType = timeType + dayType // error
+        timeType = timeType - dayType // error
+        timeType = timeType * dayType // error
+        timeType = timeType / dayType // error
+
+        timeType = timeType + monthType // error
+        timeType = timeType - monthType // error
+        timeType = timeType * monthType // error
+        timeType = timeType / monthType // error
+
+        timeType = timeType + house.test.Digital_input // error
+        timeType = timeType - house.test.Digital_input // error
+        timeType = timeType * house.test.Digital_input // error
+        timeType = timeType / house.test.Digital_input // error
+
+        timeType = timeType + house.test.Digital_output // error
+        timeType = timeType - house.test.Digital_output // error
+        timeType = timeType * house.test.Digital_output // error
+        timeType = timeType / house.test.Digital_output // error
+
+        timeType = timeType + house.test.Digital_inputpullup // error
+        timeType = timeType - house.test.Digital_inputpullup // error
+        timeType = timeType * house.test.Digital_inputpullup // error
+        timeType = timeType / house.test.Digital_inputpullup // error
+
+        timeType = timeType + house.test.Analog_input // error
+        timeType = timeType - house.test.Analog_input // error
+        timeType = timeType * house.test.Analog_input // error
+        timeType = timeType / house.test.Analog_input // error
+
+        timeType = timeType + house.test.Analog_output // error
+        timeType = timeType - house.test.Analog_output // error
+        timeType = timeType * house.test.Analog_output // error
+        timeType = timeType / house.test.Analog_output // error
+    }
+
+    //7
+    // day check
+    if (true)
+    {
+        int intType = 55
+        float floatType = 2.5
+        percent percentType = 5%
+        string stringType ="test"
+        bool boolType = true
+        time timeType = 13:37
+        day dayType = MONDAY
+        month monthType = DECEMBER
+
+        dayType = dayType + intType // error
+        dayType = dayType - intType // error
+        dayType = dayType * intType // error
+        dayType = dayType / intType // error
+
+        dayType = dayType + floatType // error
+        dayType = dayType - floatType // error
+        dayType = dayType * floatType // error
+        dayType = dayType / floatType // error
+
+        dayType = dayType + percentType // error
+        dayType = dayType - percentType // error
+        dayType = dayType * percentType // error
+        dayType = dayType / percentType // error
+
+        dayType = dayType + stringType // error
+        dayType = dayType - stringType // error
+        dayType = dayType * stringType // error
+        dayType = dayType / stringType // error
+
+        dayType = dayType + boolType // error
+        dayType = dayType - boolType // error
+        dayType = dayType * boolType // error
+        dayType = dayType / boolType // error
+
+        dayType = dayType + timeType // error
+        dayType = dayType - timeType // error
+        dayType = dayType * timeType // error
+        dayType = dayType / timeType // error
+
+        dayType = dayType + dayType // error
+        dayType = dayType - dayType // error
+        dayType = dayType * dayType // error
+        dayType = dayType / dayType // error
+
+        dayType = dayType + monthType // error
+        dayType = dayType - monthType // error
+        dayType = dayType * monthType // error
+        dayType = dayType / monthType // error
+
+        dayType = dayType + house.test.Digital_input // error
+        dayType = dayType - house.test.Digital_input // error
+        dayType = dayType * house.test.Digital_input // error
+        dayType = dayType / house.test.Digital_input // error
+
+        dayType = dayType + house.test.Digital_output // error
+        dayType = dayType - house.test.Digital_output // error
+        dayType = dayType * house.test.Digital_output // error
+        dayType = dayType / house.test.Digital_output // error
+
+        dayType = dayType + house.test.Digital_inputpullup // error
+        dayType = dayType - house.test.Digital_inputpullup // error
+        dayType = dayType * house.test.Digital_inputpullup // error
+        dayType = dayType / house.test.Digital_inputpullup // error
+
+        dayType = dayType + house.test.Analog_input // error
+        dayType = dayType - house.test.Analog_input // error
+        dayType = dayType * house.test.Analog_input // error
+        dayType = dayType / house.test.Analog_input // error
+
+        dayType = dayType + house.test.Analog_output // error
+        dayType = dayType - house.test.Analog_output // error
+        dayType = dayType * house.test.Analog_output // error
+        dayType = dayType / house.test.Analog_output // error
+    }
+
+    //8
+    // month check
+    if (true)
+    {
+        int intType = 55
+        float floatType = 2.5
+        percent percentType = 5%
+        string stringType ="test"
+        bool boolType = true
+        time timeType = 13:37
+        day dayType = MONDAY
+        month monthType = DECEMBER
+
+        monthType = monthType + intType // error
+        monthType = monthType - intType // error
+        monthType = monthType * intType // error
+        monthType = monthType / intType // error
+
+        monthType = monthType + floatType // error
+        monthType = monthType - floatType // error
+        monthType = monthType * floatType // error
+        monthType = monthType / floatType // error
+
+        monthType = monthType + percentType // error
+        monthType = monthType - percentType // error
+        monthType = monthType * percentType // error
+        monthType = monthType / percentType // error
+
+        monthType = monthType + stringType // error
+        monthType = monthType - stringType // error
+        monthType = monthType * stringType // error
+        monthType = monthType / stringType // error
+
+        monthType = monthType + boolType // error
+        monthType = monthType - boolType // error
+        monthType = monthType * boolType // error
+        monthType = monthType / boolType // error
+
+        monthType = monthType + timeType // error
+        monthType = monthType - timeType // error
+        monthType = monthType * timeType // error
+        monthType = monthType / timeType // error
+
+        monthType = monthType + dayType // error
+        monthType = monthType - dayType // error
+        monthType = monthType * dayType // error
+        monthType = monthType / dayType // error
+
+        monthType = monthType + monthType // error
+        monthType = monthType - monthType // error
+        monthType = monthType * monthType // error
+        monthType = monthType / monthType // error
+
+        monthType = monthType + house.test.Digital_input // error
+        monthType = monthType - house.test.Digital_input // error
+        monthType = monthType * house.test.Digital_input // error
+        monthType = monthType / house.test.Digital_input // error
+
+        monthType = monthType + house.test.Digital_output // error
+        monthType = monthType - house.test.Digital_output // error
+        monthType = monthType * house.test.Digital_output // error
+        monthType = monthType / house.test.Digital_output // error
+
+        monthType = monthType + house.test.Digital_inputpullup // error
+        monthType = monthType - house.test.Digital_inputpullup // error
+        monthType = monthType * house.test.Digital_inputpullup // error
+        monthType = monthType / house.test.Digital_inputpullup // error
+
+        monthType = monthType + house.test.Analog_input // error
+        monthType = monthType - house.test.Analog_input // error
+        monthType = monthType * house.test.Analog_input // error
+        monthType = monthType / house.test.Analog_input // error
+
+        monthType = monthType + house.test.Analog_output // error
+        monthType = monthType - house.test.Analog_output // error
+        monthType = monthType * house.test.Analog_output // error
+        monthType = monthType / house.test.Analog_output // error
+    }
+
+    //9
+    // Digital_input check
+    if (true)
+    {
+        int intType = 55
+        float floatType = 2.5
+        percent percentType = 5%
+        string stringType ="test"
+        bool boolType = true
+        time timeType = 13:37
+        day dayType = MONDAY
+        month monthType = DECEMBER
+
+        house.test.Digital_input = house.test.Digital_input + intType // error
+        house.test.Digital_input = house.test.Digital_input - intType // error
+        house.test.Digital_input = house.test.Digital_input * intType // error
+        house.test.Digital_input = house.test.Digital_input / intType // error
+
+        house.test.Digital_input = house.test.Digital_input + floatType // error
+        house.test.Digital_input = house.test.Digital_input - floatType // error
+        house.test.Digital_input = house.test.Digital_input * floatType // error
+        house.test.Digital_input = house.test.Digital_input / floatType // error
+
+        house.test.Digital_input = house.test.Digital_input + percentType // error
+        house.test.Digital_input = house.test.Digital_input - percentType // error
+        house.test.Digital_input = house.test.Digital_input * percentType // error
+        house.test.Digital_input = house.test.Digital_input / percentType // error
+
+        house.test.Digital_input = house.test.Digital_input + stringType // error
+        house.test.Digital_input = house.test.Digital_input - stringType // error
+        house.test.Digital_input = house.test.Digital_input * stringType // error
+        house.test.Digital_input = house.test.Digital_input / stringType // error
+
+        house.test.Digital_input = house.test.Digital_input + boolType // error
+        house.test.Digital_input = house.test.Digital_input - boolType // error
+        house.test.Digital_input = house.test.Digital_input * boolType // error
+        house.test.Digital_input = house.test.Digital_input / boolType // error
+
+        house.test.Digital_input = house.test.Digital_input + timeType // error
+        house.test.Digital_input = house.test.Digital_input - timeType // error
+        house.test.Digital_input = house.test.Digital_input * timeType // error
+        house.test.Digital_input = house.test.Digital_input / timeType // error
+
+        house.test.Digital_input = house.test.Digital_input + dayType // error
+        house.test.Digital_input = house.test.Digital_input - dayType // error
+        house.test.Digital_input = house.test.Digital_input * dayType // error
+        house.test.Digital_input = house.test.Digital_input / dayType // error
+
+        house.test.Digital_input = house.test.Digital_input + monthType // error
+        house.test.Digital_input = house.test.Digital_input - monthType // error
+        house.test.Digital_input = house.test.Digital_input * monthType // error
+        house.test.Digital_input = house.test.Digital_input / monthType // error
+
+        house.test.Digital_input = house.test.Digital_input + house.test.Digital_input // error
+        house.test.Digital_input = house.test.Digital_input - house.test.Digital_input // error
+        house.test.Digital_input = house.test.Digital_input * house.test.Digital_input // error
+        house.test.Digital_input = house.test.Digital_input / house.test.Digital_input // error
+
+        house.test.Digital_input = house.test.Digital_input + house.test.Digital_output // error
+        house.test.Digital_input = house.test.Digital_input - house.test.Digital_output // error
+        house.test.Digital_input = house.test.Digital_input * house.test.Digital_output // error
+        house.test.Digital_input = house.test.Digital_input / house.test.Digital_output // error
+
+        house.test.Digital_input = house.test.Digital_input + house.test.Digital_inputpullup // error
+        house.test.Digital_input = house.test.Digital_input - house.test.Digital_inputpullup // error
+        house.test.Digital_input = house.test.Digital_input * house.test.Digital_inputpullup // error
+        house.test.Digital_input = house.test.Digital_input / house.test.Digital_inputpullup // error
+
+        house.test.Digital_input = house.test.Digital_input + house.test.Analog_input // error
+        house.test.Digital_input = house.test.Digital_input - house.test.Analog_input // error
+        house.test.Digital_input = house.test.Digital_input * house.test.Analog_input // error
+        house.test.Digital_input = house.test.Digital_input / house.test.Analog_input // error
+
+        house.test.Digital_input = house.test.Digital_input + house.test.Analog_output // error
+        house.test.Digital_input = house.test.Digital_input - house.test.Analog_output // error
+        house.test.Digital_input = house.test.Digital_input * house.test.Analog_output // error
+        house.test.Digital_input = house.test.Digital_input / house.test.Analog_output // error
+    }
+
+    //10
+    // Digital_output check
+    if (true)
+    {
+        int intType = 55
+        float floatType = 2.5
+        percent percentType = 5%
+        string stringType ="test"
+        bool boolType = true
+        time timeType = 13:37
+        day dayType = MONDAY
+        month monthType = DECEMBER
+
+        house.test.Digital_output = house.test.Digital_output + intType // error
+        house.test.Digital_output = house.test.Digital_output - intType // error
+        house.test.Digital_output = house.test.Digital_output * intType // error
+        house.test.Digital_output = house.test.Digital_output / intType // error
+
+        house.test.Digital_output = house.test.Digital_output + floatType // error
+        house.test.Digital_output = house.test.Digital_output - floatType // error
+        house.test.Digital_output = house.test.Digital_output * floatType // error
+        house.test.Digital_output = house.test.Digital_output / floatType // error
+
+        house.test.Digital_output = house.test.Digital_output + percentType // error
+        house.test.Digital_output = house.test.Digital_output - percentType // error
+        house.test.Digital_output = house.test.Digital_output * percentType // error
+        house.test.Digital_output = house.test.Digital_output / percentType // error
+
+        house.test.Digital_output = house.test.Digital_output + stringType // error
+        house.test.Digital_output = house.test.Digital_output - stringType // error
+        house.test.Digital_output = house.test.Digital_output * stringType // error
+        house.test.Digital_output = house.test.Digital_output / stringType // error
+
+        house.test.Digital_output = house.test.Digital_output + boolType // error
+        house.test.Digital_output = house.test.Digital_output - boolType // error
+        house.test.Digital_output = house.test.Digital_output * boolType // error
+        house.test.Digital_output = house.test.Digital_output / boolType // error
+
+        house.test.Digital_output = house.test.Digital_output + timeType // error
+        house.test.Digital_output = house.test.Digital_output - timeType // error
+        house.test.Digital_output = house.test.Digital_output * timeType // error
+        house.test.Digital_output = house.test.Digital_output / timeType // error
+
+        house.test.Digital_output = house.test.Digital_output + dayType // error
+        house.test.Digital_output = house.test.Digital_output - dayType // error
+        house.test.Digital_output = house.test.Digital_output * dayType // error
+        house.test.Digital_output = house.test.Digital_output / dayType // error
+
+        house.test.Digital_output = house.test.Digital_output + monthType // error
+        house.test.Digital_output = house.test.Digital_output - monthType // error
+        house.test.Digital_output = house.test.Digital_output * monthType // error
+        house.test.Digital_output = house.test.Digital_output / monthType // error
+
+        house.test.Digital_output = house.test.Digital_output + house.test.Digital_input // error
+        house.test.Digital_output = house.test.Digital_output - house.test.Digital_input // error
+        house.test.Digital_output = house.test.Digital_output * house.test.Digital_input // error
+        house.test.Digital_output = house.test.Digital_output / house.test.Digital_input // error
+
+        house.test.Digital_output = house.test.Digital_output + house.test.Digital_output // error
+        house.test.Digital_output = house.test.Digital_output - house.test.Digital_output // error
+        house.test.Digital_output = house.test.Digital_output * house.test.Digital_output // error
+        house.test.Digital_output = house.test.Digital_output / house.test.Digital_output // error
+
+        house.test.Digital_output = house.test.Digital_output + house.test.Digital_inputpullup // error
+        house.test.Digital_output = house.test.Digital_output - house.test.Digital_inputpullup // error
+        house.test.Digital_output = house.test.Digital_output * house.test.Digital_inputpullup // error
+        house.test.Digital_output = house.test.Digital_output / house.test.Digital_inputpullup // error
+
+        house.test.Digital_output = house.test.Digital_output + house.test.Analog_input // error
+        house.test.Digital_output = house.test.Digital_output - house.test.Analog_input // error
+        house.test.Digital_output = house.test.Digital_output * house.test.Analog_input // error
+        house.test.Digital_output = house.test.Digital_output / house.test.Analog_input // error
+
+        house.test.Digital_output = house.test.Digital_output + house.test.Analog_output // error
+        house.test.Digital_output = house.test.Digital_output - house.test.Analog_output // error
+        house.test.Digital_output = house.test.Digital_output * house.test.Analog_output // error
+        house.test.Digital_output = house.test.Digital_output / house.test.Analog_output // error
+    }
+
+    //11
+    // Digital_inputpullup check
+    if (true)
+    {
+        int intType = 55
+        float floatType = 2.5
+        percent percentType = 5%
+        string stringType ="test"
+        bool boolType = true
+        time timeType = 13:37
+        day dayType = MONDAY
+        month monthType = DECEMBER
+
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup + intType // error
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup - intType // error
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup * intType // error
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup / intType // error
+
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup + floatType // error
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup - floatType // error
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup * floatType // error
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup / floatType // error
+
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup + percentType // error
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup - percentType // error
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup * percentType // error
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup / percentType // error
+
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup + stringType // error
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup - stringType // error
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup * stringType // error
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup / stringType // error
+
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup + boolType // error
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup - boolType // error
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup * boolType // error
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup / boolType // error
+
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup + timeType // error
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup - timeType // error
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup * timeType // error
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup / timeType // error
+
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup + dayType // error
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup - dayType // error
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup * dayType // error
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup / dayType // error
+
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup + monthType // error
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup - monthType // error
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup * monthType // error
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup / monthType // error
+
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup + house.test.Digital_input // error
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup - house.test.Digital_input // error
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup * house.test.Digital_input // error
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup / house.test.Digital_input // error
+
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup + house.test.Digital_output // error
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup - house.test.Digital_output // error
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup * house.test.Digital_output // error
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup / house.test.Digital_output // error
+
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup + house.test.Digital_inputpullup // error
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup - house.test.Digital_inputpullup // error
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup * house.test.Digital_inputpullup // error
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup / house.test.Digital_inputpullup // error
+
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup + house.test.Analog_input // error
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup - house.test.Analog_input // error
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup * house.test.Analog_input // error
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup / house.test.Analog_input // error
+
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup + house.test.Analog_output // error
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup - house.test.Analog_output // error
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup * house.test.Analog_output // error
+        house.test.Digital_inputpullup = house.test.Digital_inputpullup / house.test.Analog_output // error
+    }
+
+    //12
+    // Analog_input check
+    if (true)
+    {
+        int intType = 55
+        float floatType = 2.5
+        percent percentType = 5%
+        string stringType ="test"
+        bool boolType = true
+        time timeType = 13:37
+        day dayType = MONDAY
+        month monthType = DECEMBER
+
+        house.test.Analog_input = house.test.Analog_input + intType
+        house.test.Analog_input = house.test.Analog_input - intType
+        house.test.Analog_input = house.test.Analog_input * intType
+        house.test.Analog_input = house.test.Analog_input / intType // error
+
+        house.test.Analog_input = house.test.Analog_input + floatType // error
+        house.test.Analog_input = house.test.Analog_input - floatType // error
+        house.test.Analog_input = house.test.Analog_input * floatType // error
+        house.test.Analog_input = house.test.Analog_input / floatType // error
+
+        house.test.Analog_input = house.test.Analog_input + percentType
+        house.test.Analog_input = house.test.Analog_input - percentType
+        house.test.Analog_input = house.test.Analog_input * percentType // error
+        house.test.Analog_input = house.test.Analog_input / percentType // error
+
+        house.test.Analog_input = house.test.Analog_input + stringType // error
+        house.test.Analog_input = house.test.Analog_input - stringType // error
+        house.test.Analog_input = house.test.Analog_input * stringType // error
+        house.test.Analog_input = house.test.Analog_input / stringType // error
+
+        house.test.Analog_input = house.test.Analog_input + boolType // error
+        house.test.Analog_input = house.test.Analog_input - boolType // error
+        house.test.Analog_input = house.test.Analog_input * boolType // error
+        house.test.Analog_input = house.test.Analog_input / boolType // error
+
+        house.test.Analog_input = house.test.Analog_input + timeType // error
+        house.test.Analog_input = house.test.Analog_input - timeType // error
+        house.test.Analog_input = house.test.Analog_input * timeType // error
+        house.test.Analog_input = house.test.Analog_input / timeType // error
+
+        house.test.Analog_input = house.test.Analog_input + dayType // error
+        house.test.Analog_input = house.test.Analog_input - dayType // error
+        house.test.Analog_input = house.test.Analog_input * dayType // error
+        house.test.Analog_input = house.test.Analog_input / dayType // error
+
+        house.test.Analog_input = house.test.Analog_input + monthType // error
+        house.test.Analog_input = house.test.Analog_input - monthType // error
+        house.test.Analog_input = house.test.Analog_input * monthType // error
+        house.test.Analog_input = house.test.Analog_input / monthType // error
+
+        house.test.Analog_input = house.test.Analog_input + house.test.Digital_input // error
+        house.test.Analog_input = house.test.Analog_input - house.test.Digital_input // error
+        house.test.Analog_input = house.test.Analog_input * house.test.Digital_input // error
+        house.test.Analog_input = house.test.Analog_input / house.test.Digital_input // error
+
+        house.test.Analog_input = house.test.Analog_input + house.test.Digital_output // error
+        house.test.Analog_input = house.test.Analog_input - house.test.Digital_output // error
+        house.test.Analog_input = house.test.Analog_input * house.test.Digital_output // error
+        house.test.Analog_input = house.test.Analog_input / house.test.Digital_output // error
+
+        house.test.Analog_input = house.test.Analog_input + house.test.Digital_inputpullup // error
+        house.test.Analog_input = house.test.Analog_input - house.test.Digital_inputpullup // error
+        house.test.Analog_input = house.test.Analog_input * house.test.Digital_inputpullup // error
+        house.test.Analog_input = house.test.Analog_input / house.test.Digital_inputpullup // error
+
+        house.test.Analog_input = house.test.Analog_input + house.test.Analog_input
+        house.test.Analog_input = house.test.Analog_input - house.test.Analog_input
+        house.test.Analog_input = house.test.Analog_input * house.test.Analog_input
+        house.test.Analog_input = house.test.Analog_input / house.test.Analog_input // error
+
+        house.test.Analog_input = house.test.Analog_input + house.test.Analog_output
+        house.test.Analog_input = house.test.Analog_input - house.test.Analog_output
+        house.test.Analog_input = house.test.Analog_input * house.test.Analog_output
+        house.test.Analog_input = house.test.Analog_input / house.test.Analog_output // error
+    }
+
+    //13
+    // Analog_output check
+    if (true)
+    {
+        int intType = 55
+        float floatType = 2.5
+        percent percentType = 5%
+        string stringType ="test"
+        bool boolType = true
+        time timeType = 13:37
+        day dayType = MONDAY
+        month monthType = DECEMBER
+
+        house.test.Analog_output = house.test.Analog_output + intType
+        house.test.Analog_output = house.test.Analog_output - intType
+        house.test.Analog_output = house.test.Analog_output * intType
+        house.test.Analog_output = house.test.Analog_output / intType // error
+
+        house.test.Analog_output = house.test.Analog_output + floatType // error
+        house.test.Analog_output = house.test.Analog_output - floatType // error
+        house.test.Analog_output = house.test.Analog_output * floatType // error
+        house.test.Analog_output = house.test.Analog_output / floatType // error
+
+        house.test.Analog_output = house.test.Analog_output + percentType
+        house.test.Analog_output = house.test.Analog_output - percentType
+        house.test.Analog_output = house.test.Analog_output * percentType // error
+        house.test.Analog_output = house.test.Analog_output / percentType // error
+
+        house.test.Analog_output = house.test.Analog_output + stringType // error
+        house.test.Analog_output = house.test.Analog_output - stringType // error
+        house.test.Analog_output = house.test.Analog_output * stringType // error
+        house.test.Analog_output = house.test.Analog_output / stringType // error
+
+        house.test.Analog_output = house.test.Analog_output + boolType // error
+        house.test.Analog_output = house.test.Analog_output - boolType // error
+        house.test.Analog_output = house.test.Analog_output * boolType // error
+        house.test.Analog_output = house.test.Analog_output / boolType // error
+
+        house.test.Analog_output = house.test.Analog_output + timeType // error
+        house.test.Analog_output = house.test.Analog_output - timeType // error
+        house.test.Analog_output = house.test.Analog_output * timeType // error
+        house.test.Analog_output = house.test.Analog_output / timeType // error
+
+        house.test.Analog_output = house.test.Analog_output + dayType // error
+        house.test.Analog_output = house.test.Analog_output - dayType // error
+        house.test.Analog_output = house.test.Analog_output * dayType // error
+        house.test.Analog_output = house.test.Analog_output / dayType // error
+
+        house.test.Analog_output = house.test.Analog_output + monthType // error
+        house.test.Analog_output = house.test.Analog_output - monthType // error
+        house.test.Analog_output = house.test.Analog_output * monthType // error
+        house.test.Analog_output = house.test.Analog_output / monthType // error
+
+        house.test.Analog_output = house.test.Analog_output + house.test.Digital_input // error
+        house.test.Analog_output = house.test.Analog_output - house.test.Digital_input // error
+        house.test.Analog_output = house.test.Analog_output * house.test.Digital_input // error
+        house.test.Analog_output = house.test.Analog_output / house.test.Digital_input // error
+
+        house.test.Analog_output = house.test.Analog_output + house.test.Digital_output // error
+        house.test.Analog_output = house.test.Analog_output - house.test.Digital_output // error
+        house.test.Analog_output = house.test.Analog_output * house.test.Digital_output // error
+        house.test.Analog_output = house.test.Analog_output / house.test.Digital_output // error
+
+        house.test.Analog_output = house.test.Analog_output + house.test.Digital_inputpullup // error
+        house.test.Analog_output = house.test.Analog_output - house.test.Digital_inputpullup // error
+        house.test.Analog_output = house.test.Analog_output * house.test.Digital_inputpullup // error
+        house.test.Analog_output = house.test.Analog_output / house.test.Digital_inputpullup // error
+
+        house.test.Analog_output = house.test.Analog_output + house.test.Analog_input
+        house.test.Analog_output = house.test.Analog_output - house.test.Analog_input
+        house.test.Analog_output = house.test.Analog_output * house.test.Analog_input
+        house.test.Analog_output = house.test.Analog_output / house.test.Analog_input // error
+
+        house.test.Analog_output = house.test.Analog_output + house.test.Analog_output
+        house.test.Analog_output = house.test.Analog_output - house.test.Analog_output
+        house.test.Analog_output = house.test.Analog_output * house.test.Analog_output
+        house.test.Analog_output = house.test.Analog_output / house.test.Analog_output // error
+    }
+}

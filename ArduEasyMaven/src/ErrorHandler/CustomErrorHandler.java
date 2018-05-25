@@ -17,6 +17,8 @@ public class CustomErrorHandler
         errors.add(e);
     }
 
+    public static void ClearErrorList() { errors.clear(); }
+
     public static void FireInstantError(ErrorEvent e)
     {
         AddError(e);

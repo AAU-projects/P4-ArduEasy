@@ -1,0 +1,236 @@
+house
+{
+    room test
+    {
+        Digital_input = PIN 1 as input
+        Digital_output = PIN 2 as output
+        Digital_inputpullup = PIN 6 as inputpullup
+        Analog_input = PIN A 6 as input
+        Analog_output = PIN A 7 as output
+    }
+}
+
+function void testOperations()
+{
+    if (true)
+    {
+        int intType = 55
+        float floatType = 2.5
+        percent percentType = 5%
+        string stringType ="test"
+        bool boolType = true
+        time timeType = 13:37
+        day dayType = MONDAY
+        month monthType = DECEMBER
+
+        if (boolType && house.test.Digital_input) {}
+
+        //1
+        // int check
+        if (intType && intType) {} // error
+        if (intType && floatType) {} // error
+        if (intType && percentType) {} // error
+        if (intType && stringType) {} // error
+        if (intType && boolType) {} // error
+        if (intType && timeType) {} // error
+        if (intType && dayType) {} // error
+        if (intType && monthType) {} // error
+        if (intType && house.test.Digital_input) {} // error
+        if (intType && house.test.Digital_output) {} // error
+        if (intType && house.test.Digital_inputpullup) {} // error
+        if (intType && house.test.Analog_input) {} // error
+        if (intType && house.test.Analog_output) {} // error
+
+        //2
+        // float check
+        if (floatType && intType) {} // error
+        if (floatType && floatType) {} // error
+        if (floatType && percentType) {} // error
+        if (floatType && stringType) {} // error
+        if (floatType && boolType) {} // error
+        if (floatType && timeType) {} // error
+        if (floatType && dayType) {} // error
+        if (floatType && monthType) {} // error
+        if (floatType && house.test.Digital_input) {} // error
+        if (floatType && house.test.Digital_output) {} // error
+        if (floatType && house.test.Digital_inputpullup) {} // error
+        if (floatType && house.test.Analog_input) {} // error
+        if (floatType && house.test.Analog_output) {} // error
+
+        //3
+        // percent check
+        if (percentType && intType) {} // error
+        if (percentType && floatType) {} // error
+        if (percentType && percentType) {} // error
+        if (percentType && stringType) {} // error
+        if (percentType && boolType) {} // error
+        if (percentType && timeType) {} // error
+        if (percentType && dayType) {} // error
+        if (percentType && monthType) {} // error
+        if (percentType && house.test.Digital_input) {} // error
+        if (percentType && house.test.Digital_output) {} // error
+        if (percentType && house.test.Digital_inputpullup) {} // error
+        if (percentType && house.test.Analog_input) {} // error
+        if (percentType && house.test.Analog_output) {} // error
+
+        //4
+        // string check
+        if (stringType && intType) {} // error
+        if (stringType && floatType) {} // error
+        if (stringType && percentType) {} // error
+        if (stringType && stringType) {} // error
+        if (stringType && boolType) {} // error
+        if (stringType && timeType) {} // error
+        if (stringType && dayType) {} // error
+        if (stringType && monthType) {} // error
+        if (stringType && house.test.Digital_input) {} // error
+        if (stringType && house.test.Digital_output) {} // error
+        if (stringType && house.test.Digital_inputpullup) {} // error
+        if (stringType && house.test.Analog_input) {} // error
+        if (stringType && house.test.Analog_output) {} // error
+
+        //5
+        // boolType check
+        if (boolType && intType) {} // error
+        if (boolType && floatType) {} // error
+        if (boolType && percentType) {} // error
+        if (boolType && stringType) {} // error
+        if (boolType && boolType) {}
+        if (boolType && timeType) {} // error
+        if (boolType && dayType) {} // error
+        if (boolType && monthType) {} // error
+        if (boolType && house.test.Digital_input) {}
+        if (boolType && house.test.Digital_output) {}
+        if (boolType && house.test.Digital_inputpullup){}
+        if (boolType && house.test.Analog_input) {} // error
+        if (boolType && house.test.Analog_output) {} // error
+
+        //6
+        // timeType check
+        if (timeType && intType) {} // error
+        if (timeType && floatType) {} // error
+        if (timeType && percentType) {} // error
+        if (timeType && stringType) {} // error
+        if (timeType && boolType) {} // error
+        if (timeType && timeType) {} // error
+        if (timeType && dayType) {} // error
+        if (timeType && monthType) {} // error
+        if (timeType && house.test.Digital_input) {} // error
+        if (timeType && house.test.Digital_output) {} // error
+        if (timeType && house.test.Digital_inputpullup) {} // error
+        if (timeType && house.test.Analog_input) {} // error
+        if (timeType && house.test.Analog_output) {} // error
+
+        //7
+        // dayType check
+        if (dayType && intType) {} // error
+        if (dayType && floatType) {} // error
+        if (dayType && percentType) {} // error
+        if (dayType && stringType) {} // error
+        if (dayType && boolType) {} // error
+        if (dayType && timeType) {} // error
+        if (dayType && dayType) {} // error
+        if (dayType && monthType) {} // error
+        if (dayType && house.test.Digital_input) {} // error
+        if (dayType && house.test.Digital_output) {} // error
+        if (dayType && house.test.Digital_inputpullup) {} // error
+        if (dayType && house.test.Analog_input) {} // error
+        if (dayType && house.test.Analog_output) {} // error
+
+        //8
+        // monthType check
+        if (monthType && intType) {} // error
+        if (monthType && floatType) {} // error
+        if (monthType && percentType) {} // error
+        if (monthType && stringType) {} // error
+        if (monthType && boolType) {} // error
+        if (monthType && timeType) {} // error
+        if (monthType && dayType) {} // error
+        if (monthType && monthType) {} // error
+        if (monthType && house.test.Digital_input) {} // error
+        if (monthType && house.test.Digital_output) {} // error
+        if (monthType && house.test.Digital_inputpullup) {} // error
+        if (monthType && house.test.Analog_input) {} // error
+        if (monthType && house.test.Analog_output) {} // error
+
+        //9
+        // Digital_input check
+        if (house.test.Digital_input && intType) {} // error
+        if (house.test.Digital_input && floatType) {} // error
+        if (house.test.Digital_input && percentType) {} // error
+        if (house.test.Digital_input && stringType) {} // error
+        if (house.test.Digital_input && boolType) {}
+        if (house.test.Digital_input && timeType) {} // error
+        if (house.test.Digital_input && dayType) {} // error
+        if (house.test.Digital_input && monthType) {} // error
+        if (house.test.Digital_input && house.test.Digital_input) {}
+        if (house.test.Digital_input && house.test.Digital_output) {}
+        if (house.test.Digital_input && house.test.Digital_inputpullup) {}
+        if (house.test.Digital_input && house.test.Analog_input) {} // error
+        if (house.test.Digital_input && house.test.Analog_output) {} // error
+
+        //10
+        // Digital_output check
+        if (house.test.Digital_output && intType) {} // error
+        if (house.test.Digital_output && floatType) {} // error
+        if (house.test.Digital_output && percentType) {} // error
+        if (house.test.Digital_output && stringType) {} // error
+        if (house.test.Digital_output && boolType) {}
+        if (house.test.Digital_output && timeType) {} // error
+        if (house.test.Digital_output && dayType) {} // error
+        if (house.test.Digital_output && monthType) {} // error
+        if (house.test.Digital_output && house.test.Digital_input) {}
+        if (house.test.Digital_output && house.test.Digital_output) {}
+        if (house.test.Digital_output && house.test.Digital_inputpullup) {}
+        if (house.test.Digital_output && house.test.Analog_input) {} // error
+        if (house.test.Digital_output && house.test.Analog_output) {} // error
+
+        //11
+        // Digital_inputpullup check
+        if (house.test.Digital_inputpullup && intType) {} // error
+        if (house.test.Digital_inputpullup && floatType) {} // error
+        if (house.test.Digital_inputpullup && percentType) {} // error
+        if (house.test.Digital_inputpullup && stringType) {} // error
+        if (house.test.Digital_inputpullup && boolType) {}
+        if (house.test.Digital_inputpullup && timeType) {} // error
+        if (house.test.Digital_inputpullup && dayType) {} // error
+        if (house.test.Digital_inputpullup && monthType) {} // error
+        if (house.test.Digital_inputpullup && house.test.Digital_input) {}
+        if (house.test.Digital_inputpullup && house.test.Digital_output) {}
+        if (house.test.Digital_inputpullup && house.test.Digital_inputpullup) {}
+        if (house.test.Digital_inputpullup && house.test.Analog_input) {} // error
+        if (house.test.Digital_inputpullup && house.test.Analog_output) {} // error
+
+       	//12
+        // Analog_input check
+        if (house.test.Analog_input && intType) {} // error
+        if (house.test.Analog_input && floatType) {} // error
+        if (house.test.Analog_input && percentType) {} // error
+        if (house.test.Analog_input && stringType) {} // error
+        if (house.test.Analog_input && boolType) {} // error
+        if (house.test.Analog_input && timeType) {} // error
+        if (house.test.Analog_input && dayType) {} // error
+        if (house.test.Analog_input && monthType) {} // error
+        if (house.test.Analog_input && house.test.Digital_input) {} // error
+        if (house.test.Analog_input && house.test.Digital_output) {} // error
+        if (house.test.Analog_input && house.test.Digital_inputpullup) {} // error
+        if (house.test.Analog_input && house.test.Analog_input) {} // error
+        if (house.test.Analog_input && house.test.Analog_output) {} // error
+
+       	//13
+        // Analog_output check
+        if (house.test.Analog_output && intType) {} // error
+        if (house.test.Analog_output && floatType) {} // error
+        if (house.test.Analog_output && percentType) {} // error
+        if (house.test.Analog_output && stringType) {} // error
+        if (house.test.Analog_output && boolType) {} // error
+        if (house.test.Analog_output && timeType) {} // error
+        if (house.test.Analog_output && dayType) {} // error
+        if (house.test.Analog_output && monthType) {} // error
+        if (house.test.Analog_output && house.test.Digital_input) {} // error
+        if (house.test.Analog_output && house.test.Digital_output) {} // error
+        if (house.test.Analog_output && house.test.Digital_inputpullup) {} // error
+        if (house.test.Analog_output && house.test.Analog_output) {} // error
+        if (house.test.Analog_output && house.test.Analog_output) {} // error
+    }
+}

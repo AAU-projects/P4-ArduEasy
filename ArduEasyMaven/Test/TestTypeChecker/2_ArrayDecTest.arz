@@ -1,0 +1,323 @@
+house
+{
+		int intType = 55
+    float floatType = 2.5
+    percent percentType = 5%
+    string stringType ="test"
+    bool boolType = true
+    time timeType = 13:37
+    day dayType = MONDAY
+    month monthType = DECEMBER
+
+    room digital_input
+    {
+        Digital_input = PIN 1 as input
+        Digital_output = PIN 2 as output
+        Digital_inputpullup = PIN 6 as inputpullup
+        Analog_input = PIN A 6 as input
+        Analog_output = PIN A 7 as output
+
+        digital_array = {Digital_input}
+        digital_array_digital_input = {Digital_input, Digital_input}
+        digital_array_digital_output = {Digital_input, Digital_output} // error
+        digital_array_digital_inputpullup = {Digital_input, Digital_inputpullup} // error
+        digital_array_analog_input = {Digital_input, Analog_input} // error
+        digital_array_analog_output = {Digital_input, Analog_output} // error
+        digital_array_int = {Digital_input, intType} // error
+        digital_array_float = {Digital_input, floatType} // error
+        digital_array_percent = {Digital_input, percentType} // error
+        digital_array_string = {Digital_input, stringType} // error
+        digital_array_bool = {Digital_input, boolType} // error
+        digital_array_time = {Digital_input, timeType} // error
+        digital_array_day = {Digital_input, dayType} // error
+        digital_array_month = {Digital_input, monthType} // error
+    }
+
+    room digital_output
+    {
+        Digital_input = PIN 1 as input
+        Digital_output = PIN 2 as output
+        Digital_inputpullup = PIN 6 as inputpullup
+        Analog_input = PIN A 6 as input
+        Analog_output = PIN A 7 as output
+
+        digital_array = {Digital_output}
+        digital_array_digital_input = {Digital_output, Digital_input} // error
+        digital_array_digital_output = {Digital_output, Digital_output}
+        digital_array_digital_inputpullup = {Digital_output, Digital_inputpullup} // error
+        digital_array_analog_input = {Digital_output, Analog_input} // error
+        digital_array_analog_output = {Digital_output, Analog_output} // error
+        digital_array_int = {Digital_output, intType} // error
+        digital_array_float = {Digital_output, floatType} // error
+        digital_array_percent = {Digital_output, percentType} // error
+        digital_array_string = {Digital_output, stringType} // error
+        digital_array_bool = {Digital_output, boolType} // error
+        digital_array_time = {Digital_output, timeType} // error
+        digital_array_day = {Digital_output, dayType} // error
+        digital_array_month = {Digital_output, monthType} // error
+    }
+
+    room digital_inputpullup
+    {
+        Digital_input = PIN 1 as input
+        Digital_output = PIN 2 as output
+        Digital_inputpullup = PIN 6 as inputpullup
+        Analog_input = PIN A 6 as input
+        Analog_output = PIN A 7 as output
+
+        digital_array = {Digital_inputpullup}
+        digital_array_digital_input = {Digital_inputpullup, Digital_input} // error
+        digital_array_digital_output = {Digital_inputpullup, Digital_output} // error
+        digital_array_digital_inputpullup = {Digital_inputpullup, Digital_inputpullup}
+        digital_array_analog_input = {Digital_inputpullup, Analog_input} // error
+        digital_array_analog_output = {Digital_inputpullup, Analog_output} // error
+        digital_array_int = {Digital_inputpullup, intType} // error
+        digital_array_float = {Digital_inputpullup, floatType} // error
+        digital_array_percent = {Digital_inputpullup, percentType} // error
+        digital_array_string = {Digital_inputpullup, stringType} // error
+        digital_array_bool = {Digital_inputpullup, boolType} // error
+        digital_array_time = {Digital_inputpullup, timeType} // error
+        digital_array_day = {Digital_inputpullup, dayType} // error
+        digital_array_month = {Digital_inputpullup, monthType} // error
+    }
+
+    room analog_input
+    {
+        Digital_input = PIN 1 as input
+        Digital_output = PIN 2 as output
+        Digital_inputpullup = PIN 6 as inputpullup
+        Analog_input = PIN A 6 as input
+        Analog_output = PIN A 7 as output
+
+        analog_array = {Analog_input}
+        analog_array_digital_input = {Analog_input, Digital_input} // error
+        analog_array_digital_output = {Analog_input, Digital_output} // error
+        analog_array_digital_inputpullup = {Analog_input, Digital_inputpullup} // error
+        analog_array_analog_input = {Analog_input, Analog_input}
+        analog_array_analog_output = {Analog_input, Analog_output} // error
+        analog_array_int = {Analog_input, intType} // error
+        analog_array_float = {Analog_input, floatType} // error
+        analog_array_percent = {Analog_input, percentType} // error
+        analog_array_string = {Analog_input, stringType} // error
+        analog_array_bool = {Analog_input, boolType} // error
+        analog_array_time = {Analog_input, timeType} // error
+        analog_array_day = {Analog_input, dayType} // error
+        analog_array_month = {Analog_input, monthType} // error
+    }
+
+    room analog_output
+    {
+        Digital_input = PIN 1 as input
+        Digital_output = PIN 2 as output
+        Digital_inputpullup = PIN 6 as inputpullup
+        Analog_input = PIN A 6 as input
+        Analog_output = PIN A 7 as output
+
+        analog_array = {Analog_output}
+        analog_array_digital_input = {Analog_output, Digital_input} // error
+        analog_array_digital_output = {Analog_output, Digital_output} // error
+        analog_array_digital_inputpullup = {Analog_output, Digital_inputpullup} // error
+        analog_array_analog_input = {Analog_output, Analog_input} // error
+        analog_array_analog_output = {Analog_output, Analog_output}
+        analog_array_int = {Analog_output, intType} // error
+        analog_array_float = {Analog_output, floatType} // error
+        analog_array_percent = {Analog_output, percentType} // error
+        analog_array_string = {Analog_output, stringType} // error
+        analog_array_bool = {Analog_output, boolType} // error
+        analog_array_time = {Analog_output, timeType} // error
+        analog_array_day = {Analog_output, dayType} // error
+        analog_array_month = {Analog_output, monthType} // error
+    }
+
+    room inttest
+    {
+        Digital_input = PIN 1 as input
+        Digital_output = PIN 2 as output
+        Digital_inputpullup = PIN 6 as inputpullup
+        Analog_input = PIN A 6 as input
+        Analog_output = PIN A 7 as output
+
+        int_array = {intType}  // error
+        int_array_digital_input = {intType, Digital_input} // error
+        int_array_digital_output = {intType, Digital_output} // error
+        int_array_digital_inputpullup = {intType, Digital_inputpullup} // error
+        int_array_analog_input = {intType, Analog_input} // error
+        int_array_analog_output = {intType, Analog_output} // error
+        int_array_int = {intType, intType} // error
+        int_array_float = {intType, floatType} // error
+        int_array_percent = {intType, percentType} // error
+        int_array_string = {intType, stringType} // error
+        int_array_bool = {intType, boolType} // error
+        int_array_time = {intType, timeType} // error
+        int_array_day = {intType, dayType} // error
+        int_array_month = {intType, monthType} // error
+    }
+
+    room floattest
+    {
+        Digital_input = PIN 1 as input
+        Digital_output = PIN 2 as output
+        Digital_inputpullup = PIN 6 as inputpullup
+        Analog_input = PIN A 6 as input
+        Analog_output = PIN A 7 as output
+
+        float_array = {floatType}  // error
+        float_array_digital_input = {floatType, Digital_input} // error
+        float_array_digital_output = {floatType, Digital_output} // error
+        float_array_digital_inputpullup = {floatType, Digital_inputpullup} // error
+        float_array_analog_input = {floatType, Analog_input} // error
+        float_array_analog_output = {floatType, Analog_output} // error
+        float_array_int = {floatType, intType} // error
+        float_array_float = {floatType, floatType} // error
+        float_array_percent = {floatType, percentType} // error
+        float_array_string = {floatType, stringType} // error
+        float_array_bool = {floatType, boolType} // error
+        float_array_time = {floatType, timeType} // error
+        float_array_day = {floatType, dayType} // error
+        float_array_month = {floatType, monthType} // error
+    }
+
+    room percenttest
+    {
+        Digital_input = PIN 1 as input
+        Digital_output = PIN 2 as output
+        Digital_inputpullup = PIN 6 as inputpullup
+        Analog_input = PIN A 6 as input
+        Analog_output = PIN A 7 as output
+
+        percent_array = {percentType}  // error
+        percent_array_digital_input = {percentType, Digital_input} // error
+        percent_array_digital_output = {percentType, Digital_output} // error
+        percent_array_digital_inputpullup = {percentType, Digital_inputpullup} // error
+        percent_array_analog_input = {percentType, Analog_input} // error
+        percent_array_analog_output = {percentType, Analog_output} // error
+        percent_array_int = {percentType, intType} // error
+        percent_array_float = {percentType, floatType} // error
+        percent_array_percent = {percentType, percentType} // error
+        percent_array_string = {percentType, stringType} // error
+        percent_array_bool = {percentType, boolType} // error
+        percent_array_time = {percentType, timeType} // error
+        percent_array_day = {percentType, dayType} // error
+        percent_array_month = {percentType, monthType} // error
+    }
+
+    room stringtest
+    {
+        Digital_input = PIN 1 as input
+        Digital_output = PIN 2 as output
+        Digital_inputpullup = PIN 6 as inputpullup
+        Analog_input = PIN A 6 as input
+        Analog_output = PIN A 7 as output
+
+        string_array = {stringType}  // error
+        string_array_digital_input = {stringType, Digital_input} // error
+        string_array_digital_output = {stringType, Digital_output} // error
+        string_array_digital_inputpullup = {stringType, Digital_inputpullup} // error
+        string_array_analog_input = {stringType, Analog_input} // error
+        string_array_analog_output = {stringType, Analog_output} // error
+        string_array_int = {stringType, intType} // error
+        string_array_float = {stringType, floatType} // error
+        string_array_percent = {stringType, percentType} // error
+        string_array_string = {stringType, stringType} // error
+        string_array_bool = {stringType, boolType} // error
+        string_array_time = {stringType, timeType} // error
+        string_array_day = {stringType, dayType} // error
+        string_array_month = {stringType, monthType} // error
+    }
+
+    room booltest
+    {
+        Digital_input = PIN 1 as input
+        Digital_output = PIN 2 as output
+        Digital_inputpullup = PIN 6 as inputpullup
+        Analog_input = PIN A 6 as input
+        Analog_output = PIN A 7 as output
+
+        bool_array = {boolType}  // error
+        bool_array_digital_input = {boolType, Digital_input} // error
+        bool_array_digital_output = {boolType, Digital_output} // error
+        bool_array_digital_inputpullup = {boolType, Digital_inputpullup} // error
+        bool_array_analog_input = {boolType, Analog_input} // error
+        bool_array_analog_output = {boolType, Analog_output} // error
+        bool_array_int = {boolType, intType} // error
+        bool_array_float = {boolType, floatType} // error
+        bool_array_percent = {boolType, percentType} // error
+        bool_array_string = {boolType, stringType} // error
+        bool_array_bool = {boolType, boolType} // error
+        bool_array_time = {boolType, timeType} // error
+        bool_array_day = {boolType, dayType} // error
+        bool_array_month = {boolType, monthType} // error
+    }
+
+    room timetest
+    {
+        Digital_input = PIN 1 as input
+        Digital_output = PIN 2 as output
+        Digital_inputpullup = PIN 6 as inputpullup
+        Analog_input = PIN A 6 as input
+        Analog_output = PIN A 7 as output
+
+        time_array = {timeType}  // error
+        time_array_digital_input = {timeType, Digital_input} // error
+        time_array_digital_output = {timeType, Digital_output} // error
+        time_array_digital_inputpullup = {timeType, Digital_inputpullup} // error
+        time_array_analog_input = {timeType, Analog_input} // error
+        time_array_analog_output = {timeType, Analog_output} // error
+        time_array_int = {timeType, intType} // error
+        time_array_float = {timeType, floatType} // error
+        time_array_percent = {timeType, percentType} // error
+        time_array_string = {timeType, stringType} // error
+        time_array_bool = {timeType, boolType} // error
+        time_array_time = {timeType, timeType} // error
+        time_array_day = {timeType, dayType} // error
+        time_array_month = {timeType, monthType} // error
+    }
+
+    room daytest
+    {
+        Digital_input = PIN 1 as input
+        Digital_output = PIN 2 as output
+        Digital_inputpullup = PIN 6 as inputpullup
+        Analog_input = PIN A 6 as input
+        Analog_output = PIN A 7 as output
+
+        day_array = {dayType}  // error
+        day_array_digital_input = {dayType, Digital_input} // error
+        day_array_digital_output = {dayType, Digital_output} // error
+        day_array_digital_inputpullup = {dayType, Digital_inputpullup} // error
+        day_array_analog_input = {dayType, Analog_input} // error
+        day_array_analog_output = {dayType, Analog_output} // error
+        day_array_int = {dayType, intType} // error
+        day_array_float = {dayType, floatType} // error
+        day_array_percent = {dayType, percentType} // error
+        day_array_string = {dayType, stringType} // error
+        day_array_bool = {dayType, boolType} // error
+        day_array_time = {dayType, timeType} // error
+        day_array_day = {dayType, dayType} // error
+        day_array_month = {dayType, monthType} // error
+    }
+
+    room monthtest
+    {
+        Digital_input = PIN 1 as input
+        Digital_output = PIN 2 as output
+        Digital_inputpullup = PIN 6 as inputpullup
+        Analog_input = PIN A 6 as input
+        Analog_output = PIN A 7 as output
+
+        month_array = {monthType}  // error
+        month_array_digital_input = {monthType, Digital_input} // error
+        month_array_digital_output = {monthType, Digital_output} // error
+        month_array_digital_inputpullup = {monthType, Digital_inputpullup} // error
+        month_array_analog_input = {monthType, Analog_input} // error
+        month_array_analog_output = {monthType, Analog_output} // error
+        month_array_int = {monthType, intType} // error
+        month_array_float = {monthType, floatType} // error
+        month_array_percent = {monthType, percentType} // error
+        month_array_string = {monthType, stringType} // error
+        month_array_bool = {monthType, boolType} // error
+        month_array_time = {monthType, timeType} // error
+        month_array_day = {monthType, dayType} // error
+        month_array_month = {monthType, monthType} // error
+    }
+}

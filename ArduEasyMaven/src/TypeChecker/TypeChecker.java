@@ -31,7 +31,6 @@ public class TypeChecker implements Visitor
     private String dayType = "day";
     private String monthType = "month";
     private String arrayDType = "array";
-    private String roomType = "room";
     private String digital_inputType = "bool.input";
     private String digital_outputType = "bool.output";
     private String analog_inputType = "int.input";
@@ -62,7 +61,7 @@ public class TypeChecker implements Visitor
         {
             return left;
         }
-        else if (!isValidOperands(left, right))
+        else if (!isValidArithmetic(left, right))
         {
             CustomErrorHandler.AddError(new SemanticError(node, "Invalid Aritmetic operands a " + left + " operand can not be used with a " + right + " operand"));
         }
@@ -111,6 +110,12 @@ public class TypeChecker implements Visitor
     public String Visit(ArrayDeclarationNode node)
     {
         String arrayType = GetTypeNode(node.Identifier);
+        String arrayValue = GetArrayTypeNode(node.Values.get(1));
+        if (!CheckIfPinType(arrayValue))
+        {
+            CustomErrorHandler.AddError(new SemanticError(node, "Tried to declare array of type " + arrayValue));
+            return arrayType;
+        }
 
         for (IdentifierNode value : node.Values)
         {
@@ -136,13 +141,31 @@ public class TypeChecker implements Visitor
         String valueType =  GetTypeNode(node.Value);
 
 
-        if(!isValidOperands(identifierType, valueType))
+        if(!isValidAssignmentDeclaration(identifierType, valueType))
             CustomErrorHandler.AddError(new SemanticError(node, "Tried to assign " + valueType + " to " + identifierType  + " instance"));
 
         return node;
     }
 
-    private boolean isValidOperands(String left, String right)
+    private boolean isValidAssignmentDeclaration(String identifier, String value)
+    {
+        if (identifier == null || value == null) return true; // something went wrong with scope
+
+        if (identifier.equals(value)) return true; // if identifier is the same type as right
+
+        if (identifier.equals(intType)
+                && (value.equals(percentageType) )) return true; // if identifier int then right can be float, percent
+
+        if (identifier.equals(floatType)
+                && (value.equals(intType)
+                || value.equals(percentageType) )) return true; // if identifier float then right can be int
+
+        if (isValidPinOperatorRule(identifier, value)) return true;
+
+        return false;
+    }
+
+    private boolean isValidArithmetic(String left, String right)
     {
         if (left == null || right == null) return true; // something went wrong with scope
 
@@ -153,7 +176,8 @@ public class TypeChecker implements Visitor
                 || right.equals(percentageType) )) return true; // if identifier int then right can be float, percent
 
         if (left.equals(floatType)
-                && (right.equals(intType) )) return true; // if identifier float then right can be int
+                && (right.equals(intType)
+                || right.equals(percentageType) )) return true; // if identifier float then right can be int
 
         if (left.equals(percentageType)
                 && (right.equals(intType) )) return true; // if percentageType float then rightType can be int)
@@ -191,25 +215,23 @@ public class TypeChecker implements Visitor
 
     private boolean IsValidComparison(String[] comparisonTypes, String left, String right, Node node)
     {
+        // Checks if right- or left type is null, or if they are present in the comparisonTypes array.
+        // Returns true when it's not valid, since isValidInput() will add an error to the ErrorHandler, and we don't want to add any more errors afterwards,
+        // so we continue from where IsValidComparison() was called.
         if (!isValidInput(comparisonTypes, left, right, node)) return true;
 
-        // check for array declaration values, int.input int.output bool.input etc...
-        if (CheckIfPinType(left) || CheckIfPinType(right))
-        {
-            boolean notValid = isValidPinOperatorRule(left, right); // checks all valid pin operator rules
-            if (!notValid) return true;
-            left = GetPinType(left);
-            right = GetPinType(right);
-        }
+        // If left or right is a pin, the type will be shortened.
+        // Example: bool.output becomes bool, if the type is not a pin, nothing happens.
+        left = GetPinType(left);
+        right = GetPinType(right);
 
-        if (left.equals(right)) return true; // if leftType is the same type as rightType
+        if (left.equals(right)) return true; // if leftType is the same type as rightType, since all types can be compared to themselves
 
         if (left.equals(intType)
-                && right.equals(floatType)
-                || right.equals(percentageType) ) return true; // if leftType int then rightType can be float, percent
+                && (right.equals(floatType) )) return true; // if leftType int then rightType can be float, percent
 
         if (left.equals(floatType)
-                && right.equals(intType) ) return true; // if leftType float then rightType can be int
+                && (right.equals(intType) )) return true; // if leftType float then rightType can be int
 
         return false; // is not a valid operator rule
     }
@@ -298,7 +320,7 @@ public class TypeChecker implements Visitor
         String identifierType = GetTypeNode(node.Identifier);
         String expressionType = GetTypeNode(node.Value);
 
-        if (!isValidOperands(identifierType, expressionType))
+        if (!isValidAssignmentDeclaration(identifierType, expressionType))
         {
             CustomErrorHandler.AddError(new SemanticError(node, "Tried to declare object of type: " + node.Type + " with type: " + expressionType));
         }
@@ -329,7 +351,6 @@ public class TypeChecker implements Visitor
 
         if(!matchFound)
             CustomErrorHandler.AddError(new SemanticError(node, "Tried to divide invalid type " + rightType));
-
 
         return floatType;
     }
@@ -454,7 +475,7 @@ public class TypeChecker implements Visitor
     @Override
     public String Visit(GreaterOrEqualNode node)
     {
-        String[] GreaterOrEqualTypes = {intType, floatType, percentageType, timeType, dayType, monthType, analog_inputType, analog_outputType};
+        String[] GreaterOrEqualTypes = {intType, floatType, percentageType, timeType, analog_inputType, analog_outputType};
 
         String leftType = GetTypeNode(node.Left);
         String rightType = GetTypeNode(node.Right);
@@ -470,7 +491,7 @@ public class TypeChecker implements Visitor
     @Override
     public String Visit(GreaterThanNode node)
     {
-        String[] GreaterThanTypes = {intType, floatType, percentageType, timeType, dayType, monthType, analog_inputType, analog_outputType};
+        String[] GreaterThanTypes = {intType, floatType, percentageType, timeType, analog_inputType, analog_outputType};
 
         String leftType = GetTypeNode(node.Left);
         String rightType = GetTypeNode(node.Right);
@@ -542,7 +563,7 @@ public class TypeChecker implements Visitor
     @Override
     public String Visit(LessOrEqualNode node)
     {
-        String[] LessOrEqualTypes = {intType, floatType, percentageType, timeType, dayType, monthType, analog_inputType, analog_outputType};
+        String[] LessOrEqualTypes = {intType, floatType, percentageType, timeType, analog_inputType, analog_outputType};
 
         String leftType = GetTypeNode(node.Left);
         String rightType = GetTypeNode(node.Right);
@@ -558,7 +579,7 @@ public class TypeChecker implements Visitor
     @Override
     public String Visit(LessThanNode node)
     {
-        String[] LessThanTypes = {intType, floatType, percentageType, timeType, dayType, monthType, analog_inputType, analog_outputType};
+        String[] LessThanTypes = {intType, floatType, percentageType, timeType, analog_inputType, analog_outputType};
 
         String leftType = GetTypeNode(node.Left);
         String rightType = GetTypeNode(node.Right);
@@ -701,7 +722,6 @@ public class TypeChecker implements Visitor
     @Override
     public Object Visit(PerformUntilNode node)
     {
-        symbolTable.OpenScope(String.valueOf(node.LineNumber));
         IterationChecker(node);
         return null;
     }
@@ -731,7 +751,6 @@ public class TypeChecker implements Visitor
     public String Visit(RoomDeclaration node)
     {
         symbolTable.OpenScope(String.valueOf(node.Identifier.Value));
-        roomType = node.Identifier.Value;
 
         for (RoomBlockNode roomBlockNode : node.body)
         {
@@ -740,7 +759,7 @@ public class TypeChecker implements Visitor
 
         symbolTable.CloseScope();
 
-        return roomType;
+        return node.Identifier.Value;
     }
 
     @Override
@@ -839,6 +858,8 @@ public class TypeChecker implements Visitor
 
     private void IterationChecker(IterationNode node)
     {
+        symbolTable.OpenScope(String.valueOf(node.LineNumber));
+
         String predicateType = GetTypeNode(node.Predicate);
         if (!predicateType.equals(boolType))
         {
