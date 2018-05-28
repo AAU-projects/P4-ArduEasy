@@ -44,9 +44,11 @@ public class Program
             filePath = args[0];
             if (!filePath.toLowerCase().contains(".arz"))
                 throw new InvalidPathException(filePath,"Invalid file type");
-            String[] temp = filePath.split("/");
-            temp = temp[temp.length-1].split("\\.");
-            outputFile = new File("Outputs/" + temp[0] + "/" + temp[0] + ".ino");
+            File temp = new File(filePath);
+
+            //String[] temp = filePath.split("\\\\");
+            //temp = temp[temp.length-1].split("\\.");
+            outputFile = new File("Outputs/" + temp.getName().split("\\.")[0] + "/" + temp.getName().split("\\.")[0] + ".ino");
             //noinspection ResultOfMethodCallIgnored
             outputFile.getParentFile().mkdirs();
 

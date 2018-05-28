@@ -1,0 +1,82 @@
+house{}
+function void AssTest1()
+{
+    int bob = 0
+    int bob2 = -58
+    int bob3 = bob2
+    int negativbob = -bob
+
+    float jens = 25.58457
+    float jens2 = -547.584
+    float jens3 = jens
+    float jens4 = -jens
+
+    percent lasse = 100%
+    percent lasse2 = 15%
+    percent lasse3 = lasse
+
+    string ralled = "Hej"
+    string ralled2 = ralled
+
+    time alec = 20:48
+    time alec2 = 18:59
+
+    day magnus = MONDAY
+    day magnus2 = FRIDAY
+
+    month luke = JANUARY
+
+    bool jonas = true
+    bool jonas2 = false
+    bool jonas3 = !true
+
+
+    bob = 485 + 56 - 485 * 256 + 45 * -bob2
+    float jens = 50.2 * 32 * -1.4
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

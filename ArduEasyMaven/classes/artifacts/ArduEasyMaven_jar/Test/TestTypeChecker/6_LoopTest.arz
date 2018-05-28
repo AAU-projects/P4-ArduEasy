@@ -1,0 +1,106 @@
+house
+{
+    room test
+    {
+        Digital_input = PIN 1 as input
+        Digital_output = PIN 2 as output
+        Digital_inputpullup = PIN 6 as inputpullup
+        Analog_input = PIN A 6 as input
+        Analog_output = PIN A 7 as output
+    }
+}
+
+function void testOperations()
+{
+    int intType = 55
+    float floatType = 2.5
+    percent percentType = 5%
+    string stringType ="test"
+    bool boolType = true
+    time timeType = 13:37
+    day dayType = MONDAY
+    month monthType = DECEMBER
+
+    while(intType) {} // error
+    while(floatType) {} // error
+    while(percentType) {} // error
+    while(stringType) {} // error
+    while(boolType) {}
+    while(timeType) {} // error
+    while(dayType) {} // error
+    while(monthType) {} // error
+    while(house.test.Digital_input) {}
+    while(house.test.Digital_output) {}
+    while(house.test.Digital_inputpullup) {}
+    while(house.test.Analog_input) {} // error
+    while(house.test.Analog_output) {} // error
+
+    for (intType = intType; intType; intType = intType) {} // error
+    for (intType = intType; floatType; intType = intType) {} // error
+    for (intType = intType; percentType; intType = intType) {} // error
+    for (intType = intType; stringType; intType = intType) {} // error
+    for (intType = intType; boolType; intType = intType) {}
+    for (intType = intType; timeType; intType = intType) {} // error
+    for (intType = intType; dayType; intType = intType) {} // error
+    for (intType = intType; monthType; intType = intType) {} // error
+    for (intType = intType; house.test.Digital_input; intType = intType) {}
+    for (intType = intType; house.test.Digital_output; intType = intType) {}
+    for (intType = intType; house.test.Digital_inputpullup; intType = intType) {}
+    for (intType = intType; house.test.Analog_input; intType = intType) {} // error
+    for (intType = intType; house.test.Analog_output; intType = intType) {} // error
+
+    perform intType times {}
+    perform floatType times {} // error
+    perform percentType times {} // error
+    perform stringType times {} // error
+    perform boolType times {} // error
+    perform timeType times {} // error
+    perform dayType times {} // error
+    perform monthType times {} // error
+    perform house.test.Digital_input times {} // error
+    perform house.test.Digital_output times {} // error
+    perform house.test.Digital_inputpullup times {} // error
+    perform house.test.Analog_input times {}
+    perform house.test.Analog_output times {}
+
+    perform until (intType) {} // error
+    perform until (floatType) {} // error
+    perform until (percentType) {} // error
+    perform until (stringType) {} // error
+    perform until (boolType) {}
+    perform until (timeType) {} // error
+    perform until (dayType) {} // error
+    perform until (monthType) {} // error
+    perform until (house.test.Digital_input) {}
+    perform until (house.test.Digital_output) {}
+    perform until (house.test.Digital_inputpullup) {}
+    perform until (house.test.Analog_input) {} // error
+    perform until (house.test.Analog_output) {} // error
+
+    if (intType) {} // error
+    else if (intType) {} // error
+    if (floatType) {} // error
+    else if (floatType) {} // error
+    if (percentType) {} // error
+    else if (percentType) {} // error
+    if (stringType) {} // error
+    else if (stringType) {} // error
+    if (boolType) {}
+    else if (boolType) {}
+    if (timeType) {} // error
+    else if (timeType) {} // error
+    if (dayType) {} // error
+    else if (dayType) {} // error
+    if (monthType) {} // error
+    else if (monthType) {} // error
+    if (house.test.Digital_input) {}
+    else if (house.test.Digital_input) {}
+    if (house.test.Digital_output) {}
+    else if (house.test.Digital_output) {}
+    if (house.test.Digital_inputpullup) {}
+    else if (house.test.Digital_inputpullup) {}
+    if (house.test.Analog_input) {} // error
+    else if (house.test.Analog_input) {} // error
+    if (house.test.Analog_output) {} // error
+    else if (house.test.Analog_output) {} // error
+}

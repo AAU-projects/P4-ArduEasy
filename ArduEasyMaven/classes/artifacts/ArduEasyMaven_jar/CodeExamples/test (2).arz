@@ -1,0 +1,21 @@
+house
+{
+}
+
+function void bob1(string hey)
+{
+        //6
+        // month
+        if (true)
+        {
+            month syntax_test_left = DECEMBER
+            month syntax_test_right = JUNE
+            if (syntax_test_left == syntax_test_right) { }
+            if (syntax_test_left != syntax_test_right) { }
+            if (syntax_test_left < syntax_test_right) { }
+            if (syntax_test_left > syntax_test_right) { }
+            if (syntax_test_left <= syntax_test_right) { }
+            if (syntax_test_left >= syntax_test_right) { }
+        }
+
+}

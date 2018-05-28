@@ -1,0 +1,15 @@
+house
+ {
+     float floatvar = "Test"
+     string test = 7
+     bool b = 1
+     string test2 = "hello"
+ }
+
+ when(test2 == true)
+ {
+     if (b)
+     {
+         // Do something
+     }
+ }

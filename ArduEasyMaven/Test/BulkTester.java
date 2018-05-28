@@ -32,28 +32,36 @@ public class BulkTester
 
     public void RunTestCases() throws IOException
     {
-        File[] directories = new File("Test").listFiles(new FileFilter()
+        try
         {
-            @Override
-            public boolean accept(File pathname)
+            File[] directories = new File("Test").listFiles(new FileFilter()
             {
-                return pathname.isDirectory();
-            }
-        });
+                @Override
+                public boolean accept(File pathname)
+                {
+                    return pathname.isDirectory();
+                }
+            });
 
-        for (File folder : directories)
-        {
-            System.out.println(ANSI_YELLOW + "Starting: " + folder.getName() + ANSI_RESET);
-            File testDirectory = new File(folder.getPath());
-            String[] testDirectories = testDirectory.list();
-            for (String directory : testDirectories)
+            for (File folder : directories)
             {
-                System.out.println(ANSI_YELLOW + "Starting test: " + directory + ANSI_RESET);
-                Start(folder.getPath() + "\\" + directory);
-                testMap.put(directory, folder.getPath() + "\\" + directory);
-                System.out.println(ANSI_CYAN + "Successfully tested: " + directory + ANSI_RESET);
+                System.out.println(ANSI_YELLOW + "Starting: " + folder.getName() + ANSI_RESET);
+                File testDirectory = new File(folder.getPath());
+                String[] testDirectories = testDirectory.list();
+                for (String directory : testDirectories)
+                {
+                    System.out.println(ANSI_YELLOW + "Starting test: " + directory + ANSI_RESET);
+                    Start(folder.getPath() + "\\" + directory);
+                    testMap.put(directory, folder.getPath() + "\\" + directory);
+                    System.out.println(ANSI_CYAN + "Successfully tested: " + directory + ANSI_RESET);
+                }
             }
+        } catch (NullPointerException e)
+        {
+            System.out.println("Cant start compiler test");
         }
+
+
     }
 
     public boolean Start(String testPath) throws  IOException

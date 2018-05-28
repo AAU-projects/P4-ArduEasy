@@ -1,0 +1,34 @@
+house{}
+
+function void SwitchTest()
+{
+    int val = 5
+    int bob = 0
+    switch (val)
+    {
+        case 1:
+        {
+            bob = 88
+        }
+        case 2:
+        {
+            bob = 99
+        }
+        case 5:
+        {
+            bob = bob + val
+        }
+        default:
+        {
+            val = val + val
+        }
+    }
+
+    switch (8)
+    {
+        case 8:
+        {
+            val = 8
+        }
+    }
+}

@@ -1,0 +1,8 @@
+house{}
+
+function void logicalExprTest()
+{
+    bool ole = true
+    bool ole2 = false
+    bool ole3 = 2 == 2 && ole && !ole2 && 2 > 3 || 3 < 5 && 2 + 3 * 4 != 8
+}

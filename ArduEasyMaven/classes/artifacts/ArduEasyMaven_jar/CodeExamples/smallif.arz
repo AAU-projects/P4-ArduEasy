@@ -1,0 +1,39 @@
+house
+{
+		//Light1 = PIN 1 as input
+		//Light2 = PIN 2 as output
+		//Light3 = PIN 3 as input
+}
+
+function void IfTest1 ()
+{
+    int bob = 7
+    int jens = 10
+
+    if(5>2)
+    {
+        if (bob is jens)
+        {
+
+        }
+
+        bool PartyTime = true
+    }
+    else if (3>7)
+    {
+        if (bob is jens)
+        {
+
+        }
+
+        bool PartyTime = true
+    }
+    else
+    {
+        if (bob is jens)
+        {
+        }
+        bool PartyTime = true
+    }
+
+}

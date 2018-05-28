@@ -1,0 +1,7 @@
+house {}
+
+function void test()
+{
+    if (2 < 3)
+    { }
+}

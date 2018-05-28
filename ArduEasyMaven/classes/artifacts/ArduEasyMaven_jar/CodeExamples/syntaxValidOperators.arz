@@ -1,0 +1,183 @@
+house
+{
+    room Kitchen
+    {
+        Digitial_input = PIN 1 as input
+        Digitial_output = PIN 2 as output
+        bool_inputpullup = PIN 6 as inputpullup
+        Analog_input = PIN A 6 as input
+        Analog_output = PIN A 7 as output
+    }
+}
+
+
+function void testOperations()
+{
+    //A.3 Syntax valid operations
+
+    //1
+    // not
+    if (true)
+    {
+        bool test = true
+        test = !test
+        test = not test
+    }
+
+    //2
+    // int float comparison
+    if (true)
+    {
+        int bob = 55
+        float hey = 666
+        // ints on left
+        if (bob == hey) { }
+        if (bob != hey) { }
+        if (bob < hey) { }
+        if (bob > hey) { }
+        if (bob <= hey) { }
+        if (bob >= hey) { }
+        // floats on left
+        if (hey == bob) { }
+        if (hey != bob) { }
+        if (hey < bob) { }
+        if (hey > bob) { }
+        if (hey <= bob) { }
+        if (hey >= bob) { }
+    }
+
+    //3
+    // percent
+    if (true)
+    {
+        percent ptest = 55%
+        percent hptest = 77%
+        if (ptest == hptest) { }
+        if (ptest != hptest) { }
+        if (ptest < hptest) { }
+        if (ptest > hptest) { }
+        if (ptest <= hptest) { }
+        if (ptest >= hptest) { }
+    }
+
+    //4
+    // time
+    if (true)
+    {
+        time another = 23:00
+        time anna = 12:00
+        if (another == anna) { }
+        if (another != anna) { }
+        if (another < anna) { }
+        if (another > anna) { }
+        if (another <= anna) { }
+        if (another >= anna) { }
+    }
+
+    //5
+    // day
+    if (true)
+    {
+        day syntax_test_left = MONDAY
+        day syntax_test_right = FRIDAY
+        if (syntax_test_left == syntax_test_right) { }
+        if (syntax_test_left != syntax_test_right) { }
+        if (syntax_test_left < syntax_test_right) { }
+        if (syntax_test_left > syntax_test_right) { }
+        if (syntax_test_left <= syntax_test_right) { }
+        if (syntax_test_left >= syntax_test_right) { }
+    }
+
+    //6
+    // month
+    if (true)
+    {
+        month syntax_test_left = DECEMBER
+        month syntax_test_right = JUNE
+        if (syntax_test_left == syntax_test_right) { }
+        if (syntax_test_left != syntax_test_right) { }
+        if (syntax_test_left < syntax_test_right) { }
+        if (syntax_test_left > syntax_test_right) { }
+        if (syntax_test_left <= syntax_test_right) { }
+        if (syntax_test_left >= syntax_test_right) { }
+    }
+
+    //7
+    // bool
+    if (true)
+    {
+        bool syntax_test_left = true
+        bool syntax_test_right = false
+        if (syntax_test_left == syntax_test_right) { }
+        if (syntax_test_left != syntax_test_right) { }
+    }
+
+    //8
+    // string
+    if (true)
+    {
+        string syntax_test_left = "hey"
+        string syntax_test_right = "you"
+        if (syntax_test_left == syntax_test_right) { }
+        if (syntax_test_left != syntax_test_right) { }
+    }
+
+    //5
+    // digital input
+    if (true)
+    {
+        bool hello = true
+        if (house.Kitchen.Digitial_input == house.Kitchen.Digitial_input) { }
+        if (house.Kitchen.Digitial_input == house.Kitchen.Digitial_output) { }
+        if (house.Kitchen.Digitial_input == hello) { }
+        if (house.Kitchen.Digitial_input == house.Kitchen.Digitial_input) { } // right side to left side
+        if (house.Kitchen.Digitial_output == house.Kitchen.Digitial_input) { }
+        if (hello == house.Kitchen.Digitial_input) { }
+        if (house.Kitchen.Digitial_input != house.Kitchen.Digitial_input) { } // not equal
+        if (house.Kitchen.Digitial_input != house.Kitchen.Digitial_output) { }
+        if (house.Kitchen.Digitial_input != hello) { }
+        if (house.Kitchen.Digitial_input != house.Kitchen.Digitial_input) { }
+        if (house.Kitchen.Digitial_output != house.Kitchen.Digitial_input) { }
+        if (hello != house.Kitchen.Digitial_input) { }
+    }
+
+    //6
+    // digital output
+    if (true)
+    {
+        bool hello = true
+        if (house.Kitchen.Digitial_output == house.Kitchen.Digitial_input) { }
+        if (house.Kitchen.Digitial_output == house.Kitchen.Digitial_output) { }
+        if (house.Kitchen.Digitial_output == hello) { }
+        if (house.Kitchen.Digitial_input == house.Kitchen.Digitial_output) { } // right side to left side
+        if (house.Kitchen.Digitial_output == house.Kitchen.Digitial_output) { }
+        if (hello == house.Kitchen.Digitial_output) { }
+        if (house.Kitchen.Digitial_output != house.Kitchen.Digitial_input) { } // not equal
+        if (house.Kitchen.Digitial_output != house.Kitchen.Digitial_output) { }
+        if (house.Kitchen.Digitial_output != hello) { }
+        if (house.Kitchen.Digitial_input != house.Kitchen.Digitial_output) { }
+        if (house.Kitchen.Digitial_output != house.Kitchen.Digitial_output) { }
+        if (hello != house.Kitchen.Digitial_output) { }
+    }
+
+    //7 NOT DONE
+    // Analog input
+    if (true)
+    {
+        bool hello = true
+        if (house.Kitchen.Digitial_output == house.Kitchen.Digitial_input) { }
+        if (house.Kitchen.Digitial_output == house.Kitchen.Digitial_output) { }
+        if (house.Kitchen.Digitial_output == hello) { }
+        if (house.Kitchen.Digitial_input == house.Kitchen.Digitial_output) { } // right side to left side
+        if (house.Kitchen.Digitial_output == house.Kitchen.Digitial_output) { }
+        if (hello == house.Kitchen.Digitial_output) { }
+        if (house.Kitchen.Digitial_output != house.Kitchen.Digitial_input) { } // not equal
+        if (house.Kitchen.Digitial_output != house.Kitchen.Digitial_output) { }
+        if (house.Kitchen.Digitial_output != hello) { }
+        if (house.Kitchen.Digitial_input != house.Kitchen.Digitial_output) { }
+        if (house.Kitchen.Digitial_output != house.Kitchen.Digitial_output) { }
+        if (hello != house.Kitchen.Digitial_output) { }
+    }
+
+
+}
