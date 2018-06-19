@@ -10,7 +10,6 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.file.InvalidPathException;
 import java.util.Arrays;
 
 import AST.*;
@@ -41,9 +40,7 @@ public class Program
 
         try
         {
-            filePath = args[0];
-            if (!filePath.toLowerCase().contains(".arz"))
-                throw new InvalidPathException(filePath,"Invalid file type");
+            filePath = "CodeExamples/project.arz";
             File temp = new File(filePath);
 
             //String[] temp = filePath.split("\\\\");
@@ -122,10 +119,7 @@ public class Program
         {
             System.out.println("No input file given");
             System.exit(0);
-        } catch (InvalidPathException e)
-        {
-            System.out.println(e.getReason());
-        } catch (Exception e)
+        }  catch (Exception e)
         {
             System.out.println(e.toString());
             e.printStackTrace();

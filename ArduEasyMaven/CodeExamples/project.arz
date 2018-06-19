@@ -1,0 +1,102 @@
+house
+{
+    int temperature = 20
+	int timeSet = 0
+    int selectedAppliance = 0
+
+    room program
+    {
+        increase = PIN 4 as input // time increase
+        decrease = PIN 5 as input // time decrease
+        switchAppliance = PIN 7 as input // switch appliance
+        light_sensor = PIN A 5 as input // light sensor
+    }
+
+    room kitchen
+    {
+        coffeeMachine = PIN 2 as output // coffee machine
+    }
+
+    room bedroom
+    {
+        light = PIN 8 as input // light
+        fan = PIN 13 as output // fan
+    }
+}
+when (house.program.switchAppliance == true)
+{
+    if (selectedAppliance == 0)
+    {
+        selectedAppliance = 1
+    }
+    else if (selectedAppliance == 1)
+    {
+        selectedAppliance = 0
+    }
+    while (house.program.switchAppliance == true)
+    { }
+}
+// start fan when temeperature is 24 or above
+when (temperature >= 24)
+{
+	house.bedroom.fan = true
+}
+when (temperature < 24)
+{
+	house.bedroom.fan = false
+}
+
+when (timeSet >= 3)
+{
+	house.kitchen.coffeeMachine = true
+}
+when (timeSet < 3)
+{
+	house.kitchen.coffeeMachine = false
+}
+
+// Temperature increase
+when (house.program.increase is true && selectedAppliance == 0)
+{
+	temperature = temperature + 1
+    while (house.program.increase == true)
+    { }
+}
+// Temperature decrease
+when (house.program.decrease is true && selectedAppliance == 0)
+{
+	temperature = temperature - 1
+    while (house.program.decrease == true)
+    { }
+}
+
+// Time increase
+when (house.program.increase is true && selectedAppliance == 1)
+{
+	timeSet = timeSet + 1
+    while (house.program.increase == true)
+    { }
+}
+// Time decrease
+when (house.program.decrease is true && selectedAppliance == 1)
+{
+	timeSet = timeSet - 1
+    while (house.program.decrease == true)
+    { }
+}
+
+when (house.program.light_sensor <= 500)
+{
+    if (house.bedroom.light == false)
+    {
+        house.bedroom.light = true
+    }
+}
+
+when (house.program.light_sensor > 500)
+{
+    if (house.bedroom.light == true)
+    {
+        house.bedroom.light = false
+    }
+}

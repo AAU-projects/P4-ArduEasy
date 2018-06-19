@@ -260,7 +260,11 @@ public class BuildCode implements Visitor
 
         Addtextln("}");
 
-        node.Alternative.Accept(this);
+        if (node.Alternative != null)
+        {
+            node.Alternative.Accept(this);
+        }
+
         return null;
     }
 
@@ -389,6 +393,10 @@ public class BuildCode implements Visitor
 
         DeacreaseIndent();
         Addtextln("}");
+        if (node.Alternative != null)
+        {
+            node.Alternative.Accept(this);
+        }
         return null;
     }
 
