@@ -5,7 +5,7 @@ This program is developed as part of a 4th semester Software Engineering project
 
 This program implements a compiler and a programming language with focus on home automation.
 
-On the left side ArduEasy code, on the right side the corrasponding Arduino code
+On the left side ArduEasy code, on the right side the corresponding Arduino code
 ![image](https://user-images.githubusercontent.com/16747705/93993717-5d8e9f00-fd8f-11ea-854d-ae6bed922765.png)
 
 ## Project Period
